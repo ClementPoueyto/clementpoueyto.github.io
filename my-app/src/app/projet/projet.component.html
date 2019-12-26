@@ -1,0 +1,38 @@
+<!--Projects section v.1-->
+<section id="projets">
+  <br>
+  <!--Section heading-->
+  <h2 class="text-center h1 py-5">
+    <strong>Projets</strong>
+  </h2>
+
+  <!--Grid row-->
+  <div class="row text-center">
+    <!--Grid column-->
+    <div *ngFor="let projet of projets" class="mx-auto col-lg-4 col-md-6 mb-4">
+
+      <!--Featured image-->
+      <div style="width:350px;height:350px;overflow:hidden;" class="mx-auto rounded z-depth-1 waves-light" mdbWavesEffect>
+        <img src={{projet.image}} class="" style="width:100%;"  alt="Sample project image">
+      </div>
+
+      <!--Excerpt-->
+      <mdb-card-body class="mt-3" style="margin:15px">
+        <h4>
+          <strong>{{projet.title}}</strong>
+        </h4>
+        <p class="grey-text">{{projet.date}}
+        </p>
+        <p class="grey-text">{{projet.description}}
+        </p>
+        <a mdbBtn color="indigo" size="sm" class="waves-light" href="{{projet.github}}" target="_blank" mdbWavesEffect>
+          <mdb-icon far icon="clone" class="left"></mdb-icon>Voir projet</a>
+      </mdb-card-body>
+
+    </div>
+    <!--Grid column-->
+
+</div>
+</section>
+
+    
