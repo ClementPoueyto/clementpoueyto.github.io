@@ -9,7 +9,7 @@
         "published": true,
         "created": "2019-12-25T22:15:51.484120Z",
         "image": "/assets/photo/citadelles--4eme-ed--p-image-68422-grande.jpg",
-        "github": "https://github.com/pns-si3-projects/ps5-projet2-1920-main-class/tree/FINAL"
+        "github": "https://github.com/ClementPoueyto/Projet-Citadelles---SI3"
     },
     {
         "url": "http://localhost:8000/projets/7/",
@@ -21,7 +21,9 @@
         "published": true,
         "created": "2019-12-25T22:10:17.069600Z",
         "image": "/assets/photo/carre.PNG",
-        "github": "https://play.google.com/store/apps/details?id=com.mencelt.flutter_groop&hl=fr"
+        "github":"https://github.com/ClementPoueyto/Android_app_GROOP",
+        "link": "https://play.google.com/store/apps/details?id=com.mencelt.flutter_groop&hl=fr",
+        "messageLink":"Télécharger"
     },
     {
         "url": "http://localhost:8000/projets/6/",
@@ -33,14 +35,16 @@
         "published": true,
         "created": "2019-12-25T22:02:01.959263Z",
         "image": "/assets/photo/pico8.jpeg",
-        "github": "https://github.com/ClementPoueyto/Eat-n-slide_pico8"
+        "github": "https://github.com/ClementPoueyto/Eat-n-slide_pico8",
+        "link":"/assets/index.html",
+        "messageLink":"Jouer"
     },
     {
         "url": "http://localhost:8000/projets/5/",
         "title": "Projet Arduino - Distributeur Snack",
         "description": "Distributeur automatique snack incluant un monnayeur. Détection des pièces, de la valeur jusqu'à la vente du produit. Conception et réalisation complète de la machine. Langage Arduino (proche du C/C++)",
         "place": "PeiP Polytech Nice Sophia",
-        "date": "décembre - mars 2019",
+        "date": "décembre 2018 - mars 2019",
         "slug": "1",
         "published": true,
         "created": "2019-12-25T21:52:17.297149Z",

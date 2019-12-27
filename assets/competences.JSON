@@ -72,7 +72,7 @@
         "published": true,
         "image": "/assets/photo/hiclipart.com.png",
         "created": "2019-12-25T19:33:00.829745Z",
-        "pourcentage": "45",
+        "pourcentage": "55",
         "langage": true,
         "outil": false,
         "langue": false
@@ -141,5 +141,18 @@
         "langage": false,
         "outil": false,
         "langue": true
+    }, 
+    {
+        "url": "http://localhost:8000/competences/13/",
+        "title": "GitHub",
+        "description": "ecole",
+        "slug": "o6",
+        "published": true,
+        "image": "/assets/photo/github.png",
+        "created": "2019-12-27T19:33:00.829745Z",
+        "pourcentage": "60",
+        "langage": false,
+        "outil": true,
+        "langue": false
     }
 ]

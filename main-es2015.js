@@ -45,7 +45,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<section id=\"competences\">\n    <br>\n    <br>\n   \n    <h2 class=\"text-center h1 py-3\">\n        <strong>Compétences</strong>\n    </h2>\n    <br>\n\n    <h3 class=\"text-center h2\">\n        <strong>Langages</strong>\n    </h3>\n    <br>\n    <div class=\"row text-center\">\n    <div class=\"mx-auto\">\n        <div class=\"d-inline-block\" *ngFor=\"let competence of competences\">\n            <div style=\"padding:30px\" *ngIf=\"competence.langage\">\n                <circle-progress \n                [percent]=competence.pourcentage\n                [imageSrc]=competence.image\n                [outerStrokeColor]= \"'#E12D14'\"\n                >\n                </circle-progress>\n            </div>\n        </div>\n    </div>\n    </div>\n    <h3 class=\"text-center h2\">\n        <strong>Outils</strong>\n    </h3>\n    <br>\n    <div class=\"row text-center\">\n    <div class=\"mx-auto\">\n        <div class=\"d-inline-block\" *ngFor=\"let competence of competences\">\n            <div style=\"padding:30px\" *ngIf=\"competence.outil\">\n                <circle-progress \n                [percent]=competence.pourcentage\n                [imageSrc]=competence.image\n                [outerStrokeColor]= \"'#2243E7'\"\n                >\n                </circle-progress>\n            </div>\n        </div>\n    </div>\n    </div>\n    <h3 class=\"text-center h2\">\n        <strong>Langues</strong>\n    </h3>\n    <br>\n    <div class=\"row text-center mx-auto\">\n    <div class=\"mx-auto\">\n        <div class=\"d-inline-block\" *ngFor=\"let competence of competences\">\n            <div style=\"padding:30px\"  *ngIf=\"competence.langue\">\n                <circle-progress \n                [percent]=competence.pourcentage\n                [imageSrc]=competence.image\n                [outerStrokeColor]= \"'#78C000'\"\n                >\n                </circle-progress>\n            </div>\n        </div>\n    </div>\n    </div>\n\n</section>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<section id=\"competences\">\n    <br>\n    <br>\n   \n    <h2 class=\"text-center h1 py-3\">\n        <strong>Compétences</strong>\n    </h2>\n    <br>\n\n    <h3 class=\"text-center h2\">\n        <strong>Langages</strong>\n    </h3>\n    <br>\n    <div class=\"wrapper container-fluid wow\">\n    <div class=\"row text-center\">\n    <div class=\"mx-auto\">\n        <div class=\"d-inline-block\" *ngFor=\"let competence of competences\">\n            <div style=\"padding:30px\" *ngIf=\"competence.langage\">\n                <circle-progress \n                [percent]=competence.pourcentage\n                [imageSrc]=competence.image\n                [outerStrokeColor]= \"'#E12D14'\"\n                >\n                </circle-progress>\n            </div>\n        </div>\n    </div>\n    </div>\n    </div>\n    <h3 class=\"text-center h2\">\n        <strong>Outils</strong>\n    </h3>\n    <br>\n    <div class=\"wrapper container-fluid\">\n    <div class=\"row text-center\">\n    <div class=\"mx-auto\">\n        <div class=\"d-inline-block\" *ngFor=\"let competence of competences\">\n            <div style=\"padding:30px\" *ngIf=\"competence.outil\">\n                <circle-progress \n                [percent]=competence.pourcentage\n                [imageSrc]=competence.image\n                [outerStrokeColor]= \"'#2243E7'\"\n                >\n                </circle-progress>\n            </div>\n        </div>\n    </div>\n    </div>\n    </div>\n    <h3 class=\"text-center h2\">\n        <strong>Langues</strong>\n    </h3>\n    <br>\n    <div class=\"wrapper container-fluid\">\n    <div class=\"row text-center mx-auto\">\n    <div class=\"mx-auto\">\n        <div class=\"d-inline-block\" *ngFor=\"let competence of competences\">\n            <div style=\"padding:30px\"  *ngIf=\"competence.langue\">\n                <circle-progress \n                [percent]=competence.pourcentage\n                [imageSrc]=competence.image\n                [outerStrokeColor]= \"'#78C000'\"\n                >\n                </circle-progress>\n            </div>\n        </div>\n    </div>\n    </div>\n    </div>\n\n</section>\n");
 
 /***/ }),
 
@@ -58,7 +58,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<footer class=\"footer\">\n      <div class=\"container\">\n        <span> CECI EST UN TEST</span>\n      </div>\n    </footer>\n  ");
+/* harmony default export */ __webpack_exports__["default"] = ("<!-- Footer -->\n<footer class=\"page-footer font-small grey darken-3 \">\n\n    <!-- Footer Elements -->\n    <div class=\"container\">\n\n      <!-- Grid row-->\n      <div class=\"row \">\n\n        <!-- Grid column -->\n        <div class=\"col-md-12 py-4\">\n          <div class=\"mb-5 flex-center\">\n            <!-- GitHub +-->\n            <a class=\"git-ic\" href=\"https://github.com/ClementPoueyto\" target=\"_blank\">\n                <mdb-icon fab fab icon=\"github\" size=\"2x\" class=\"white-text mr-md-5 mr-3\"></mdb-icon>\n            </a>\n            <!--Linkedin -->\n            <a class=\"li-ic\" href=\"https://www.linkedin.com/in/clement-poueyto-743429180\" target=\"_blank\">\n                <mdb-icon fab icon=\"linkedin\" size=\"2x\" class=\"white-text mr-md-5 mr-3\"></mdb-icon>\n            </a>\n            <!--Email-->\n            <div class=\"mail-ic\">\n                <mdb-icon fas icon=\"envelope\" size=\"2x\" class=\"white-text d-block text-center\"></mdb-icon>\n                <p class=\"d-block  mr-3\">clement.poueyto@etu.unice.fr</p>\n            </div>\n            <!--Numero-->\n            <div>\n                <mdb-icon fas icon=\"mobile-alt\" size=\"2x\" class=\"white-text d-block text-center\"></mdb-icon>\n                <p class=\"d-block  mr-3\">+33.6.58.01.80.24</p>\n            </div>\n\n          </div>\n        </div>\n        <!-- Grid column -->\n\n      </div>\n      <!-- Grid row-->\n\n    </div>\n    <!-- Footer Elements -->\n\n    <!-- Copyright -->\n    <div class=\"footer-copyright text-center py-3\">© 2019-{{date}} Copyright:\n      <a href=\"/\">Poueyto Clément</a>\n    </div>\n    <!-- Copyright -->\n\n  </footer>");
 
 /***/ }),
 
@@ -71,7 +71,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<section id=\"formations\">\n    <br>\n    <br>\n   \n    <h2 class=\"text-center h1 py-3\">\n        <strong>Formations</strong>\n    </h2>\n    <br>\n\n    <ul class=\"text-center\" *ngFor=\"let formation of formations\">\n        <div class=\"mx-auto \">\n            <div class=\"align-top wow fadeInLeft d-inline-block align-bottom\" style=\"padding-right:30px;padding-left:30px\" data-wow-delay=\"0.5s\">\n                <img src={{formation.image}}\n                class=\"img-fluid rounded rounded z-depth-1\n             d-block\" width=\"300\" alt=\"Responsive image\">\n            </div>\n            <div class=\"align-bottom wow fadeInRight card d-inline-block\" style=\"width: 35rem;\">\n                <div class=\"card-body\">\n                    <h5 class=\"card-title\">{{formation.title}}</h5>\n                    <h6 class=\"card-subtitle mb-2 text-muted\">{{formation.date}}</h6>\n                    \n                    <p>{{formation.description}}</p>\n                    \n                </div>\n            </div>\n        </div>\n    </ul>\n</section>");
+/* harmony default export */ __webpack_exports__["default"] = ("<section id=\"formations\">\n    <br>\n    <br>\n   \n    <h2 class=\"text-center h1 py-3\">\n        <strong>Formations</strong>\n    </h2>\n    <br>\n\n    <ul class=\"text-center\" *ngFor=\"let formation of formations\">\n        <div class=\"mx-auto \">\n            <div class=\"align-top wow fadeInLeft d-inline-block align-bottom\" style=\"padding-right:30px;padding-left:30px\" data-wow-delay=\"0.5s\">\n                <img src={{formation.image}}\n                class=\"img-fluid rounded rounded z-depth-1\n             d-block\" width=\"300\" alt=\"Responsive image\">\n            </div>\n            <div class=\"align-bottom wow fadeInRight card d-inline-block \" style=\"width: 350px;\">\n                <div class=\"card-body\">\n                    <h5 class=\"card-title\">{{formation.title}}</h5>\n                    <h6 class=\"card-subtitle mb-2 text-muted\">{{formation.date}}</h6>\n                    \n                    <p>{{formation.description}}</p>\n                    \n                </div>\n            </div>\n        </div>\n    </ul>\n</section>");
 
 /***/ }),
 
@@ -84,7 +84,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<nav class=\"fixed-top navbar navbar-expand-md navbar-dark bg-dark mb-4\">\n  <a [ngx-scroll-to]=\"'#profil'\" class=\"navbar-brand\" style=\"color:#fff\">Portfolio</a>\n\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarCollapse\" aria-controls=\"navbarCollapse\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarCollapse\">\n    <ul class=\"navbar-nav mr-auto\">\n\n      <li class=\"nav-item\">\n        <a [ngx-scroll-to]=\"'#formations'\" class=\"nav-link\">Formations</a>\n      </li>\n      <li class=\"nav-item\">\n        <a [ngx-scroll-to]=\"'#projets'\" class=\"nav-link\">Projets</a>\n      </li>\n      <li class=\"nav-item\">\n        <a [ngx-scroll-to]=\"'#competences'\" class=\"nav-link\">Compétences</a>\n      </li>\n    </ul>\n  </div>\n\n</nav>");
+/* harmony default export */ __webpack_exports__["default"] = ("<nav class=\"fixed-top navbar navbar-expand-md navbar-dark bg-dark mb-4\">\n  <a [ngx-scroll-to]=\"'#profil'\" class=\"navbar-brand\" style=\"color:#fff\">Portfolio</a>\n\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarCollapse\" aria-controls=\"navbarCollapse\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarCollapse\">\n    <ul class=\"navbar-nav mr-auto\">\n\n      <li class=\"nav-item\">\n        <a [ngx-scroll-to]=\"'#formations'\" class=\"nav-link\">Formations</a>\n      </li>\n      <li class=\"nav-item\">\n        <a [ngx-scroll-to]=\"'#projets'\" class=\"nav-link\">Projets</a>\n      </li>\n      <li class=\"nav-item\">\n        <a [ngx-scroll-to]=\"'#competences'\" class=\"nav-link\">Compétences</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" href=\"/assets/CV_CLEMENT.pdf\" download=\"CV_clement_poueyto.pdf\" style=\"color:#fff\" target=\"_blank\">CV</a>\n      </li>\n    </ul>\n  </div>\n\n</nav>");
 
 /***/ }),
 
@@ -110,7 +110,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<!--Projects section v.1-->\n<section id=\"projets\">\n  <br>\n  <!--Section heading-->\n  <h2 class=\"text-center h1 py-5\">\n    <strong>Projets</strong>\n  </h2>\n\n  <!--Grid row-->\n  <div class=\"row text-center\">\n    <!--Grid column-->\n    <div *ngFor=\"let projet of projets\" class=\"mx-auto col-lg-4 col-md-6 mb-4\">\n\n      <!--Featured image-->\n      <div style=\"width:350px;height:350px;overflow:hidden;\" class=\"mx-auto rounded z-depth-1 waves-light\" mdbWavesEffect>\n        <img src={{projet.image}} class=\"\" style=\"width:100%;\"  alt=\"Sample project image\">\n      </div>\n\n      <!--Excerpt-->\n      <mdb-card-body class=\"mt-3\" style=\"margin:15px\">\n        <h4>\n          <strong>{{projet.title}}</strong>\n        </h4>\n        <p class=\"grey-text\">{{projet.date}}\n        </p>\n        <p class=\"grey-text\">{{projet.description}}\n        </p>\n        <a mdbBtn color=\"indigo\" size=\"sm\" class=\"waves-light\" href=\"{{projet.github}}\" target=\"_blank\" mdbWavesEffect>\n          <mdb-icon far icon=\"clone\" class=\"left\"></mdb-icon>Voir projet</a>\n      </mdb-card-body>\n\n    </div>\n    <!--Grid column-->\n\n</div>\n</section>\n\n    ");
+/* harmony default export */ __webpack_exports__["default"] = ("<!--Projects section v.1-->\n<section id=\"projets\">\n  <br>\n  <!--Section heading-->\n  <h2 class=\"text-center h1 py-5\">\n    <strong>Projets</strong>\n  </h2>\n<div class=\"wrapper container-fluid\">\n  <!--Grid row-->\n  <div class=\"row text-center\">\n    <!--Grid column-->\n    <div *ngFor=\"let projet of projets\" class=\"mx-auto col-lg-4 col-md-6 mb-4\">\n\n      <!--Featured image-->\n      <div style=\"width:350px;height:350px;overflow:hidden;\" class=\"mx-auto rounded z-depth-1 waves-light\" mdbWavesEffect>\n        <img src={{projet.image}} class=\"\" style=\"width:100%;\"  alt=\"Sample project image\">\n      </div>\n\n      <!--Excerpt-->\n      <mdb-card-body class=\"mt-3\" style=\"margin:15px\">\n        <h4>\n          <strong>{{projet.title}}</strong>\n        </h4>\n        <p class=\"grey-text\">{{projet.date}}\n        </p>\n        <p class=\"grey-text\">{{projet.description}}\n        </p>\n        <a mdbBtn color=\"indigo\" size=\"sm\" class=\"waves-light\" href=\"{{projet.github}}\" target=\"_blank\" mdbWavesEffect>\n          <mdb-icon far icon=\"clone\" class=\"left\"></mdb-icon>Voir projet</a>\n          <a *ngIf=\"projet.link\"  mdbBtn color=\"green\" size=\"sm\" class=\"waves-light\" href=\"{{projet.link}}\" target=\"_blank\" mdbWavesEffect>\n          <mdb-icon far icon=\"clone\" class=\"left\"></mdb-icon>{{projet.messageLink}}</a>\n      </mdb-card-body>\n\n    </div>\n    <!--Grid column-->\n  </div>\n</div>\n</section>\n\n    ");
 
 /***/ }),
 
@@ -466,6 +466,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 let AppModule = class AppModule {
 };
 AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -483,6 +484,7 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
             _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
             _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"],
             _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClientModule"],
+            angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_10__["IconsModule"],
             _nicky_lenaers_ngx_scroll_to__WEBPACK_IMPORTED_MODULE_12__["ScrollToModule"].forRoot(),
             angular_bootstrap_md__WEBPACK_IMPORTED_MODULE_10__["ButtonsModule"].forRoot(),
             ng_circle_progress__WEBPACK_IMPORTED_MODULE_11__["NgCircleProgressModule"].forRoot({
@@ -496,15 +498,19 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
                 imageHeight: 70,
                 imageWidth: 70,
                 showBackground: true,
-                showTitle: false
+                showTitle: false,
+                lazy: false,
+                renderOnClick: false
             })
         ],
         providers: [],
         bootstrap: [
             _app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"],
+            _profil_profil_component__WEBPACK_IMPORTED_MODULE_8__["ProfilComponent"],
             _navbar_navbar_component__WEBPACK_IMPORTED_MODULE_6__["NavbarComponent"],
             _formation_formation_component__WEBPACK_IMPORTED_MODULE_7__["FormationComponent"],
-            _projet_projet_component__WEBPACK_IMPORTED_MODULE_9__["ProjetComponent"]
+            _projet_projet_component__WEBPACK_IMPORTED_MODULE_9__["ProjetComponent"],
+            _footer_footer_component__WEBPACK_IMPORTED_MODULE_14__["FooterComponent"]
         ],
         schemas: [_angular_core__WEBPACK_IMPORTED_MODULE_2__["CUSTOM_ELEMENTS_SCHEMA"]]
     })
@@ -656,7 +662,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let FooterComponent = class FooterComponent {
-    constructor() { }
+    constructor() {
+        this.date = new Date().getFullYear();
+    }
     ngOnInit() {
     }
 };
