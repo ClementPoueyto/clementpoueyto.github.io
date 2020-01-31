@@ -126,7 +126,6 @@ createMenuScene = function (engine, canvas) {
     text.top =-250;
     advancedTexture.addControl(text);
 
-
     var image = new BABYLON.GUI.Image("but", "assets/images/keyQ.png");
     image.width = "40px";
     image.height = "40px";

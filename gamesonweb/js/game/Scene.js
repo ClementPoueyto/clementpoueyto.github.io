@@ -7,11 +7,11 @@ createScene = function (engine, level) {
     /************************* variables initialisation ********************************** */
     var initCompt = new Date().getTime();
     var isloaded = false;
-    
+
 
     /********************* Moteur physique du jeu *********************** */
     var scene = new BABYLON.Scene(engine);
-    var gravityVector = new BABYLON.Vector3(0, -120.81, 0);
+    var gravityVector = new BABYLON.Vector3(0, -100.81, 0);
     var physicsPlugin = new BABYLON.CannonJSPlugin();
     scene.enablePhysics(gravityVector, physicsPlugin);
     scene.clearColor = new BABYLON.Color3(0, 0, 0);
@@ -29,12 +29,12 @@ createScene = function (engine, level) {
     var previousJump = new Date().getTime();
     var previousPlayerPosX = 0
     var defaultRotation = scene.camera.rotation;
-    var brakePower = 40;
-    var brakeInterval = 300
-    var jumpPower = 8000;
-    var sideDelay = 300
+    var brakePower = 20;
+    var brakeInterval = 100
+    var jumpPower = 100;
+    var sideDelay = 200
     var jumpVector = new BABYLON.Vector3(0, 1, 0);
-    var brakeVector = new BABYLON.Vector3(-1, 0.2, 0);
+    var brakeVector = new BABYLON.Vector3(-1, 0.01, 0);
     scene.keepPosition = new BABYLON.Vector3.Zero();
     /****************************************************************** */
     var player = new Player(this);
@@ -77,7 +77,7 @@ createScene = function (engine, level) {
     scene.blueMat = new BABYLON.StandardMaterial("blueMat", scene);;
     //scene.blueMat.diffuseTexture = new BABYLON.Texture("assets/images/Portal-PNG-Free-Image.png", scene);
     scene.blueMat.diffuseColor = new BABYLON.Color3(0.4, 0.2, 0.8);
-    scene.blueMat.alpha=0.03
+    scene.blueMat.alpha = 0.03
     scene.cyanMat = new BABYLON.StandardMaterial("cyanMat", scene);
     scene.cyanMat.emissiveColor = new BABYLON.Color3(0, 1, 1);
 
@@ -241,6 +241,7 @@ createScene = function (engine, level) {
                 scene.arena = new Arena3(scene);
                 break;
         }
+        scene.arena.levelId = lvl;
         onLoad();
         initCompt = new Date().getTime();
 
@@ -290,7 +291,7 @@ createScene = function (engine, level) {
                     // Try to speed up player if it's current speed is bellow ths max speed 
                     if (player.box.position.x - previousPlayerPosX < scene.arena.speed) {
                         var forceDirection = new BABYLON.Vector3(1, 0, 0);
-                        var forceMagnitude = 500;
+                        var forceMagnitude = 1000;
                         var contactLocalRefPoint = BABYLON.Vector3.Zero();
                         player.box.physicsImpostor.applyForce(forceDirection.scale(forceMagnitude),
                             player.box.getAbsolutePosition().add(contactLocalRefPoint));
@@ -302,9 +303,9 @@ createScene = function (engine, level) {
                         cameraAdd -= 2;
                         cameraAdd = Math.max(cameraAdd, 25);
                     }
-                    if (player.box.position.y + 100 * scene.mapEngine.cubeWidth < scene.mapEngine.currentGameY)
+                    if (player.box.position.y + 20 * scene.mapEngine.cubeWidth < scene.mapEngine.currentGameY)
                         respawn()
-                    scene.camera.position.x += Math.floor((player.box.position.x- scene.camera.position.x - 60) * 0.03)
+                    scene.camera.position.x += Math.floor((player.box.position.x - scene.camera.position.x - 60) * 0.03)
                     scene.camera.position.y += Math.floor((player.box.position.y - scene.camera.position.y + cameraAdd + 60) * 0.15)
                     actualScore = Math.floor(player.box.position.x);
                     score.text = "Score: " + actualScore;
@@ -314,7 +315,9 @@ createScene = function (engine, level) {
                     } else {
                         highScore.color = "white";
                     }
-                    highScore.text = "Highscore: " + Math.floor(bestScore)
+
+                    setCookie("highscore"+scene.arena.levelId, bestScore, 365);
+                    highScore.text = "Highscore: " + bestScore
 
                     textPlayerX.text = "x: " + Math.floor(player.box.position.x)
                     textPlayerY.text = "y: " + Math.floor(player.box.position.y)
@@ -322,20 +325,22 @@ createScene = function (engine, level) {
                     previousPlayerPosX = player.box.position.x
 
 
-                    ray = new BABYLON.Ray(player.box.position, new BABYLON.Vector3(0, -1, 0), 20 * scene.mapEngine.cubeWidth);
+                    var vec = new BABYLON.Vector3(player.box.position.x, player.box.position.y - 3, player.box.position.z)
+                    ray = new BABYLON.Ray(vec, new BABYLON.Vector3(0, -1, 0), 20 * scene.mapEngine.cubeWidth);
                     hit = scene.pickWithRay(ray);
                     if (hit.pickedMesh) {
-                        if (hit.pickedMesh.name != "redbox")
-                            shadowY = hit.pickedMesh.position.y
-
+                        shadowY = hit.pickedMesh.position.y
                     }
 
-
-                    pointer.position.x = player.box.position.x + (player.box.position.y - shadowY) * scene.arena.speed * 0.375
-                    pointer.position.y = shadowY + 6
-                    pointer.position.z = player.box.position.z
-                    pointer.scaling.x = min(2, 0.4 * (player.box.position.y - shadowY) / 13 + 0.4)
-                    pointer.scaling.z = min(2, 0.4 * (player.box.position.y - shadowY) / 13 + 0.4)
+                    if (player.box.position.y > shadowY + 12) {
+                        pointer.position.x = player.box.position.x + (player.box.position.y - shadowY) * scene.arena.speed * 0.28
+                        pointer.position.y = shadowY + 6
+                        pointer.position.z = player.box.position.z
+                        pointer.scaling.x = min(2, 0.4 * (player.box.position.y - shadowY) / 13 + 0.4)
+                        pointer.scaling.z = min(2, 0.4 * (player.box.position.y - shadowY) / 13 + 0.4)
+                    }else{
+                        pointer.position.y-=500
+                    }
                 }
                 else {
 
@@ -438,7 +443,7 @@ createScene = function (engine, level) {
                 jump = player.box.position.x
                 var forceDirection = new BABYLON.Vector3(0, 1, 0);
                 var contactLocalRefPoint = BABYLON.Vector3.Zero();
-                scene.player.box.physicsImpostor.applyImpulse(forceDirection.scale(100),
+                scene.player.box.physicsImpostor.applyImpulse(forceDirection.scale(jumpPower),
                     scene.player.box.getAbsolutePosition().add(contactLocalRefPoint));
                 player.hasJump = true;
             };
@@ -448,6 +453,11 @@ createScene = function (engine, level) {
 
     //Ensemble des actions a execute une fois le niveau charge
     function onLoad() {
+
+        var scoreCookie = getCookie("highscore"+scene.arena.levelId);
+
+        bestScore = scoreCookie == "" ? 0: scoreCookie;
+
         player.box.position = scene.arena.spawn;
         player.box.actionManager = new BABYLON.ActionManager(scene);
 
@@ -480,8 +490,31 @@ createScene = function (engine, level) {
     text.fontFamily = 'Verdana';
     text.top = -150;
     advancedTextureLoading.addControl(text);
-    
+
 
     return scene;
 
 };
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}

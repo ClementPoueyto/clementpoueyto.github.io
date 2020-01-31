@@ -8,44 +8,17 @@ class MapEngine {
 
         this.params = []
 
-        // Player 
-        this.spaw = new BABYLON.Vector3(0, 100, 0);
+        // -------- Don't touch--------------//
         this.jumpCubesVector = new BABYLON.Vector3(0, 1, 0);
         this.boostCubesVector = new BABYLON.Vector3(1, 1, 0);
-
-        this.destroyMeshes = 8
-        this.createMeshes = 40
+        // Random
         this.seed = seed
         this.rand = random_seed(this.seed)
+        // stop and restart
         this.run = true
-
+        this.currentPattern = new Map()
         this.currentParam = -1
         this.cubeWidth = 13
-        this.minWidth = 3
-        this.maxWidth = 0
-        this.dangerMaxHeight = 5
-        this.change = 0
-        this.pattern = [-1, 0, 1]
-        this.defaultPattern = [-1, 0, 1]
-        this.currentPattern = new Map()
-        this.jumpCubesPower = 500
-        this.superJumpCubesPower = 5000
-        this.boostPower = 200
-        this.dangerPower = 400
-        this.upCubeTriggerX = 40
-        this.upCubeDefaultTriggerX = 10
-        this.downCubeTriggerX = 2
-        this.downCubeTriggerY = 0.5
-        this.downCubeTriggerZ = 2
-        this.heightDifferenceUp = 6
-        this.heightDifferenceDown = -6
-        this.arenaStartingHeight = 0
-        this.upCubeSpeed = 0.1
-        this.downCubeSpeed = -0.4
-        this.maxUpCubeSpeed = 0
-        this.maxUpCubeHeight = 20 * this.cubeWidth
-        this.angle = 0
-
         // Arrays of meshes
         this.normalCubes = []
         this.upCubes = []
@@ -60,8 +33,51 @@ class MapEngine {
         this.currentGameY = 0
         this.currentGameZ = 0
 
+
+
+        //--------Editable-------//
+
+        // Performances
+        this.destroyMeshes = 20
+        this.createMeshes = 30
+
+        // Arena width and change params
+        this.minWidth = 0
+        this.maxWidth = 0
+        // probability to change between 0 and 1000
+        this.change = 0
+
+        // must be the same, define array's lines
+        this.pattern = [ 0, 1]
+        this.defaultPattern = [ 0, 1]
+
+        // power and speed params here
+        this.jumpCubesPower = 500
+        this.superJumpCubesPower = 5000
+        this.boostPower = 200
+        this.downCubeSpeed = -0.4
+        this.maxUpCubeSpeed = 3
+
+        // Trigger params here
+        this.upCubeTriggerX = 20
+        this.downCubeTriggerX = 2
+        this.downCubeTriggerY = 0.5
+        this.downCubeTriggerZ = 2
+
+        // height params
+        this.heightDifferenceUp = 6
+        this.heightDifferenceDown = -6
+        this.arenaStartingHeight = 0
+        this.upCubeSpeed = 0.08
+        this.maxUpCubeHeight = 20
+        // define cube rotation angle
+        this.angle = 0
+        // danger cubes are between current arena height and maxHeight
+        this.dangerMaxHeight = 5
+
+
         // Array of probability (between 0 and 1000)
-        this.normalCubesProbability = [0, 1000]
+        this.normalCubesProbability = []
         this.upCubesProbability = []
         this.downCubesProbability = []
         this.heightDifferenceUpProbability = []
@@ -71,10 +87,12 @@ class MapEngine {
         this.dangerCubesProbability = []
         this.boostCubesProbability = []
 
-        //material
+
+        //--------Editable before starting play loop-------//
+        //materials
         this.normalCubesMat = null
         this.upCubesMat = game.redMat
-        this.downCubesMat = null
+        this.downCubesMat = game.temp
         this.jumpCubesMat = null
         this.superJumpCubesMat = null
         this.dangerCubesMat = null
@@ -87,33 +105,75 @@ class MapEngine {
      * @param {Array} params 
      */
     addParamsConfiguration(params) {
-        this.params.push(params.slice())
+        if (params.hasOwnProperty("trigger"))
+            this.params.push(params)
+        else
+            console.log("bad params")
     }
     /**
      * Change params
-     * @param {Array} param 
+     * @param {Array} params 
      */
-    setParamsConfiguration(param) {
-        this.setNewPattern(param[1])
-        this.defaultPattern = param[1].splice()
-        this.change = param[2]
-        this.arenaStartingHeight = param[3]
-        this.normalCubesProbability = range(0, param[4])
-        this.upCubesProbability = range(0, param[5])
-        this.downCubesProbability = range(0, param[6])
-        this.heightDifferenceUpProbability = range(0, param[7])
-        this.heightDifferenceDownProbability = range(0, param[8])
-        this.jumpCubesProbability = range(0, param[9])
-        this.jumpCubesPower = param[10]
-        this.superJumpCubesProbability = range(0, param[11])
-        this.superJumpCubesPower = param[12]
-        this.dangerCubesProbability = range(0, param[13])
-        this.boostCubesProbability = range(0, param[14])
-        this.boostPower = param[15]
-        this.minWidth = param[16]
-        this.maxWidth = param[17]
-        this.change = param[18]
-        this.maxUpCubeSpeed = param[19]
+    setParamsConfiguration(params) {
+        if (params.hasOwnProperty("minWidth"))
+            this.minWidth = params["minWidth"]
+        if (params.hasOwnProperty("maxWidth"))
+            this.maxWidth = params["maxWidth"]
+        if (params.hasOwnProperty("change"))
+            this.change = params["change"]
+        if (params.hasOwnProperty("pattern"))
+            this.setNewPattern(params["pattern"])
+        if (params.hasOwnProperty("jumpCubesPower"))
+            this.jumpCubesPower = params["jumpCubesPower"]
+        if (params.hasOwnProperty("superJumpCubesPower"))
+            this.superJumpCubesPower = params["superJumpCubesPower"]
+        if (params.hasOwnProperty("boostPower"))
+            this.boostPower = params["boostPower"]
+        if (params.hasOwnProperty("downCubeSpeed"))
+            this.downCubeSpeed = params["downCubeSpeed"]
+        if (params.hasOwnProperty("maxUpCubeSpeed"))
+            this.maxUpCubeHeight = params["maxUpCubeSpeed"]
+        if (params.hasOwnProperty("upCubeTriggerX"))
+            this.upCubeTriggerX = params["upCubeTriggerX"]
+        if (params.hasOwnProperty("downCubeTriggerX"))
+            this.downCubeTriggerX = params["downCubeTriggerX"]
+        if (params.hasOwnProperty("downCubeTriggerY"))
+            this.downCubeTriggerY = params["downCubeTriggerY"]
+        if (params.hasOwnProperty("downCubeTriggerZ"))
+            this.downCubeTriggerZ = params["downCubeTriggerZ"]
+        if (params.hasOwnProperty("heightDifferenceUp"))
+            this.heightDifferenceUp = params["heightDifferenceUp"]
+        if (params.hasOwnProperty("heightDifferenceDown"))
+            this.heightDifferenceDown = params["heightDifferenceDown"]
+        if (params.hasOwnProperty("arenaStartingHeight"))
+            this.arenaStartingHeight = params["arenaStartingHeight"]
+        if (params.hasOwnProperty("upCubeSpeed"))
+            this.upCubeSpeed = params["upCubeSpeed"]
+        if (params.hasOwnProperty("maxUpCubeHeight"))
+            this.maxUpCubeHeight = params["maxUpCubeHeight"]
+        if (params.hasOwnProperty("angle"))
+            this.angle = params["angle"]
+        if (params.hasOwnProperty("dangerMaxHeight"))
+            this.dangerMaxHeight = params["dangerMaxHeight"]
+        // Probability must me given in this order !
+        if (params.hasOwnProperty("normalCubesProbability"))
+            this.normalCubesProbability = range(0, params["normalCubesProbability"])
+        if (params.hasOwnProperty("upCubesProbability"))
+            this.upCubesProbability = range(0, params["upCubesProbability"])
+        if (params.hasOwnProperty("downCubesProbability"))
+            this.downCubesProbability = range(0, params["downCubesProbability"])
+        if (params.hasOwnProperty("heightDifferenceUpProbability"))
+            this.heightDifferenceUpProbability = range(0, params["heightDifferenceUpProbability"])
+        if (params.hasOwnProperty("heightDifferenceDownProbability"))
+            this.heightDifferenceDownProbability = range(0, params["heightDifferenceDownProbability"])
+        if (params.hasOwnProperty("jumpCubesProbability"))
+            this.jumpCubesProbability = range(0, params["jumpCubesProbability"])
+        if (params.hasOwnProperty("superJumpCubesProbability"))
+            this.superJumpCubesProbability = range(0, params["superJumpCubesProbability"])
+        if (params.hasOwnProperty("dangerCubesProbability"))
+            this.dangerCubesProbability = range(0, params["dangerCubesProbability"])
+        if (params.hasOwnProperty("boostCubesProbability"))
+            this.boostCubesProbability = range(0, params["boostCubesProbability"])
 
 
     }
@@ -122,7 +182,8 @@ class MapEngine {
      */
     updateParams() {
         for (let i = 0; i < this.params.length; i++) {
-            if (this.params[i][0] < this.currentGameX * this.cubeWidth && this.currentParam < i) {
+            
+            if (this.params[i]["trigger"] < this.currentGameX * this.cubeWidth && this.currentParam < i) {
                 this.setParamsConfiguration(this.params[i])
                 this.currentParam = i
                 break
@@ -130,6 +191,10 @@ class MapEngine {
         }
 
     }
+    /**
+     * Add new object on the map by following probability
+     * @param {BABYLON.Vector3} position 
+     */
 
     createRandomItem(position) {
         let r = Math.floor(this.rand() * 1000)
@@ -159,7 +224,7 @@ class MapEngine {
 
     }
     /**
-     * Create a rows of cubes
+     * Create 1 row of cubes
      */
     createCubesRows() {
         if (Math.floor(this.rand() * 1000) < this.change) {
@@ -167,7 +232,7 @@ class MapEngine {
         }
         let pos = this.pattern.slice();
         shuffle(pos, this.rand());
-        for (let i = 0; i < Math.floor(this.rand() * this.maxWidth + this.minWidth); i++) {
+        for (let i = 0; i < Math.floor(this.rand() * this.maxWidth)+ this.minWidth; i++) {
             let position = new BABYLON.Vector3(this.currentGameX * this.cubeWidth, this.currentGameY, pos.pop() * this.cubeWidth)
             this.createRandomItem(position);
         }
@@ -185,7 +250,7 @@ class MapEngine {
 
     }
     /**
-     * playerPos : X
+     * Allow to know what is the pattern under the player
      * @param {*} playerPos 
      */
     getCurrentPattern(playerPos) {
@@ -235,20 +300,65 @@ class MapEngine {
         this.boostCubes.forEach(function (mesh) {
             mesh.dispose()
         });
+
+        this.currentPattern = new Map()
+        this.currentParam = -1
+        this.rand = random_seed(this.seed)
+        // Arrays of meshes
         this.normalCubes = []
         this.upCubes = []
         this.downCubes = []
         this.jumpCubes = []
         this.superJumpCubes = []
-        this.boostCubes = []
         this.dangerCubes = []
+        this.boostCubes = []
 
+        // Current game position
         this.currentGameX = 0
         this.currentGameY = 0
         this.currentGameZ = 0
-        this.rand = random_seed(this.seed)
-        this.currentPattern = new Map()
-        this.currentParam = -1
+
+        // Arena width and change params
+        this.minWidth = 0
+        this.maxWidth = 0
+        // probability to change between 0 and 1000
+        this.change = 0
+        // power and speed params here
+        this.jumpCubesPower = 500
+        this.superJumpCubesPower = 5000
+        this.boostPower = 200
+        this.downCubeSpeed = -0.4
+        this.maxUpCubeSpeed = 3
+
+        // Trigger params here
+        this.upCubeTriggerX = 20
+        this.downCubeTriggerX = 2
+        this.downCubeTriggerY = 0.5
+        this.downCubeTriggerZ = 2
+
+        // height params
+        this.heightDifferenceUp = 6
+        this.heightDifferenceDown = -6
+        this.arenaStartingHeight = 0
+        this.upCubeSpeed = 0.08
+        this.maxUpCubeHeight = 20
+        // define cube rotation angle
+        this.angle = 0
+        // danger cubes are between current arena height and maxHeight
+        this.dangerMaxHeight = 5
+
+
+        // Array of probability (between 0 and 1000)
+        this.normalCubesProbability = []
+        this.upCubesProbability = []
+        this.downCubesProbability = []
+        this.heightDifferenceUpProbability = []
+        this.heightDifferenceDownProbability = []
+        this.jumpCubesProbability = []
+        this.superJumpCubesProbability = []
+        this.dangerCubesProbability = []
+        this.boostCubesProbability = []
+
         this.pattern = this.defaultPattern.splice()
 
     }
@@ -261,27 +371,27 @@ class MapEngine {
         for (let i = 0; i < this.normalCubes.length; i++) {
             if (this.game.player.box.position.x > this.normalCubes[i].position.x + this.destroyMeshes * this.cubeWidth) {
                 this.normalCubes[i].dispose()
-                this.normalCubes.splice(i, 1);
+                this.normalCubes.splice(0, i);
             }
         }
         for (let i = 0; i < this.upCubes.length; i++) {
             if (this.game.player.box.position.x > this.upCubes[i].position.x + this.destroyMeshes * this.cubeWidth) {
                 this.upCubes[i].dispose()
-                this.upCubes.splice(i, 1);
+                this.upCubes.splice(0, i);
             }
 
         }
         for (let i = 0; i < this.downCubes.length; i++) {
             if (this.game.player.box.position.x > this.downCubes[i].position.x + this.destroyMeshes * this.cubeWidth) {
                 this.downCubes[i].dispose()
-                this.downCubes.splice(i, 1);
+                this.downCubes.splice(0, i);
             }
 
         }
         for (let i = 0; i < this.jumpCubes.length; i++) {
             if (this.game.player.box.position.x > this.jumpCubes[i].position.x + this.destroyMeshes * this.cubeWidth) {
                 this.jumpCubes[i].dispose()
-                this.jumpCubes.splice(i, 1);
+                this.jumpCubes.splice(0, i);
             }
 
         }
@@ -289,19 +399,19 @@ class MapEngine {
         for (let i = 0; i < this.superJumpCubes.length; i++) {
             if (this.game.player.box.position.x > this.superJumpCubes[i].position.x + this.destroyMeshes * this.cubeWidth) {
                 this.superJumpCubes[i].dispose()
-                this.superJumpCubes.splice(i, 1);
+                this.superJumpCubes.splice(0, i);
             }
         }
         for (let i = 0; i < this.dangerCubes.length; i++) {
             if (this.game.player.box.position.x > this.dangerCubes[i].position.x + this.destroyMeshes * this.cubeWidth) {
                 this.dangerCubes[i].dispose()
-                this.dangerCubes.splice(i, 1);
+                this.dangerCubes.splice(0, i);
             }
         }
         for (let i = 0; i < this.boostCubes.length; i++) {
             if (this.game.player.box.position.x > this.boostCubes[i].position.x + this.destroyMeshes * this.cubeWidth) {
                 this.boostCubes[i].dispose()
-                this.boostCubes.splice(i, 1);
+                this.boostCubes.splice(0, i);
             }
         }
 
@@ -328,7 +438,7 @@ class MapEngine {
     createBox(position, name) {
         var mainBox = BABYLON.MeshBuilder.CreateBox("normalBox", { size: 3 }, this.game);
         var scene = this.game
-        mainBox.scaling.y = 3;
+        mainBox.scaling.y = 1.5;
         mainBox.name = "box"
         mainBox.scaling.x = 4;
         mainBox.scaling.z = 4;
@@ -350,7 +460,7 @@ class MapEngine {
         mainBox.scaling.x = 15;
         mainBox.scaling.z = 15;
         mainBox.position = position
-        mainBox.position.Y+=15
+        mainBox.position.Y += 15
         mainBox.rotate(BABYLON.Axis.Z, this.angle, BABYLON.Space.WORLD);
         mainBox.actionManager = new BABYLON.ActionManager(this.game);
         mainBox.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
@@ -383,7 +493,7 @@ class MapEngine {
         mainBox.physicsImpostor = new BABYLON.PhysicsImpostor(mainBox, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0 }, this.game);
         this.upCubes.push(mainBox);
     }
-    
+
 
     /**
     * Cube qui descend lorsque l'on est dessus
@@ -476,31 +586,26 @@ class MapEngine {
         particleSystem.particleTexture = new BABYLON.Texture("assets/images/flare.png", scene);
         var radius = 0.5;
         var angle = Math.PI / 4;
-        mainBox.rotate(BABYLON.Axis.Z,0, BABYLON.Space.WORLD);
+        mainBox.rotate(BABYLON.Axis.Z, 0, BABYLON.Space.WORLD);
         var sphereEmitter = particleSystem.createSphereEmitter(0.3);
         particleSystem.emitter = mainBox;
         mainBox.rotation.z = -300
-        particleSystem.color2 =new BABYLON.Color4(0.2, 0.8, 0.2, 1);
+        particleSystem.color2 = new BABYLON.Color4(0.2, 0.8, 0.2, 1);
         particleSystem.color1 = new BABYLON.Color4(0.2, 0.8, 0.2, 1);
         particleSystem.colorDead = new BABYLON.Color4(0.2, 0.8, 0.2, 1);
         particleSystem.gravity = new BABYLON.Vector3(-20, 15, 0);
-
         // Size of each particle (random between...
         particleSystem.minSize = 0.1;
         particleSystem.maxSize = 0.5;
-
         // Life time of each particle (random between...
         particleSystem.minLifeTime = 0.2;
         particleSystem.maxLifeTime = 0.9;
-
         // Emission rate
         particleSystem.emitRate = 4000;
-
         // Speed
         particleSystem.minEmitPower = 0;
         particleSystem.maxEmitPower = 0.5;
         particleSystem.updateSpeed = 0.008;
-
         particleSystem.start();
         this.boostCubes.push(mainBox);
 
@@ -539,7 +644,7 @@ function updateMap(scene) {
 
     // Update upCubes position
     scene.mapEngine.upCubes.forEach(function (mesh) {
-        if (scene.player.box.position.x > mesh.position.x - scene.mapEngine.upCubeTriggerX * scene.mapEngine.cubeWidth && mesh.position.y < scene.mapEngine.maxUpCubeHeight + scene.mapEngine.currentGameY
+        if (scene.player.box.position.x > mesh.position.x - scene.mapEngine.upCubeTriggerX * scene.mapEngine.cubeWidth && mesh.position.y < scene.mapEngine.maxUpCubeHeight * scene.mapEngine.cubeWidth + scene.mapEngine.currentGameY
             && scene.mapEngine.run)
             mesh.position.y += min(scene.mapEngine.maxUpCubeSpeed, Math.abs(scene.mapEngine.upCubeSpeed * (scene.player.box.position.y - scene.mapEngine.currentGameY) / scene.mapEngine.cubeWidth))
 
