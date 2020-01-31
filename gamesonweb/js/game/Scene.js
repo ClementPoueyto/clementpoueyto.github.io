@@ -11,7 +11,7 @@ createScene = function (engine, level) {
 
     /********************* Moteur physique du jeu *********************** */
     var scene = new BABYLON.Scene(engine);
-    var gravityVector = new BABYLON.Vector3(0, -100.81, 0);
+    var gravityVector = new BABYLON.Vector3(0, -120.81, 0);
     var physicsPlugin = new BABYLON.CannonJSPlugin();
     scene.enablePhysics(gravityVector, physicsPlugin);
     scene.clearColor = new BABYLON.Color3(0, 0, 0);
@@ -232,7 +232,7 @@ createScene = function (engine, level) {
     scene.createLevel = function (lvl) {
         switch (lvl) {
             case 0:
-                scene.arena = new Arena(scene);
+                scene.arena = new Arena1(scene);
                 break;
             case 1:
                 scene.arena = new Arena2(scene);
@@ -264,9 +264,69 @@ createScene = function (engine, level) {
     /****************************Control Multiple Keys************************************************/
 
     var map = {}; //object for multiple key presses
+    let container = document.createElement("div")
+    let butns = document.createElement("div")
+    container.appendChild(butns)
+    butns.id = "btns"
+    document.querySelector('body').appendChild(container)
+
+    function MobileButton() {
+    let container = document.createElement("div")
+    container.classList.add("pause_container")
+    let btn = document.createElement("div")
+    btn.classList.add("right")
+    let img = document.createElement("img")
+    img.src = "assets/controller/pico-pause.png"
+    btn.appendChild(img)
+    btn.addEventListener("touchstart", (e)=>{
+        
+        e.preventDefault()
+        map["d"]=true;
+        setTimeout(()=>{
+        map["d"]=false;
+        },100)
+    })
+    container.appendChild(btn)
+    butns.appendChild(container)
+
+    
+    btn = document.createElement("div")
+    btn.classList.add("left")
+        img = document.createElement("img")
+    img.src = "assets/controller/pico-pause.png"
+    btn.appendChild(img)
+    btn.addEventListener("touchstart", (e)=>{
+        e.preventDefault()
+        map["q"]=true;
+        setTimeout(()=>{
+        map["q"]=false;
+        },100)
+    })
+    container.appendChild(btn)
+    butns.appendChild(container)
+
+    btn = document.createElement("div")
+    btn.classList.add("pause")
+        img = document.createElement("img")
+    img.src = "assets/controller/pico-pause.png"
+    btn.appendChild(img)
+    btn.addEventListener("touchstart", (e)=>{
+        e.preventDefault()
+        map[" "]=true;
+        setTimeout(()=>{
+        map[" "]=false;
+        },100)
+    })
+    container.appendChild(btn)
+    butns.appendChild(container)
+    }
+    MobileButton();
+
+      
 
     scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyDownTrigger, function (evt) {
         map[evt.sourceEvent.key] = evt.sourceEvent.type == "keydown";
+        //console.log(map);
 
     }));
 
@@ -291,7 +351,7 @@ createScene = function (engine, level) {
                     // Try to speed up player if it's current speed is bellow ths max speed 
                     if (player.box.position.x - previousPlayerPosX < scene.arena.speed) {
                         var forceDirection = new BABYLON.Vector3(1, 0, 0);
-                        var forceMagnitude = 1000;
+                        var forceMagnitude = 700;
                         var contactLocalRefPoint = BABYLON.Vector3.Zero();
                         player.box.physicsImpostor.applyForce(forceDirection.scale(forceMagnitude),
                             player.box.getAbsolutePosition().add(contactLocalRefPoint));
@@ -307,6 +367,7 @@ createScene = function (engine, level) {
                         respawn()
                     scene.camera.position.x += Math.floor((player.box.position.x - scene.camera.position.x - 60) * 0.03)
                     scene.camera.position.y += Math.floor((player.box.position.y - scene.camera.position.y + cameraAdd + 60) * 0.15)
+                    scene.camera.position.z =  player.box.position.z*0.5 - 25
                     actualScore = Math.floor(player.box.position.x);
                     score.text = "Score: " + actualScore;
                     if (actualScore > bestScore) {

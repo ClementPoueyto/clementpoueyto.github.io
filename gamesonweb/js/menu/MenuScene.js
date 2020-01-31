@@ -123,7 +123,21 @@ createMenuScene = function (engine, canvas) {
     text.color = "white";
     text.fontSize = "100px";
     text.fontFamily = 'Verdana';
-    text.top =-250;
+    text.top =-270;
+    advancedTexture.addControl(text);
+
+    
+    //texte : theme
+    var text = new BABYLON.GUI.TextBlock("text2");
+    text.textWrapping = true;
+    //text.position = "absolute";
+    text.width = "100%";
+    text.height = "100%";
+    text.text = 'The place to be';
+    text.color = "white";
+    text.fontSize = "70px";
+    text.fontFamily = 'Verdana';
+    text.top =-150;
     advancedTexture.addControl(text);
 
     var image = new BABYLON.GUI.Image("but", "assets/images/keyQ.png");
@@ -165,7 +179,6 @@ createMenuScene = function (engine, canvas) {
     //-------------------------KEY CONTROLL -------------------------------//
 
     scene.actionManager = new BABYLON.ActionManager(scene);
-
 
     scene.actionManager.registerAction(
         new BABYLON.ExecuteCodeAction(

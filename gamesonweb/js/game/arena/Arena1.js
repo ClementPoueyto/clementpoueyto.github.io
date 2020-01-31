@@ -1,6 +1,6 @@
 
 
-Arena2 = function (game) {
+Arena1 = function (game) {
 
     // Appel des variables nécéssaires
     this.game = game;
@@ -8,7 +8,7 @@ Arena2 = function (game) {
     //position d'apparition du joueur dans le niveau;
     this.spawn = new BABYLON.Vector3(0, 15 * 13, 0);
     //Vitesse du joueur dans le niveau
-    this.speed = 1.8;
+    this.speed = 1.2;
     var music2 = new BABYLON.Sound(
         "Music", "assets/sons/music.mp3", scene, null, {
         loop: true,
@@ -46,15 +46,11 @@ Arena2 = function (game) {
 
     params = {"trigger":-1,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":3}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":600,"normalCubesProbability":900,"pattern":[0],"minWidth":1,"maxWidth":0,"change":100}
+    params = {"trigger":700,"normalCubesProbability":1000,"pattern":[0],"minWidth":1,"change":100}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":2000,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":2,"change":0,"maxWidth":0}
+    params = {"trigger":4000,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":2,"change":0,"maxWidth":1}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":3000,"normalCubesProbability":1500,"pattern":[-2,-1,0,1,2],"minWidth":2,"maxWidth":2,"change":0}
-    scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":4500,"normalCubesProbability":1500,"pattern":[-2,-1,0,1,2],"minWidth":2,"maxWidth":2,"change":0}
-    scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":5000,"normalCubesProbability":1,"pattern":[0],"minWidth":1,"maxWidth":0,"change":0}
+    params = {"trigger":5000,"normalCubesProbability":1,"pattern":[-1,0,1],"minWidth":1,"change":0}
     scene.mapEngine.addParamsConfiguration(params)
 
 

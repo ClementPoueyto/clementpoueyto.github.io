@@ -39,7 +39,7 @@ class MapEngine {
 
         // Performances
         this.destroyMeshes = 20
-        this.createMeshes = 30
+        this.createMeshes = 10
 
         // Arena width and change params
         this.minWidth = 0
@@ -48,8 +48,8 @@ class MapEngine {
         this.change = 0
 
         // must be the same, define array's lines
-        this.pattern = [ 0, 1]
-        this.defaultPattern = [ 0, 1]
+        this.pattern = [0, 1]
+        this.defaultPattern = [0, 1]
 
         // power and speed params here
         this.jumpCubesPower = 500
@@ -182,7 +182,7 @@ class MapEngine {
      */
     updateParams() {
         for (let i = 0; i < this.params.length; i++) {
-            
+
             if (this.params[i]["trigger"] < this.currentGameX * this.cubeWidth && this.currentParam < i) {
                 this.setParamsConfiguration(this.params[i])
                 this.currentParam = i
@@ -232,7 +232,7 @@ class MapEngine {
         }
         let pos = this.pattern.slice();
         shuffle(pos, this.rand());
-        for (let i = 0; i < Math.floor(this.rand() * this.maxWidth)+ this.minWidth; i++) {
+        for (let i = 0; i < Math.floor(this.rand() * this.maxWidth) + this.minWidth; i++) {
             let position = new BABYLON.Vector3(this.currentGameX * this.cubeWidth, this.currentGameY, pos.pop() * this.cubeWidth)
             this.createRandomItem(position);
         }
@@ -371,27 +371,27 @@ class MapEngine {
         for (let i = 0; i < this.normalCubes.length; i++) {
             if (this.game.player.box.position.x > this.normalCubes[i].position.x + this.destroyMeshes * this.cubeWidth) {
                 this.normalCubes[i].dispose()
-                this.normalCubes.splice(0, i);
+                this.normalCubes.splice(i, 1);
             }
         }
         for (let i = 0; i < this.upCubes.length; i++) {
             if (this.game.player.box.position.x > this.upCubes[i].position.x + this.destroyMeshes * this.cubeWidth) {
                 this.upCubes[i].dispose()
-                this.upCubes.splice(0, i);
+                this.upCubes.splice(i, 1);
             }
 
         }
         for (let i = 0; i < this.downCubes.length; i++) {
             if (this.game.player.box.position.x > this.downCubes[i].position.x + this.destroyMeshes * this.cubeWidth) {
                 this.downCubes[i].dispose()
-                this.downCubes.splice(0, i);
+                this.downCubes.splice(i, 1);
             }
 
         }
         for (let i = 0; i < this.jumpCubes.length; i++) {
             if (this.game.player.box.position.x > this.jumpCubes[i].position.x + this.destroyMeshes * this.cubeWidth) {
                 this.jumpCubes[i].dispose()
-                this.jumpCubes.splice(0, i);
+                this.jumpCubes.splice(i, 1);
             }
 
         }
@@ -399,19 +399,19 @@ class MapEngine {
         for (let i = 0; i < this.superJumpCubes.length; i++) {
             if (this.game.player.box.position.x > this.superJumpCubes[i].position.x + this.destroyMeshes * this.cubeWidth) {
                 this.superJumpCubes[i].dispose()
-                this.superJumpCubes.splice(0, i);
+                this.superJumpCubes.splice(i, 1);
             }
         }
         for (let i = 0; i < this.dangerCubes.length; i++) {
             if (this.game.player.box.position.x > this.dangerCubes[i].position.x + this.destroyMeshes * this.cubeWidth) {
                 this.dangerCubes[i].dispose()
-                this.dangerCubes.splice(0, i);
+                this.dangerCubes.splice(i, 1);
             }
         }
         for (let i = 0; i < this.boostCubes.length; i++) {
             if (this.game.player.box.position.x > this.boostCubes[i].position.x + this.destroyMeshes * this.cubeWidth) {
                 this.boostCubes[i].dispose()
-                this.boostCubes.splice(0, i);
+                this.boostCubes.splice(i, 1);
             }
         }
 
@@ -632,6 +632,7 @@ function updateMap(scene) {
     scene.mapEngine.updateParams()
     scene.mapEngine.destroyBackMeshes()
     scene.mapEngine.createNextMeshes()
+    //console.log(scene.mapEngine.normalCubes.length)
 
 
     // Update downCubes position
