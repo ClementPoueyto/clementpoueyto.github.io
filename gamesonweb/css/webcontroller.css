@@ -22,16 +22,16 @@
   }
   .pause {
     display: inline-block;
-    width: 50px;
-    height: 10px;
+    width: 75px;
+    height: 20px;
     opacity: .5;
   } 
   .left {
     float: left;
     flex: 5;
     display: block;
-    width: 50px;
-    height: 10px;
+    width: 75px;
+    height: 20px;
     opacity: .5;
   }
 
@@ -39,8 +39,8 @@
     float: right;
     flex: 5;
     display: block;
-    width: 50px;
-    height: 10px;
+    width: 75px;
+    height: 20px;
     opacity: .5;
   }
   img {

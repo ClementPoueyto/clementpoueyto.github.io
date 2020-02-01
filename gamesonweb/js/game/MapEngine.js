@@ -39,7 +39,7 @@ class MapEngine {
 
         // Performances
         this.destroyMeshes = 20
-        this.createMeshes = 10
+        this.createMeshes = 30
 
         // Arena width and change params
         this.minWidth = 0

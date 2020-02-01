@@ -29,7 +29,7 @@ createScene = function (engine, level) {
     var previousJump = new Date().getTime();
     var previousPlayerPosX = 0
     var defaultRotation = scene.camera.rotation;
-    var brakePower = 20;
+    var brakePower = 30
     var brakeInterval = 100
     var jumpPower = 100;
     var sideDelay = 200
@@ -51,18 +51,24 @@ createScene = function (engine, level) {
     var hit = null
 
     /****************************** Particle******************************** */
-    // var particleSystem = new BABYLON.ParticleSystem("laser", 2000, scene);
-    // particleSystem.particleTexture = new BABYLON.Texture("assets/images/laser_bolt", scene);
-    // particleSystem.emitter = player.box;
-    // particleSystem.emitRate = 2000;
-    // particleSystem.maxEmitBox = new BABYLON.Vector3(-1, 0, 0);
-    // particleSystem.minLifeTime = 2;
-    // particleSystem.maxLifeTime = 5;
-    // particleSystem.minSize = 1;
-    // particleSystem.maxSize = 1.5;
-    // particleSystem.color1 = new BABYLON.Color4(0.7, 0.8, 1.0, 1.0);
-    // particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.2, 0.0);
-    // particleSystem.start();
+    /*var particleSystem = new BABYLON.ParticleSystem("laser", 10000, scene);
+    particleSystem.particleTexture = new BABYLON.Texture("assets/images/flare.png", scene);
+    particleSystem.emitter = player.box;
+    particleSystem.emitRate = 3000;
+    particleSystem.maxEmitBox = new BABYLON.Vector3(-1, 0, 0);
+    particleSystem.minLifeTime = 0.1;
+    particleSystem.maxLifeTime = 1;
+    particleSystem.minSize = 0.2;
+    particleSystem.maxSize = 1.1
+    particleSystem.minEmitBox = new BABYLON.Vector3(-1, -2, -2);
+    particleSystem.maxEmitBox = new BABYLON.Vector3(1, 2, 2);;
+    particleSystem.color1 = new BABYLON.Color4(0.7, 0.3, 0.0, 1);
+    particleSystem.color2 = new BABYLON.Color4(1, 0, 0.2, 0.0);
+    particleSystem.colorDead = new BABYLON.Color4(1, 0, 0.2, 0.0);
+    particleSystem.minEmitPower = 0.1;
+    particleSystem.maxEmitPower = 8;
+    particleSystem.updateSpeed = 0.01;
+    particleSystem.start(); */
 
     /**************************** Material ************************************************/
     scene.redMat = new BABYLON.StandardMaterial("redMat", scene);
@@ -257,7 +263,8 @@ createScene = function (engine, level) {
 
     var end = function () {
         resetMovementPlayer();
-        player.box.position = scene.arena.spawn;
+        scene.keepPosition=player.box.position;
+        player.box.physicsImpostor.sleep();
         scene.end = true;
     }
 
@@ -337,7 +344,6 @@ createScene = function (engine, level) {
     /********************** Player and camera Update  ****************************************** */
 
 
-
     scene.actionManager.registerAction(
         new BABYLON.ExecuteCodeAction(
             {
@@ -347,11 +353,12 @@ createScene = function (engine, level) {
                 loading();
                 if (scene.keepPosition.x == 0 && scene.keepPosition.y == 0 && scene.keepPosition.z == 0) {
 
+                    var brakePower = (scene.arena.speed / 30) * 1000
                     player.box.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, 0, 0));
                     // Try to speed up player if it's current speed is bellow ths max speed 
                     if (player.box.position.x - previousPlayerPosX < scene.arena.speed) {
                         var forceDirection = new BABYLON.Vector3(1, 0, 0);
-                        var forceMagnitude = 700;
+                        var forceMagnitude = Math.floor((scene.arena.speed / 2) * 1000);
                         var contactLocalRefPoint = BABYLON.Vector3.Zero();
                         player.box.physicsImpostor.applyForce(forceDirection.scale(forceMagnitude),
                             player.box.getAbsolutePosition().add(contactLocalRefPoint));
@@ -367,7 +374,7 @@ createScene = function (engine, level) {
                         respawn()
                     scene.camera.position.x += Math.floor((player.box.position.x - scene.camera.position.x - 60) * 0.03)
                     scene.camera.position.y += Math.floor((player.box.position.y - scene.camera.position.y + cameraAdd + 60) * 0.15)
-                    scene.camera.position.z =  player.box.position.z*0.5 - 25
+                    scene.camera.position.z = player.box.position.z * 0.5 - 25
                     actualScore = Math.floor(player.box.position.x);
                     score.text = "Score: " + actualScore;
                     if (actualScore > bestScore) {
@@ -377,7 +384,7 @@ createScene = function (engine, level) {
                         highScore.color = "white";
                     }
 
-                    setCookie("highscore"+scene.arena.levelId, bestScore, 365);
+                    setCookie("highscore" + scene.arena.levelId, bestScore, 365);
                     highScore.text = "Highscore: " + bestScore
 
                     textPlayerX.text = "x: " + Math.floor(player.box.position.x)
@@ -399,8 +406,8 @@ createScene = function (engine, level) {
                         pointer.position.z = player.box.position.z
                         pointer.scaling.x = min(2, 0.4 * (player.box.position.y - shadowY) / 13 + 0.4)
                         pointer.scaling.z = min(2, 0.4 * (player.box.position.y - shadowY) / 13 + 0.4)
-                    }else{
-                        pointer.position.y-=500
+                    } else {
+                        pointer.position.y -= 500
                     }
                 }
                 else {
@@ -512,12 +519,13 @@ createScene = function (engine, level) {
 
     });
 
+
     //Ensemble des actions a execute une fois le niveau charge
     function onLoad() {
 
-        var scoreCookie = getCookie("highscore"+scene.arena.levelId);
+        var scoreCookie = getCookie("highscore" + scene.arena.levelId);
 
-        bestScore = scoreCookie == "" ? 0: scoreCookie;
+        bestScore = scoreCookie == "" ? 0 : scoreCookie;
 
         player.box.position = scene.arena.spawn;
         player.box.actionManager = new BABYLON.ActionManager(scene);
@@ -557,11 +565,12 @@ createScene = function (engine, level) {
 
 };
 
+
 function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0) == ' ') {
             c = c.substring(1);
@@ -576,6 +585,6 @@ function getCookie(cname) {
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires="+d.toUTCString();
+    var expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
