@@ -24,8 +24,11 @@ createMenuScene = function (engine, canvas) {
         }
     );*/
 
+    var nbLevel=7;
 
-    var materials= new MenuMaterials(scene);
+
+    scene.materials= new MenuMaterials(scene);
+    updateFinishedLevels(scene);
 
     var listMesh = [];
     // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
@@ -50,6 +53,7 @@ createMenuScene = function (engine, canvas) {
 
     }
 
+
     function showSelectedLevel(mesh, lvl) {
         if (lvl == mesh.id) {
             mesh.material.emissiveColor = BABYLON.Color3.White();
@@ -59,6 +63,7 @@ createMenuScene = function (engine, canvas) {
             mesh.scaling = new BABYLON.Vector3(1, 1, 1);
         }
     }
+
 
     //affiche un niveau
     function addMesh(id) {
@@ -73,7 +78,7 @@ createMenuScene = function (engine, canvas) {
         box.material = new BABYLON.StandardMaterial("mat", scene);
         box.id = id;
         box.actionManager = new BABYLON.ActionManager(scene);
-        box.material=materials[box.id];
+        box.material=scene.materials[box.id];
         box.actionManager.registerAction(
             new BABYLON.ExecuteCodeAction(
                 {
@@ -102,9 +107,10 @@ createMenuScene = function (engine, canvas) {
 
     };
 
-    addMesh(0);
-    addMesh(1);
-    addMesh(2);
+    for(let i=0; i<nbLevel; i++){
+        addMesh(i);
+    }
+    
 
 
     var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
@@ -140,20 +146,20 @@ createMenuScene = function (engine, canvas) {
     text.top =-150;
     advancedTexture.addControl(text);
 
-    var image = new BABYLON.GUI.Image("but", "assets/images/keyQ.png");
+    var image = new BABYLON.GUI.Image("but", "assets/images/menu/keyQ.png");
     image.width = "40px";
     image.height = "40px";
     image.top=200;
     image.left=600;
     advancedTexture.addControl(image);
-    var image2 = new BABYLON.GUI.Image("but", "assets/images/keyD.png");
+    var image2 = new BABYLON.GUI.Image("but", "assets/images/menu/keyD.png");
     image2.width = "40px";
     image2.height = "40px";
     image2.top=200;
     image2.left=700;
     advancedTexture.addControl(image2);
 
-    var image3 = new BABYLON.GUI.Image("but", "assets/images/keySpace.png");
+    var image3 = new BABYLON.GUI.Image("but", "assets/images/menu/keySpace.png");
     image3.width = "180px";
     image3.height = "30px";
 
@@ -161,14 +167,14 @@ createMenuScene = function (engine, canvas) {
     image3.left=650;
     advancedTexture.addControl(image3);
 
-    var image4 = new BABYLON.GUI.Image("but", "assets/images/keyS.png");
+    var image4 = new BABYLON.GUI.Image("but", "assets/images/menu/keyS.png");
     image4.width = "40px";
     image4.height = "40px";
     image4.top=200;
     image4.left=650;
     advancedTexture.addControl(image4);
 
-    var image5 = new BABYLON.GUI.Image("but", "assets/images/keyZ.png");
+    var image5 = new BABYLON.GUI.Image("but", "assets/images/menu/keyZ.png");
     image5.width = "40px";
     image5.height = "40px";
     image5.top=150;
@@ -206,7 +212,7 @@ createMenuScene = function (engine, canvas) {
                 break;
             case "d"://"D"
             case "ArrowRight":
-                if (scene.pointedLevel < 2) {
+                if (scene.pointedLevel < nbLevel) {
                     scene.pointedLevel++;
                     camera.position = new BABYLON.Vector3(listMesh[scene.pointedLevel].position.x, 5, listMesh[scene.pointedLevel].position.z - 10);
                 }

@@ -546,7 +546,9 @@ class MapEngine {
         ));
         this.superJumpCubes.push(mainBox);
     }
+    
     createDangerBox(position) {
+        
         var mainBox = this.createBox(position)
         mainBox.material = this.dangerCubesMat
         var scene = this.game
@@ -622,7 +624,6 @@ class MapEngine {
         this.boostCubesMat = boostCubesMat
 
     }
-
 }
 /**
  * 
@@ -639,7 +640,7 @@ function updateMap(scene) {
     scene.mapEngine.downCubes.forEach(function (mesh) {
         if ((scene.player.box.position.x > mesh.position.x - scene.mapEngine.downCubeTriggerX * scene.mapEngine.cubeWidth)
             && (mesh.position.y + scene.mapEngine.downCubeTriggerY * 13 > scene.player.box.position.y) && scene.mapEngine.run) {
-            mesh.position.y += scene.mapEngine.downCubeSpeed
+            mesh.position.y -= scene.mapEngine.downCubeSpeed
         }
     });
 
@@ -650,6 +651,8 @@ function updateMap(scene) {
             mesh.position.y += min(scene.mapEngine.maxUpCubeSpeed, Math.abs(scene.mapEngine.upCubeSpeed * (scene.player.box.position.y - scene.mapEngine.currentGameY) / scene.mapEngine.cubeWidth))
 
     });
+
+
 
 
 

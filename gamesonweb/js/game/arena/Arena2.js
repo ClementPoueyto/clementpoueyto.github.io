@@ -6,7 +6,7 @@ Arena2 = function (game) {
     this.game = game;
     var scene = game;
     //position d'apparition du joueur dans le niveau;
-    this.spawn = new BABYLON.Vector3(0, 15 * 13, 0);
+    this.spawn = new BABYLON.Vector3(0, 15 * 1, 0);
     //Vitesse du joueur dans le niveau
     this.speed = 1.2;
     var music2 = new BABYLON.Sound(
@@ -17,9 +17,13 @@ Arena2 = function (game) {
     )
     this.music = music2;
 
+    /**DECOR*********************************************************************** */
+   var decor1= new Decor1(scene);
+   /********************************************************************** */
+
      //Material pour normal box
     var materialNormalBox = new BABYLON.StandardMaterial("NormalBoxTexture", scene);
-    materialNormalBox.diffuseTexture = new BABYLON.Texture("assets/images/grass.jpg", scene);
+    materialNormalBox.diffuseTexture = new BABYLON.Texture("assets/images/decor1/grass.jpg", scene);
     materialNormalBox.diffuseTexture.uScale = 1.0;
     materialNormalBox.diffuseTexture.vScale = 1.0;
     scene.materialNormalBox = materialNormalBox;
