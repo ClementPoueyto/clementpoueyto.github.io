@@ -32,7 +32,8 @@ Arena5 = function (game) {
     //clementArena4
     //loic
  /** DECOR************************************************* */
- var decor = new Decor2(scene);
+ if(scene.decorOn==true){
+    var decor2= new Decor2(scene);}
  /******************************************************************************************** */
 
     params = {"trigger":-1,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":3}

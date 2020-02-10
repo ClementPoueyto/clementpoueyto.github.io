@@ -20,7 +20,7 @@ Game = function(canvasId) {
     // Permet au jeu de tourner en boucle
     engine.runRenderLoop(function () {
         if(loaded==false&&menu.begin==true&&menu.level!=-1){
-            scene.createLevel(menu.level);//charge le niveau correspondant au level
+            scene.createLevel(menu.level,menu.decor);//charge le niveau correspondant au level
             loaded=true; // le niveau a été chargé
             menu.dispose();
         }

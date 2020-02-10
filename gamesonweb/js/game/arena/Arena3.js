@@ -30,7 +30,8 @@ Arena3 = function (game) {
     var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 10, 0), scene);
 
     /**DECOR*********************************************************************** */
-   var decor1= new Decor1(scene);
+    if(scene.decorOn==true){
+        var decor1= new Decor1(scene);}
    /********************************************************************** */
 	    
     scene.mapEngine = new MapEngine(scene, "clement")

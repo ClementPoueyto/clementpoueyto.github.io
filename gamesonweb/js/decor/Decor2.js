@@ -9,24 +9,39 @@ Decor2=function(scene){
     materialLeaf.diffuseTexture.uScale = 1.0;
     materialLeaf.diffuseTexture.vScale = 1.0;
 
-    for(let i=0; i<100;i++){
+    for(let i=0; i<20;i++){
         let z =getRandomInt(30);
         var tree = QuickTreeGenerator(15, 10, 5, materialWood, materialLeaf, scene);
-        tree.position= new BABYLON.Vector3(i*60,-100,-100-z);
+        tree.position= new BABYLON.Vector3(i*200,-100,-100-z);
+        tree.scaling = new BABYLON.Vector3(4, 4, 4)
         var tree2 = QuickTreeGenerator(15, 10, 5, materialWood, materialLeaf, scene);
-        tree2.position= new BABYLON.Vector3(i*60,-100,-80+z);
+        tree2.position= new BABYLON.Vector3(i*200,-100,-60+z);
+        tree2.scaling = new BABYLON.Vector3(4, 4, 4)
       
     }
-    for(let i=0; i<100;i++){
+    for(let i=0; i<20;i++){
         let z =getRandomInt(30);
         var tree = QuickTreeGenerator(15, 10, 5, materialWood, materialLeaf, scene);
-        tree.position= new BABYLON.Vector3(i*60,-100,100+z);
+        tree.position= new BABYLON.Vector3(i*200,-100,100+z);
+        tree.scaling = new BABYLON.Vector3(4, 4, 4)
+
         var tree2 = QuickTreeGenerator(15, 10, 5, materialWood, materialLeaf, scene);
-        tree2.position= new BABYLON.Vector3(i*60,-100,80+z);
+        tree2.position= new BABYLON.Vector3(i*200,-100,60+z);
+        tree2.scaling = new BABYLON.Vector3(4, 4, 4)
+
 
     }
 
-
+    var skybox = BABYLON.MeshBuilder.CreateBox('skyBox', { size: 6000.0 }, scene)
+    skybox.position = new BABYLON.Vector3(2000, 15 * 13, 0)
+    var skyboxMaterial = new BABYLON.StandardMaterial('skyBox', scene)
+    skyboxMaterial.backFaceCulling = false
+    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture('assets/sky/skybox', scene)
+    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE
+    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0)
+    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0)
+    skybox.material = skyboxMaterial
+    
     var ground = BABYLON.MeshBuilder.CreatePlane("plane", {height:400, width: 5500}, scene);
     ground.rotate(BABYLON.Axis.X, Math.PI / 2, BABYLON.Space.WORLD);
     ground.position=new BABYLON.Vector3(2500,-110,0);

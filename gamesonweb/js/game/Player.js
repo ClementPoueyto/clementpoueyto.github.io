@@ -11,12 +11,8 @@ class Player {
         this.hasJump=false; //saut en continu
         this.animation=false;//saut à l'infini
         // On crée le joueur
-        if(5==5){
         this.box = BABYLON.Mesh.CreateSphere("redbox",16,4, this.scene);
-        }
-        else{
-            this.box = BABYLON.Mesh.CreateBox("redbox",4, this.scene);
-        }
+        
         this.box.position = new BABYLON.Vector3(0,((this.size/2)*this.box.scaling.y+10),-5);
 
 

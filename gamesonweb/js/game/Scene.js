@@ -2,7 +2,7 @@
  * Definie la scene de jeu
  * @author Clement Poueyto
  */
-createScene = function (engine, level) {
+createScene = function (engine) {
 
     /************************* variables initialisation ********************************** */
     var initCompt = new Date().getTime()
@@ -68,8 +68,9 @@ createScene = function (engine, level) {
     particleSystem.start(); */
 
     /**************************** Material ************************************************/
-    scene.redMat = new BABYLON.StandardMaterial('redMat', scene)
-    scene.redMat.emissiveColor = new BABYLON.Color3(1, 0, 0)
+    scene.upCubeColor = new BABYLON.StandardMaterial('yellow', scene)
+    scene.upCubeColor.emissiveColor = new BABYLON.Color3(0.86, 0.57, 0.13);
+    scene.upCubeColor.diffuseColor = new BABYLON.Color3(0.86, 0.57, 0.13);
 
     scene.yellowMat = new BABYLON.StandardMaterial('yellowMat', scene)
     scene.yellowMat.emissiveColor = new BABYLON.Color3(1, 1, 0)
@@ -85,11 +86,18 @@ createScene = function (engine, level) {
     scene.cyanMat = new BABYLON.StandardMaterial('cyanMat', scene)
     scene.cyanMat.emissiveColor = new BABYLON.Color3(0, 1, 1)
 
-    scene.temp = new BABYLON.StandardMaterial('cyanMat', scene)
-    scene.temp.emissiveColor = new BABYLON.Color3(1, 0, 1)
+    scene.downCubeColor = new BABYLON.StandardMaterial('green', scene)
+    scene.downCubeColor.emissiveColor = new BABYLON.Color3(0.17, 0.65, 0.22);
+    scene.downCubeColor.diffuseColor=new BABYLON.Color3(0.17, 0.65, 0.22);
 
-    temp = new BABYLON.StandardMaterial('cyanMat', scene)
-    temp.emissiveColor = new BABYLON.Color3(0, 0, 1)
+    scene.dangerCubeColor = new BABYLON.StandardMaterial('red', scene)
+    scene.dangerCubeColor.emissiveColor = new BABYLON.Color3(0.69, 0.13, 0.13);
+    scene.dangerCubeColor.diffuseColor=new BABYLON.Color3.Red()
+
+    scene.jumpCubeColor = new BABYLON.StandardMaterial('blue', scene)
+    scene.jumpCubeColor.emissiveColor = new BABYLON.Color3.Blue();
+    scene.jumpCubeColor.diffuseColor=new BABYLON.Color3.Blue()
+
 
     var myMaterial = new BABYLON.StandardMaterial('myMaterial', scene)
     myMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0)
@@ -223,7 +231,8 @@ createScene = function (engine, level) {
     var jump = 0
 
     /*********************************** Level ************************************************ */
-    scene.createLevel = function (lvl) {
+    scene.createLevel = function (lvl,condition) {
+        scene.decorOn=condition;
         switch (lvl) {
             case 0:
                 scene.arena = new Arena1(scene)
@@ -338,6 +347,10 @@ createScene = function (engine, level) {
 
     scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyDownTrigger, function (evt) {
         map[evt.sourceEvent.key] = evt.sourceEvent.type == 'keydown'
+
+        if(map['l']){
+            toggleFullscreen(evt);
+        }
         //console.log(map);
 
     }))
@@ -375,31 +388,32 @@ createScene = function (engine, level) {
                         //cameraAdd -= 1
                         //cameraAdd = Math.max(cameraAdd, 25)
                     }
-                    if (player.box.position.y + 20 * scene.mapEngine.cubeWidth < scene.mapEngine.currentGameY)
+                    if (player.box.position.y + 20 * scene.mapEngine.cubeWidth < scene.mapEngine.currentGameY+160)
                         respawn()
 
                     // scene.camera.position.x += (player.box.position.x - scene.camera.position.x - 60) * 0.025
-                    scene.camera.position.y += (player.box.position.y*1.2 - scene.camera.position.y + cameraAdd + 60) * 0.2
+                    // scene.camera.position.y += (player.box.position.y - scene.camera.position.y + cameraAdd + 60) * 0.15
                     // scene.camera.position.z = player.box.position.z * 0.5
 
 
-                    scene.camera.position.x = player.box.position.x - cameraAdd -120;
-                    //scene.camera.position.y = Math.floor(50 +cameraAdd/2);
+                    scene.camera.position.x = player.box.position.x - cameraAdd**2 -120;
+                    scene.camera.position.y = player.box.position.y + Math.round(50 +cameraAdd**2);
                     scene.camera.position.z = player.box.position.z*1.4
-                    scene.camera.setTarget(new BABYLON.Vector3(player.box.position.x, 4, player.box.position.z));
+                    scene.camera.setTarget(new BABYLON.Vector3(player.box.position.x, player.box.position.y, player.box.position.z));
 
 
-                    actualScore = min(scene.arena.end.position.x, Math.floor(player.box.position.x))
-                    score.text = 'Score: ' + actualScore
-                    if (actualScore > bestScore) {
-                        bestScore = actualScore
-                        highScore.color = 'red'
-                    } else {
-                        highScore.color = 'white'
+                    if(player.box.position.y >= 4) {
+                        actualScore = min(scene.arena.end.position.x, Math.floor(player.box.position.x))
+                        score.text = 'Score: ' + actualScore
+                        if (actualScore > bestScore) {
+                            bestScore = actualScore
+                            highScore.color = 'red'
+                        } else {
+                            highScore.color = 'white'
+                        }
+                        setCookie('highscore' + scene.arena.levelId, bestScore, 100 * 365)
+                        highScore.text = 'Highscore: ' + bestScore
                     }
-                    setCookie('highscore' + scene.arena.levelId, bestScore, 100 * 365)
-                    highScore.text = 'Highscore: ' + bestScore
-
                     textPlayerX.text = 'x: ' + Math.floor(player.box.position.x)
                     textPlayerY.text = 'y: ' + Math.floor(player.box.position.y)
                     textPlayerZ.text = 'z: ' + Math.floor(player.box.position.z)
@@ -419,7 +433,7 @@ createScene = function (engine, level) {
                         pointer.scaling.x = min(2, 0.4 * (player.box.position.y - shadowY) / 13 + 0.4)
                         pointer.scaling.z = min(2, 0.4 * (player.box.position.y - shadowY) / 13 + 0.4)
                     } else {
-                        pointer.position.y -= 500
+                        pointer.position.y += 500
                     }
                 } else {
 
@@ -430,7 +444,7 @@ createScene = function (engine, level) {
     )
 
     function resetMovementPlayer () {
-        player.box.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, 0, 0))
+        player.box.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, -10, 0))
         player.box.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, 0))
     }
 
@@ -480,7 +494,6 @@ createScene = function (engine, level) {
         }
 
         /***** Shift (moving) *****/
-
         if (new Date().getTime() - previousMove > sideDelay) {
             if ((map['q'] || map['Q'])) {
                 if (player.movingSide == 0 && ((Math.max.apply(null, scene.mapEngine.getCurrentPattern(player.box.position.x)) + 1) * scale) > player.box.position.z) {
@@ -519,7 +532,7 @@ createScene = function (engine, level) {
                 var contactLocalRefPoint = BABYLON.Vector3.Zero()
                 previousJump = new Date().getTime()
                 jump = player.box.position.x
-                var forceDirection = new BABYLON.Vector3(0, 1, 0)
+                var forceDirection = new BABYLON.Vector3(0, 0.9, 0)
                 var contactLocalRefPoint = BABYLON.Vector3.Zero()
                 scene.player.box.physicsImpostor.applyImpulse(forceDirection.scale(jumpPower),
                     scene.player.box.getAbsolutePosition().add(contactLocalRefPoint))
@@ -580,7 +593,7 @@ function markFinishedLevel (levelId, scene) {
 function updateFinishedLevels (scene) {
     for (let i = 0; i < scene.materials.length; i++) {
         if (getCookie('finished' + i) == 1) {
-            scene.materials[i].diffuseTexture = new BABYLON.Texture('assets/images/poubelle.jpg', scene)
+            scene.materials[i].diffuseTexture = new BABYLON.Texture('assets/images/menu/blue.jpg', scene)
         }
     }
 
@@ -607,4 +620,24 @@ function setCookie (cname, cvalue, exdays) {
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000))
     var expires = 'expires=' + d.toUTCString()
     document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/'
+}
+
+/**
+ * Toggle fullscreen function who work with webkit and firefox.
+ * @function toggleFullscreen
+ * @param {Object} event
+ */
+function toggleFullscreen(event) {
+    var element = document.body;
+
+    if (event instanceof HTMLElement) {
+        element = event;
+    }
+
+    var isFullscreen = document.webkitIsFullScreen || document.mozFullScreen || false;
+
+    element.requestFullScreen = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || function () { return false; };
+    document.cancelFullScreen = document.cancelFullScreen || document.webkitCancelFullScreen || document.mozCancelFullScreen || function () { return false; };
+
+    isFullscreen ? document.cancelFullScreen() : element.requestFullScreen();
 }

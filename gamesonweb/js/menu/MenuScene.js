@@ -25,7 +25,8 @@ createMenuScene = function (engine, canvas) {
     );*/
 
     var nbLevel=7;
-
+    
+    scene.decor=true;
 
     scene.materials= new MenuMaterials(scene);
     updateFinishedLevels(scene);
@@ -181,6 +182,27 @@ createMenuScene = function (engine, canvas) {
     image5.left=650;
     advancedTexture.addControl(image5);
 
+    var setting = new BABYLON.GUI.Button.CreateSimpleButton('Decor', 'Decor')
+    setting.width = 0.07
+    setting.height = 0.04
+    setting.color = 'black'
+    setting.background = 'white'
+    setting.left = '50px'
+    setting.top = '30px'
+    setting.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT
+    setting.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP
+    setting.onPointerClickObservable.add(function () {
+        if(scene.decor==true){
+            scene.decor=false;
+            setting.background='red'
+        }
+        else{
+            scene.decor=true
+            setting.background='white'
+        }
+    })
+    advancedTexture.addControl(setting)
+
 
     //-------------------------KEY CONTROLL -------------------------------//
 
@@ -198,9 +220,7 @@ createMenuScene = function (engine, canvas) {
             })
     );
 
-
-    // Quand les touches sont relachés
-    window.addEventListener("keyup", function (evt) {
+    function keyController (evt) {
         switch (evt.key) {
             case "q": //"Q"
             case "ArrowLeft":
@@ -212,7 +232,7 @@ createMenuScene = function (engine, canvas) {
                 break;
             case "d"://"D"
             case "ArrowRight":
-                if (scene.pointedLevel < nbLevel) {
+                if (scene.pointedLevel < nbLevel-1) {
                     scene.pointedLevel++;
                     camera.position = new BABYLON.Vector3(listMesh[scene.pointedLevel].position.x, 5, listMesh[scene.pointedLevel].position.z - 10);
                 }
@@ -223,7 +243,10 @@ createMenuScene = function (engine, canvas) {
                     selectLevel(listMesh[scene.pointedLevel]);}
             break;
         }
-    }, false);
+    }
+
+    // Quand les touches sont relachés
+    window.addEventListener("keyup",keyController, false);
 
 
     return scene;

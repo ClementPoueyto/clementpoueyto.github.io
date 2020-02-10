@@ -39,7 +39,7 @@ class MapEngine {
 
         // Performances
         this.destroyMeshes = 20
-        this.createMeshes = 30
+        this.createMeshes = 100
 
         // Arena width and change params
         this.minWidth = 0
@@ -54,7 +54,7 @@ class MapEngine {
         // power and speed params here
         this.jumpCubesPower = 500
         this.superJumpCubesPower = 5000
-        this.boostPower = 200
+        this.boostPower = 120
         this.downCubeSpeed = -0.4
         this.maxUpCubeSpeed = 3
 
@@ -91,11 +91,11 @@ class MapEngine {
         //--------Editable before starting play loop-------//
         //materials
         this.normalCubesMat = null
-        this.upCubesMat = game.redMat
-        this.downCubesMat = game.temp
-        this.jumpCubesMat = null
+        this.upCubesMat = game.upCubeColor
+        this.downCubesMat = game.downCubeColor
+        this.jumpCubesMat = game.jumpCubeColor
         this.superJumpCubesMat = null
-        this.dangerCubesMat = null
+        this.dangerCubesMat = game.dangerCubeColor
         this.boostCubesMat = game.blueMat
 
     }

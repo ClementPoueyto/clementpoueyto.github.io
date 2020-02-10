@@ -17,7 +17,7 @@ Arena = function(game) {
 
 
     //Vitesse du joueur dans le niveau
-    this.speed=0.8;
+    this.speed=10;
 
     // Material pour le sol
     var materialGround = new BABYLON.StandardMaterial("wallTexture", scene);
@@ -98,16 +98,7 @@ Arena = function(game) {
     skybox.material = skyboxMaterial;	
     this.normalCubes.push(skybox);	
 
-    //MESH DE FIN - Ramene au menu
-    this.end = BABYLON.MeshBuilder.CreateBox("box1", {size:3}, scene);
-    this.end.position= new BABYLON.Vector3(boxPosition+90,((3/2)*mainBox2.scaling.y),-5);
-    this.end.material=materialEnd;
-    this.end.scaling.y = 3;
-    this.end.scaling.z = 4;
-    this.end.scaling.x = 4;
-    this.end.checkCollisions = true;
-    this.end.physicsImpostor = new BABYLON.PhysicsImpostor(this.end, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0 }, scene);
-    this.normalCubes.push(this.end);
+   
 
 
 

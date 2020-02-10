@@ -18,7 +18,8 @@ Arena2 = function (game) {
     this.music = music2;
 
     /**DECOR*********************************************************************** */
-   var decor1= new Decor1(scene);
+    if(scene.decorOn==true){
+        var decor1= new Decor1(scene);}
    /********************************************************************** */
 
      //Material pour normal box

@@ -26,15 +26,16 @@ Arena4 = function (game) {
     //MESH DE FIN - Ramene au menu
     this.end = BABYLON.MeshBuilder.CreateBox("box1", { size: 50 }, scene);
     this.end.position= new BABYLON.Vector3(5010,0,0);
-    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 10, 0), scene);
-
+    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 100, 0), scene);
+    
 
     scene.mapEngine = new MapEngine(scene, "clementArena4")
     //clementArena4
     //loic
 
     /** DECOR************************************************* */
-    var decor = new Decor2(scene);
+    if(scene.decorOn==true){
+        var decor2= new Decor2(scene);}
 /******************************************************************************************** */
 
     params = {"trigger":-1,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":3}
