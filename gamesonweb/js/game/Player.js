@@ -22,6 +22,18 @@ class Player {
         this.box.ellipsoid = new BABYLON.Vector3(1, 1, 1);
         this.box.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, 0, 0));
 
+        // BABYLON.SceneLoader.ImportMesh("", "./assets/model/", "scene1bin.glb", this.scene, function (mesh) {
+        //     this.box=mesh[0]
+        //     this.box.position = new BABYLON.Vector3(0,((this.size/2)*this.box.scaling.y+10),-5);
+        //     //activation de la physique du joueur
+        //     this.box.checkCollisions=true;
+        //     this.box.physicsImpostor = new BABYLON.PhysicsImpostor(this.box, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1, restitution: 0 }, this.scene);
+        //     this.box.ellipsoid = new BABYLON.Vector3(1, 1, 1);
+        //     this.box.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, 0, 0));
+        //         // do something with the meshes and skeletons
+        //         // particleSystems are always null for glTF assets
+        // }.bind(this));
+
     }
 
     

@@ -16,22 +16,19 @@ createMenuScene = function (engine, canvas) {
     //camera.attachControl(canvas, true);
     scene.level = -1;
     scene.pointedLevel = -1;
-    //Initialisation de la musique du menu
-    /*var music = new BABYLON.Sound(
-        "Music", "assets/sons/menu.mp3", scene, null, {
-            loop: true,
-            autoplay: true
-        }
-    );*/
 
-    var nbLevel=7;
-    
-    scene.decor=true;
+    var nbLevel = 9;
 
-    scene.materials= new MenuMaterials(scene);
+    scene.decor = true;
+
+    scene.materials = new MenuMaterials(scene);
+    scene.listMesh = []
+    for (let i = 0; i < nbLevel; i++) {
+        addMesh(i);
+    }
     updateFinishedLevels(scene);
 
-    var listMesh = [];
+
     // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
     var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
 
@@ -41,10 +38,11 @@ createMenuScene = function (engine, canvas) {
     //lance la procedure de chargement de niveau
     function selectLevel(mesh) {
         scene.level = mesh.id;
+        updateText()
         if (mesh.position.x == camera.position.x && mesh.position.z - 10 == camera.position.z) {
             scene.begin = true
             //music.stop();
-            
+
         }
         camera.position = new BABYLON.Vector3(mesh.position.x, 5, mesh.position.z - 10);
     }
@@ -57,13 +55,13 @@ createMenuScene = function (engine, canvas) {
 
     function showSelectedLevel(mesh, lvl) {
         if (lvl == mesh.id) {
-            mesh.material.emissiveColor = BABYLON.Color3.White();
-            mesh.scaling = new BABYLON.Vector3(1.1, 1.1, 1.1);
+            mesh.scaling = new BABYLON.Vector3(1.4, 1.4, 1.4);
         } else {
-            mesh.material.emissiveColor = BABYLON.Color3.Black();
             mesh.scaling = new BABYLON.Vector3(1, 1, 1);
         }
     }
+
+
 
 
     //affiche un niveau
@@ -75,11 +73,12 @@ createMenuScene = function (engine, canvas) {
             id * 1.5,
         );
 
+
         //ensemble d'observable
         box.material = new BABYLON.StandardMaterial("mat", scene);
         box.id = id;
         box.actionManager = new BABYLON.ActionManager(scene);
-        box.material=scene.materials[box.id];
+        box.material = scene.materials[box.id];
         box.actionManager.registerAction(
             new BABYLON.ExecuteCodeAction(
                 {
@@ -103,15 +102,12 @@ createMenuScene = function (engine, canvas) {
             )
         );
 
-        listMesh.push(box);
+        scene.listMesh.push(box);
 
 
     };
 
-    for(let i=0; i<nbLevel; i++){
-        addMesh(i);
-    }
-    
+
 
 
     var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
@@ -119,90 +115,132 @@ createMenuScene = function (engine, canvas) {
     advancedTexture.idealHeight = 1080;
     advancedTexture.renderAtIdealSize = true
     //advancedTexture.isForeground = true;
-    
-    //texte : titre du jeu
-    var text = new BABYLON.GUI.TextBlock("text2");
-    text.textWrapping = true;
-    //text.position = "absolute";
-    text.width = "100%";
-    text.height = "100%";
-    text.text = `Geome3Dash`;
-    text.color = "white";
-    text.fontSize = "100px";
-    text.fontFamily = 'Verdana';
-    text.top =-270;
-    advancedTexture.addControl(text);
 
-    
-    //texte : theme
-    var text = new BABYLON.GUI.TextBlock("text2");
-    text.textWrapping = true;
-    //text.position = "absolute";
-    text.width = "100%";
-    text.height = "100%";
-    text.text = 'The place to be';
-    text.color = "white";
-    text.fontSize = "70px";
-    text.fontFamily = 'Verdana';
-    text.top =-150;
-    advancedTexture.addControl(text);
+    //texte : titre du jeu
+    var imageTitle = new BABYLON.GUI.Image("title", "assets/images/menu/title.png");
+    imageTitle.width = "1000px";
+    imageTitle.height = "200px";
+    imageTitle.top = -270;
+   
+    advancedTexture.addControl(imageTitle);
+
+    //Theme du jeu
+    var imageTitle2 = new BABYLON.GUI.Image("title", "assets/images/menu/title2.png");
+    imageTitle2.width = "600px";
+    imageTitle2.height = "100px";
+    imageTitle2.top = -100;
+   
+    advancedTexture.addControl(imageTitle2);
+
 
     var image = new BABYLON.GUI.Image("but", "assets/images/menu/keyQ.png");
     image.width = "40px";
     image.height = "40px";
-    image.top=200;
-    image.left=600;
+    image.top = 200;
+    image.left = 600;
     advancedTexture.addControl(image);
     var image2 = new BABYLON.GUI.Image("but", "assets/images/menu/keyD.png");
     image2.width = "40px";
     image2.height = "40px";
-    image2.top=200;
-    image2.left=700;
+    image2.top = 200;
+    image2.left = 700;
     advancedTexture.addControl(image2);
 
     var image3 = new BABYLON.GUI.Image("but", "assets/images/menu/keySpace.png");
     image3.width = "180px";
     image3.height = "30px";
 
-    image3.top=250;
-    image3.left=650;
+    image3.top = 250;
+    image3.left = 650;
     advancedTexture.addControl(image3);
 
     var image4 = new BABYLON.GUI.Image("but", "assets/images/menu/keyS.png");
     image4.width = "40px";
     image4.height = "40px";
-    image4.top=200;
-    image4.left=650;
+    image4.top = 200;
+    image4.left = 650;
     advancedTexture.addControl(image4);
 
-    var image5 = new BABYLON.GUI.Image("but", "assets/images/menu/keyZ.png");
-    image5.width = "40px";
-    image5.height = "40px";
-    image5.top=150;
-    image5.left=650;
-    advancedTexture.addControl(image5);
 
-    var setting = new BABYLON.GUI.Button.CreateSimpleButton('Decor', 'Decor')
-    setting.width = 0.07
-    setting.height = 0.04
+
+    var setting = new BABYLON.GUI.Button.CreateSimpleButton('Decor', 'Mode Performance')
+    setting.width = "0.2" 
+    setting.height = "0.1"
     setting.color = 'black'
     setting.background = 'white'
+    setting.fontSize = "35";
+
     setting.left = '50px'
     setting.top = '30px'
     setting.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT
     setting.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP
     setting.onPointerClickObservable.add(function () {
-        if(scene.decor==true){
-            scene.decor=false;
-            setting.background='red'
+        if (scene.decor == true) {
+            scene.decor = false;
+            setting.background = 'cyan'
         }
-        else{
-            scene.decor=true
-            setting.background='white'
+        else {
+            scene.decor = true
+            setting.background = 'white'
         }
     })
     advancedTexture.addControl(setting)
 
+//
+
+var textDecor=[
+    "Aidez le déchet à atteindre la poubelle !",
+    "Aidez l'oeuf à regagner son nid !",
+    "Aidez le boulet de canon à percuter le navire",
+]
+
+var textDifficulty=[
+    "Facile",
+    "Moyen",
+    "Dificile",
+    "Expert"
+]
+
+var dataBaseLevel=[
+    textDecor[0]+"\nDifficulté : "+textDifficulty[0],  
+    textDecor[0]+"\nDifficulté : "+textDifficulty[0],
+    textDecor[0]+"\nDifficulté : "+textDifficulty[0],
+    textDecor[1]+"\nDifficulté : "+textDifficulty[1],
+    textDecor[1]+"\nDifficulté : "+textDifficulty[1],
+    textDecor[1]+"\nDifficulté : "+textDifficulty[2],
+    textDecor[2]+"\nDifficulté : "+textDifficulty[0],
+    textDecor[2]+"\nDifficulté : "+textDifficulty[1],
+    textDecor[2]+"\nDifficulté : "+textDifficulty[2]
+
+
+
+]
+var dataBaseColor=[
+    "green","green","green","red","red","red","blue","blue","blue","yellow"
+]
+
+var rectangle = new BABYLON.GUI.Rectangle("rect");
+    rectangle.background = "green";
+    rectangle.color = "black";
+    rectangle.width = "30%";
+    rectangle.height = "15%";
+    rectangle.top="40%"
+advancedTexture.addControl(rectangle);
+var text1 = new BABYLON.GUI.TextBlock("text1");
+    
+    text1.fontFamily = "Helvetica";
+    text1.textWrapping = true;
+    
+    text1.text = textDecor[0]+"\nDifficulté : "+textDifficulty[0]
+    text1.color = "white";
+    text1.fontSize = "20%";
+    rectangle.addControl(text1);
+
+
+    function updateText(){
+        text1.text=dataBaseLevel[scene.level]
+        rectangle.background=dataBaseColor[scene.level]
+    }
 
     //-------------------------KEY CONTROLL -------------------------------//
 
@@ -214,39 +252,40 @@ createMenuScene = function (engine, canvas) {
                 trigger: BABYLON.ActionManager.OnEveryFrameTrigger,
             },
             function () {
-                for (let i = 0; i < listMesh.length; i++) {
-                    showSelectedLevel(listMesh[i], scene.pointedLevel);
+                for (let i = 0; i < scene.listMesh.length; i++) {
+                    showSelectedLevel(scene.listMesh[i], scene.pointedLevel);
                 }
             })
     );
 
-    function keyController (evt) {
+    function keyController(evt) {
         switch (evt.key) {
             case "q": //"Q"
             case "ArrowLeft":
                 if (scene.pointedLevel > 0) {
                     scene.pointedLevel--;
-                    camera.position = new BABYLON.Vector3(listMesh[scene.pointedLevel].position.x, 5, listMesh[scene.pointedLevel].position.z - 10);
+                    camera.position = new BABYLON.Vector3(scene.listMesh[scene.pointedLevel].position.x, 5, scene.listMesh[scene.pointedLevel].position.z - 10);
 
                 }
                 break;
             case "d"://"D"
             case "ArrowRight":
-                if (scene.pointedLevel < nbLevel-1) {
+                if (scene.pointedLevel < nbLevel - 1) {
                     scene.pointedLevel++;
-                    camera.position = new BABYLON.Vector3(listMesh[scene.pointedLevel].position.x, 5, listMesh[scene.pointedLevel].position.z - 10);
+                    camera.position = new BABYLON.Vector3(scene.listMesh[scene.pointedLevel].position.x, 5, scene.listMesh[scene.pointedLevel].position.z - 10);
                 }
-            break;
+                break;
             case "Enter"://"Enter"
             case " "://"Space"
-                if(scene.pointedLevel>=0){
-                    selectLevel(listMesh[scene.pointedLevel]);}
-            break;
+                if (scene.pointedLevel >= 0) {
+                    selectLevel(scene.listMesh[scene.pointedLevel]);
+                }
+                break;
         }
     }
 
     // Quand les touches sont relachés
-    window.addEventListener("keyup",keyController, false);
+    window.addEventListener("keyup", keyController, false);
 
 
     return scene;

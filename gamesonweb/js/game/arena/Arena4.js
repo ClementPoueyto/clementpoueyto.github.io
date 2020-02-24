@@ -6,7 +6,7 @@ Arena4 = function (game) {
     //position d'apparition du joueur dans le niveau;
     this.spawn = new BABYLON.Vector3(0, 15 * 1, 0);
     //Vitesse du joueur dans le niveau
-    this.speed = 1.5;
+    this.speed = 2;
     var music2 = new BABYLON.Sound(
         "Music", "assets/sons/music.mp3", scene, null, {
         loop: true,
@@ -24,10 +24,22 @@ Arena4 = function (game) {
     scene.materialNormalBox = materialNormalBox;
 
     //MESH DE FIN - Ramene au menu
-    this.end = BABYLON.MeshBuilder.CreateBox("box1", { size: 50 }, scene);
-    this.end.position= new BABYLON.Vector3(5010,0,0);
-    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 100, 0), scene);
-    
+    this.end = BABYLON.MeshBuilder.CreateBox("box1", { size: 80 }, scene);
+    var endMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+    endMaterial.alpha = 0
+    this.end.position = new BABYLON.Vector3(5140, -40, 0);
+    this.end.material = endMaterial
+    //MESH DE FIN - Ramene au menu
+    loader = BABYLON.SceneLoader.Append('assets/model/', 'scene2end.glb', scene, function (scene) {
+        // do something with the scene
+    })
+    loader.onMeshLoaded = function (mesh) {
+        mesh.position = new BABYLON.Vector3(5140, -80, 0)
+        mesh.scaling = new BABYLON.Vector3(40, 40, 40)
+
+    }
+    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 50, 0), scene);
+     light.intensity = 1.3
 
     scene.mapEngine = new MapEngine(scene, "clementArena4")
     //clementArena4
@@ -40,15 +52,15 @@ Arena4 = function (game) {
 
     params = {"trigger":-1,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":3}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":400,"normalCubesProbability":800,"upCubesProbability":1000,"upCubeSpeed":0.2,"upCubeTriggerX":5,"pattern":[0,1],"minWidth":2,"maxWidth":0}
+    params = {"trigger":400,"normalCubesProbability":850,"upCubesProbability":1000,"upCubeSpeed":0.2,"upCubeTriggerX":10,"pattern":[0,1],"minWidth":2,"maxWidth":0}
     scene.mapEngine.addParamsConfiguration(params)
     params = {"trigger":2000,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":2,"change":0,"maxWidth":0}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":3000,"normalCubesProbability":800,"upCubesProbability":1000,"upCubeSpeed":0.3,"upCubeTriggerX":5,"pattern":[-2,-1,0,1,2],"minWidth":3,"maxWidth":2,"change":0}
+    params = {"trigger":3000,"normalCubesProbability":600,"upCubesProbability":1000,"upCubeSpeed":0.2,"upCubeTriggerX":10,"pattern":[-2,0,1,2],"minWidth":2,"maxWidth":2,"change":0}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":4500,"normalCubesProbability":1500,"pattern":[-2,-1,0,1,2],"minWidth":2,"maxWidth":2,"change":0}
+    params = {"trigger":4500,"normalCubesProbability":850,"pattern":[-2,0,2],"minWidth":1,"maxWidth":2,"change":200,"upCubeSpeed":0.1,"upCubeTriggerX":5}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":5000,"normalCubesProbability":1,"upCubesProbability":0,"upCubeSpeed":0,"upCubeTriggerX":0,"pattern":[0],"minWidth":1,"maxWidth":0,"change":0}
+    params = {"trigger":5000,"normalCubesProbability":0,"upCubesProbability":0,"upCubeSpeed":0,"upCubeTriggerX":0,"pattern":[0],"minWidth":1,"maxWidth":0,"change":0}
     scene.mapEngine.addParamsConfiguration(params)
 
 

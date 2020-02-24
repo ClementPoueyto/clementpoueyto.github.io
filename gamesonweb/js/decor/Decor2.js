@@ -9,31 +9,37 @@ Decor2=function(scene){
     materialLeaf.diffuseTexture.uScale = 1.0;
     materialLeaf.diffuseTexture.vScale = 1.0;
 
+    
     for(let i=0; i<20;i++){
         let z =getRandomInt(30);
         var tree = QuickTreeGenerator(15, 10, 5, materialWood, materialLeaf, scene);
         tree.position= new BABYLON.Vector3(i*200,-100,-100-z);
         tree.scaling = new BABYLON.Vector3(4, 4, 4)
+        tree.freezeWorldMatrix();
+
         var tree2 = QuickTreeGenerator(15, 10, 5, materialWood, materialLeaf, scene);
         tree2.position= new BABYLON.Vector3(i*200,-100,-60+z);
         tree2.scaling = new BABYLON.Vector3(4, 4, 4)
-      
+        tree2.freezeWorldMatrix();
+
     }
     for(let i=0; i<20;i++){
         let z =getRandomInt(30);
         var tree = QuickTreeGenerator(15, 10, 5, materialWood, materialLeaf, scene);
         tree.position= new BABYLON.Vector3(i*200,-100,100+z);
         tree.scaling = new BABYLON.Vector3(4, 4, 4)
+        tree.freezeWorldMatrix();
 
         var tree2 = QuickTreeGenerator(15, 10, 5, materialWood, materialLeaf, scene);
         tree2.position= new BABYLON.Vector3(i*200,-100,60+z);
         tree2.scaling = new BABYLON.Vector3(4, 4, 4)
+        tree2.freezeWorldMatrix();
 
 
     }
 
     var skybox = BABYLON.MeshBuilder.CreateBox('skyBox', { size: 6000.0 }, scene)
-    skybox.position = new BABYLON.Vector3(2000, 15 * 13, 0)
+    skybox.infiniteDistance = true;
     var skyboxMaterial = new BABYLON.StandardMaterial('skyBox', scene)
     skyboxMaterial.backFaceCulling = false
     skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture('assets/sky/skybox', scene)
@@ -42,7 +48,7 @@ Decor2=function(scene){
     skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0)
     skybox.material = skyboxMaterial
     
-    var ground = BABYLON.MeshBuilder.CreatePlane("plane", {height:400, width: 5500}, scene);
+    var ground = BABYLON.MeshBuilder.CreatePlane("plane", {height:400, width: 7000}, scene);
     ground.rotate(BABYLON.Axis.X, Math.PI / 2, BABYLON.Space.WORLD);
     ground.position=new BABYLON.Vector3(2500,-110,0);
     //Material pour le sol
@@ -51,4 +57,10 @@ Decor2=function(scene){
     groundMaterial.diffuseTexture.uScale = 1000.0;
     groundMaterial.diffuseTexture.vScale = 100.0;
     ground.material = groundMaterial;
+
+
+     var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 50, 0), scene);
+     light.intensity = 1.3
+    
+
 }

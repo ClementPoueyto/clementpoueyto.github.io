@@ -14,7 +14,6 @@ Game = function(canvasId) {
     // on initie le menu de jeu pour selectionner le niveau
     var menu=new createMenuScene(engine,canvasId);
 
-
     var loaded =false;
 
     // Permet au jeu de tourner en boucle

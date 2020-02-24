@@ -20,15 +20,17 @@ createScene = function (engine) {
     var previousTorque = new Date().getTime()
     var previousAcceleration = new Date().getTime()
     var previousJump = new Date().getTime()
-    var previousPlayerPosX = 0
-    // var defaultRotation = scene.camera.rotation
-    var brakePower = 30
-    var brakeInterval = 100
+    var previousPlayerFrontMovement  = new Date().getTime()
+    var brakePower = 70
+    var brakeInterval = 800
     var jumpPower = 100
     var sideDelay = 200
     var jumpVector = new BABYLON.Vector3(0, 1, 0)
     var brakeVector = new BABYLON.Vector3(-1, 0.01, 0)
     scene.keepPosition = new BABYLON.Vector3.Zero()
+    var quaternion0=new BABYLON.Quaternion(0, 0, 0, 0)
+    var linear0=new BABYLON.Vector3(0, 0, 0)
+
     /****************************************************************** */
     var player = new Player(this)
     scene.player = player
@@ -45,6 +47,11 @@ createScene = function (engine) {
     /********************* Camera  *********************** */
     scene.camera = new BABYLON.FreeCamera('camera', player.box.position, scene);
     var cameraAdd = 0;
+
+    var defaultEnvironment = scene.createDefaultEnvironment({ createSkybox: false })
+    scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
+    scene.fogColor = new BABYLON.Color3(0.9, 0.9, 0.85);
+    scene.fogDensity = 0.0001;
 
 
     /****************************** Particle******************************** */
@@ -88,15 +95,15 @@ createScene = function (engine) {
 
     scene.downCubeColor = new BABYLON.StandardMaterial('green', scene)
     scene.downCubeColor.emissiveColor = new BABYLON.Color3(0.17, 0.65, 0.22);
-    scene.downCubeColor.diffuseColor=new BABYLON.Color3(0.17, 0.65, 0.22);
+    scene.downCubeColor.diffuseColor = new BABYLON.Color3(0.17, 0.65, 0.22);
 
     scene.dangerCubeColor = new BABYLON.StandardMaterial('red', scene)
     scene.dangerCubeColor.emissiveColor = new BABYLON.Color3(0.69, 0.13, 0.13);
-    scene.dangerCubeColor.diffuseColor=new BABYLON.Color3.Red()
+    scene.dangerCubeColor.diffuseColor = new BABYLON.Color3.Red()
 
     scene.jumpCubeColor = new BABYLON.StandardMaterial('blue', scene)
     scene.jumpCubeColor.emissiveColor = new BABYLON.Color3.Blue();
-    scene.jumpCubeColor.diffuseColor=new BABYLON.Color3.Blue()
+    scene.jumpCubeColor.diffuseColor = new BABYLON.Color3.Blue()
 
 
     var myMaterial = new BABYLON.StandardMaterial('myMaterial', scene)
@@ -118,13 +125,16 @@ createScene = function (engine) {
     advancedTexture.idealWidth = 1920
     advancedTexture.idealHeight = 1080
     advancedTexture.renderAtIdealSize = true
-    var quitButton = new BABYLON.GUI.Button.CreateSimpleButton('quit', 'Quit')
-    quitButton.width = 0.1
-    quitButton.height = 0.08
-    quitButton.color = 'black'
-    quitButton.background = 'white'
+    var quitButton = BABYLON.GUI.Button.CreateImageWithCenterTextButton(
+        "but",
+        "",
+        "assets/images/arrow.png"
+      );
+    quitButton.width = "80px"
+    quitButton.height = "80px"
     quitButton.left = '50px'
     quitButton.top = '30px'
+    quitButton.background="white"
     quitButton.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT
     quitButton.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP
     quitButton.onPointerClickObservable.add(function () {
@@ -134,24 +144,29 @@ createScene = function (engine) {
 
     /************************************ Pause ***************************** */
 
-    var stopButton = new BABYLON.GUI.Button.CreateSimpleButton('pause', 'Stop')
-    stopButton.width = 0.1
-    stopButton.height = 0.08
-    stopButton.color = 'black'
-    stopButton.background = 'white'
+    var stopButton = BABYLON.GUI.Button.CreateImageWithCenterTextButton(
+        "but",
+        "",
+        "assets/images/pause_icon.png"
+      );
+    stopButton.width = "80px"
+    stopButton.height = "80px"
+    
     stopButton.left = '50px'
     stopButton.top = '150px'
+    stopButton.background="white"
     stopButton.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT
     stopButton.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP
     stopButton.onPointerClickObservable.add(function () {
         if (scene.keepPosition.x == 0 && scene.keepPosition.y == 0 && scene.keepPosition.z == 0) {
+            stopButton.children[0].source="assets/images/play_icon.png"
             player.box.physicsImpostor.sleep()
             scene.keepPosition = player.box.position
             scene.mapEngine.run = false
-            stopButton.textBlock.text = 'Resume'
             scene.arena.music.pause()
         } else {
-            stopButton.textBlock.text = 'Stop'
+            stopButton.children[0].source="assets/images/pause_icon.png"
+            previousPlayerFrontMovement = new Date().getTime()
             scene.keepPosition = new BABYLON.Vector3.Zero()
             player.box.physicsImpostor.wakeUp()
             scene.mapEngine.run = true
@@ -164,13 +179,13 @@ createScene = function (engine) {
     var score = new BABYLON.GUI.TextBlock('Score')
     score.textWrapping = true
     score.position = 'absolute'
-    score.width = 0.1
+    score.width = 0.2
     score.height = 0.1
     score.color = 'red'
     score.text = ''
     score.fontSize = '25px'
     score.right = -30
-    score.top = 10
+    score.top = 50
     score.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT
     score.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP
     advancedTexture.addControl(score)
@@ -178,13 +193,13 @@ createScene = function (engine) {
     var highScore = new BABYLON.GUI.TextBlock('Highscore')
     highScore.textWrapping = true
     highScore.position = 'absolute'
-    highScore.width = 0.1
+    highScore.width = 0.2
     highScore.height = 0.1
     highScore.color = 'white'
     highScore.text = ''
-    highScore.fontSize = '25px'
+    highScore.fontSize = '30px'
     highScore.right = -30
-    highScore.top = 50
+    highScore.top = 100
     highScore.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT
     highScore.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP
     advancedTexture.addControl(highScore)
@@ -231,8 +246,8 @@ createScene = function (engine) {
     var jump = 0
 
     /*********************************** Level ************************************************ */
-    scene.createLevel = function (lvl,condition) {
-        scene.decorOn=condition;
+    scene.createLevel = function (lvl, condition) {
+        scene.decorOn = condition;
         switch (lvl) {
             case 0:
                 scene.arena = new Arena1(scene)
@@ -260,6 +275,12 @@ createScene = function (engine) {
                 break
             case 8:
                 scene.arena = new Arena9(scene)
+                break
+            case 9:
+                scene.arena = new Arena10(scene)
+                break
+            case 10:
+                scene.arena = new Arena11(scene)
                 break
         }
         scene.arena.levelId = lvl
@@ -293,7 +314,7 @@ createScene = function (engine) {
     butns.id = 'btns'
     document.querySelector('body').appendChild(container)
 
-    function MobileButton () {
+    function MobileButton() {
         let container = document.createElement('div')
         container.classList.add('pause_container')
         let btn = document.createElement('div')
@@ -348,7 +369,7 @@ createScene = function (engine) {
     scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyDownTrigger, function (evt) {
         map[evt.sourceEvent.key] = evt.sourceEvent.type == 'keydown'
 
-        if(map['l']){
+        if (map['l']) {
             toggleFullscreen(evt);
         }
         //console.log(map);
@@ -370,17 +391,9 @@ createScene = function (engine) {
                 loading()
                 if (scene.keepPosition.x == 0 && scene.keepPosition.y == 0 && scene.keepPosition.z == 0) {
 
-                    var brakePower = (scene.arena.speed / 30) * 1000
-                    player.box.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, 0, 0))
-                    // Try to speed up player if it's current speed is bellow ths max speed 
-                    if (player.box.position.x - previousPlayerPosX < scene.arena.speed) {
-                        var forceDirection = new BABYLON.Vector3(1, 0, 0)
-                        var forceMagnitude = Math.floor((scene.arena.speed / 2) * 1000)
-                        var contactLocalRefPoint = BABYLON.Vector3.Zero()
-                        //player.box.physicsImpostor.applyForce(forceDirection.scale(forceMagnitude),
-                           // player.box.getAbsolutePosition().add(contactLocalRefPoint))
-                        player.box.position.x+=scene.arena.speed;
-                    }
+                    player.box.physicsImpostor.setAngularVelocity(quaternion0) 
+                    player.box.position.x += scene.arena.speed*min(150,(new Date().getTime() -previousPlayerFrontMovement))*0.05;
+                    previousPlayerFrontMovement = new Date().getTime()
                     if (player.hasJump) {
                         //cameraAdd += 0.5
                         //cameraAdd = Math.min(cameraAdd, 60)
@@ -388,21 +401,16 @@ createScene = function (engine) {
                         //cameraAdd -= 1
                         //cameraAdd = Math.max(cameraAdd, 25)
                     }
-                    if (player.box.position.y + 20 * scene.mapEngine.cubeWidth < scene.mapEngine.currentGameY+160)
+                    if (player.box.position.y + 20 * scene.mapEngine.cubeWidth < scene.mapEngine.currentGameY + 160)
                         respawn()
 
-                    // scene.camera.position.x += (player.box.position.x - scene.camera.position.x - 60) * 0.025
-                    // scene.camera.position.y += (player.box.position.y - scene.camera.position.y + cameraAdd + 60) * 0.15
-                    // scene.camera.position.z = player.box.position.z * 0.5
-
-
-                    scene.camera.position.x = player.box.position.x - cameraAdd**2 -120;
-                    scene.camera.position.y = player.box.position.y + Math.round(50 +cameraAdd**2);
-                    scene.camera.position.z = player.box.position.z*1.4
+                    scene.camera.position.x = player.box.position.x - cameraAdd ** 2 - 120;
+                    scene.camera.position.y = player.box.position.y + Math.round(50 + cameraAdd ** 2);
+                    scene.camera.position.z = player.box.position.z * 1.1
                     scene.camera.setTarget(new BABYLON.Vector3(player.box.position.x, player.box.position.y, player.box.position.z));
 
 
-                    if(player.box.position.y >= 4) {
+                    if (player.box.position.y >= 4) {
                         actualScore = min(scene.arena.end.position.x, Math.floor(player.box.position.x))
                         score.text = 'Score: ' + actualScore
                         if (actualScore > bestScore) {
@@ -417,7 +425,7 @@ createScene = function (engine) {
                     textPlayerX.text = 'x: ' + Math.floor(player.box.position.x)
                     textPlayerY.text = 'y: ' + Math.floor(player.box.position.y)
                     textPlayerZ.text = 'z: ' + Math.floor(player.box.position.z)
-                    previousPlayerPosX = player.box.position.x
+                    
 
                     var vec = new BABYLON.Vector3(player.box.position.x, player.box.position.y - 3, player.box.position.z)
                     ray = new BABYLON.Ray(vec, new BABYLON.Vector3(0, -1, 0), 20 * scene.mapEngine.cubeWidth)
@@ -443,12 +451,12 @@ createScene = function (engine) {
             })
     )
 
-    function resetMovementPlayer () {
-        player.box.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, -10, 0))
-        player.box.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, 0))
+    function resetMovementPlayer() {
+        player.box.physicsImpostor.setAngularVelocity(quaternion0)
+        player.box.physicsImpostor.setLinearVelocity(linear0)
     }
 
-    function loading () {
+    function loading() {
         if (isloaded == false) {
             let timeWaiting = 2000
             if (new Date().getTime() - initCompt > timeWaiting * 0.25) {
@@ -544,7 +552,7 @@ createScene = function (engine) {
     })
 
     //Ensemble des actions a execute une fois le niveau charge
-    function onLoad () {
+    function onLoad() {
 
         var scoreCookie = getCookie('highscore' + scene.arena.levelId)
 
@@ -585,21 +593,26 @@ createScene = function (engine) {
 
 }
 
-function markFinishedLevel (levelId, scene) {
+function markFinishedLevel(levelId, scene) {
     setCookie('finished' + levelId, 1, 100 * 365)
     updateFinishedLevels(scene)
 }
 
-function updateFinishedLevels (scene) {
+function updateFinishedLevels(scene) {
     for (let i = 0; i < scene.materials.length; i++) {
         if (getCookie('finished' + i) == 1) {
-            scene.materials[i].diffuseTexture = new BABYLON.Texture('assets/images/menu/blue.jpg', scene)
+            if (scene.listMesh != null) {
+                let gl = new BABYLON.GlowLayer("glow", scene);
+                gl.addIncludedOnlyMesh(scene.listMesh[i]);
+                gl.intensity = 0.45
+            }
+
         }
     }
 
 }
 
-function getCookie (cname) {
+function getCookie(cname) {
     var name = cname + '='
     var decodedCookie = decodeURIComponent(document.cookie)
     var ca = decodedCookie.split(';')
@@ -615,7 +628,7 @@ function getCookie (cname) {
     return ''
 }
 
-function setCookie (cname, cvalue, exdays) {
+function setCookie(cname, cvalue, exdays) {
     var d = new Date()
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000))
     var expires = 'expires=' + d.toUTCString()

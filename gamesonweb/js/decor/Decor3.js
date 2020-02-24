@@ -1,7 +1,7 @@
-Decor3=function(scene){
+Decor3 = function (scene) {
 
     var skybox = BABYLON.MeshBuilder.CreateBox('skyBox', { size: 6000.0 }, scene)
-    skybox.position = new BABYLON.Vector3(2000, 15 * 13, 0)
+    skybox.infiniteDistance = true;
     var skyboxMaterial = new BABYLON.StandardMaterial('skyBox', scene)
     skyboxMaterial.backFaceCulling = false
     skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture('assets/sky/skybox', scene)
@@ -11,13 +11,42 @@ Decor3=function(scene){
     skybox.material = skyboxMaterial
 
 
-    var ground = BABYLON.MeshBuilder.CreatePlane("plane", {height:400, width: 5500}, scene);
+    var ground = BABYLON.MeshBuilder.CreatePlane("plane", { height: 400, width: 5500 }, scene);
     ground.rotate(BABYLON.Axis.X, Math.PI / 2, BABYLON.Space.WORLD);
-    ground.position=new BABYLON.Vector3(2500,-110,0);
+    ground.position = new BABYLON.Vector3(2500, -110, 0);
     //Material pour le sol
     var groundMaterial = new BABYLON.StandardMaterial("NormalBoxTexture", scene);
     groundMaterial.diffuseTexture = new BABYLON.Texture("assets/images/decor3/water.jpg", scene);
     groundMaterial.diffuseTexture.uScale = 1000.0;
     groundMaterial.diffuseTexture.vScale = 100.0;
     ground.material = groundMaterial;
+    
+    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 10, 0), scene);
+
+    loaderDecor = BABYLON.SceneLoader.Append('assets/model/', 'out.glb', scene, function (scene) {
+        // do something with the scene
+    });
+    loaderDecor.onMeshLoaded = function (mesh) {
+
+        for (var index = 0; index < 15; index++) {
+            var newInstance = mesh.createInstance("i" + index);
+            // Here you could change the properties of your individual instance,
+            // for example to form a diagonal line of instances:
+            newInstance.scaling = new BABYLON.Vector3(20, 20, 20)
+            newInstance.position.x = index*300;
+            newInstance.position.y = -100;
+            newInstance.position.z = 90;
+            // See below for more details on what can be changed.
+        }
+        for (var index = 0; index < 15; index++) {
+            var newInstance = mesh.createInstance("i2-" + index);
+            // Here you could change the properties of your individual instance,
+            // for example to form a diagonal line of instances:
+            newInstance.scaling = new BABYLON.Vector3(20, 20, 20)
+            newInstance.position.x = index*300;
+            newInstance.position.y = -100;
+            newInstance.position.z = -110;
+            // See below for more details on what can be changed.
+        }
+    }
 }
