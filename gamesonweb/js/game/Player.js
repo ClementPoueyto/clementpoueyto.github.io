@@ -4,7 +4,7 @@
  */
 class Player {
 
-    constructor(game){
+    constructor(game,skin){
         // La scène du jeu
         this.scene = game.scene;
         this.size= 5;  
@@ -13,8 +13,8 @@ class Player {
         // On crée le joueur
         this.box = BABYLON.Mesh.CreateSphere("redbox",16,4, this.scene);
         
-        this.box.position = new BABYLON.Vector3(0,((this.size/2)*this.box.scaling.y+10),-5);
 
+        this.box.position = new BABYLON.Vector3(0,((this.size/2)*this.box.scaling.y+10),-5);
 
         //activation de la physique du joueur
         this.box.checkCollisions=true;

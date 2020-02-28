@@ -25,22 +25,31 @@ Arena2 = function (game) {
      materialNormalBox.diffuseTexture.vScale = 1.0;
      scene.materialNormalBox = materialNormalBox;
 
-    //MESH DE FIN - Ramene au menu
-    this.end = BABYLON.MeshBuilder.CreateBox("box1", { size: 60 }, scene);
-    var endMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
-    endMaterial.alpha = 0
-    this.end.material = endMaterial
-    this.end.position = new BABYLON.Vector3(5100, -60, 0);
-    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 50, 0), scene);
-    light.intensity = 1.3
-    //MESH DE FIN - Ramene au menu
-    loader = BABYLON.SceneLoader.Append('assets/model/', 'scene1end.glb', scene, function (scene) {
-        // do something with the scene
-    })
-    loader.onMeshLoaded = function (mesh) {
-        mesh.position = new BABYLON.Vector3(5100, -100, 0)
-        mesh.scaling = new BABYLON.Vector3(50, 50, 50)
-    }
+
+      //MESH DE FIN - Ramene au menu
+      this.end = BABYLON.MeshBuilder.CreateBox("box1", { size: 350 }, scene);
+      var endMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+      endMaterial.alpha = 0
+      this.end.material = endMaterial
+      this.end.position = new BABYLON.Vector3(4400, -200, 10);
+      var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 50, 0), scene);
+      light.intensity = 1.3
+      //MESH DE FIN - Ramene au menu
+ 
+      loader = BABYLON.SceneLoader.Append('assets/model/', 'scene1end.glb', scene, function (scene) {
+         // do something with the scene
+     })
+     loader.onMeshLoaded = function (mesh) {
+         mesh.position = new BABYLON.Vector3(4400, -450, 10)
+         mesh.scaling = new BABYLON.Vector3(250, 250, 250)
+     }
+
+    //Material pour normal box
+    var materialPlayer = new BABYLON.StandardMaterial("NormalBoxTexture", scene);
+    materialPlayer.diffuseTexture = new BABYLON.Texture("assets/images/player/player1.jpg", scene);
+    materialPlayer.diffuseTexture.uScale = 1.0;
+    materialPlayer.diffuseTexture.vScale = 1.0;
+    scene.player.box.material = materialPlayer;
 
     /**DECOR*********************************************************************** */
     if(scene.decorOn==true){
@@ -54,7 +63,7 @@ Arena2 = function (game) {
 
     params = {"trigger":-1,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":3}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":700,"normalCubesProbability":1000,"pattern":[0],"minWidth":1,"change":100}
+    params = {"trigger":500,"normalCubesProbability":1000,"pattern":[0],"minWidth":1,"change":100}
     scene.mapEngine.addParamsConfiguration(params)
     params = {"trigger":4000,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":2,"change":0,"maxWidth":1}
     scene.mapEngine.addParamsConfiguration(params)

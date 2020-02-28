@@ -13,12 +13,12 @@ Decor2=function(scene){
     for(let i=0; i<20;i++){
         let z =getRandomInt(30);
         var tree = QuickTreeGenerator(15, 10, 5, materialWood, materialLeaf, scene);
-        tree.position= new BABYLON.Vector3(i*200,-100,-100-z);
+        tree.position= new BABYLON.Vector3(i*200+200,-100,-100-z);
         tree.scaling = new BABYLON.Vector3(4, 4, 4)
         tree.freezeWorldMatrix();
 
         var tree2 = QuickTreeGenerator(15, 10, 5, materialWood, materialLeaf, scene);
-        tree2.position= new BABYLON.Vector3(i*200,-100,-60+z);
+        tree2.position= new BABYLON.Vector3(i*200+200,-100,-60+z);
         tree2.scaling = new BABYLON.Vector3(4, 4, 4)
         tree2.freezeWorldMatrix();
 
@@ -26,12 +26,12 @@ Decor2=function(scene){
     for(let i=0; i<20;i++){
         let z =getRandomInt(30);
         var tree = QuickTreeGenerator(15, 10, 5, materialWood, materialLeaf, scene);
-        tree.position= new BABYLON.Vector3(i*200,-100,100+z);
+        tree.position= new BABYLON.Vector3(i*200+200,-100,100+z);
         tree.scaling = new BABYLON.Vector3(4, 4, 4)
         tree.freezeWorldMatrix();
 
         var tree2 = QuickTreeGenerator(15, 10, 5, materialWood, materialLeaf, scene);
-        tree2.position= new BABYLON.Vector3(i*200,-100,60+z);
+        tree2.position= new BABYLON.Vector3(i*200+200,-100,60+z);
         tree2.scaling = new BABYLON.Vector3(4, 4, 4)
         tree2.freezeWorldMatrix();
 

@@ -25,14 +25,39 @@ Arena8 = function (game) {
     var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 50, 0), scene);
      light.intensity = 1.3
 
-    //MESH DE FIN - Ramene au menu
-    this.end = BABYLON.MeshBuilder.CreateBox("box1", { size: 50 }, scene);
-    this.end.position = new BABYLON.Vector3(5010, 0, 0);
+     var materialNormalBox = new BABYLON.StandardMaterial("NormalBoxTexture", scene);
+     materialNormalBox.diffuseTexture = new BABYLON.Texture("assets/images/decor3/wood.jpg", scene);
+     materialNormalBox.diffuseTexture.uScale = 1.0;
+     materialNormalBox.diffuseTexture.vScale = 1.0;
+     scene.materialNormalBox = materialNormalBox;
+ 
+     var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 50, 0), scene);
+     light.intensity = 1.3
+ 
+     //MESH DE FIN - Ramene au menu
+     this.end = BABYLON.MeshBuilder.CreateBox("box1", { size: 100 }, scene);
+     var endMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+     endMaterial.alpha = 0
+     this.end.material = endMaterial
+     this.end.position = new BABYLON.Vector3(4300, -100, 0);
+     loader = BABYLON.SceneLoader.Append('assets/model/', 'barrel.glb', scene, function (scene) {
+         // do something with the scene
+     })
+     loader.onMeshLoaded = function (mesh) {
+         mesh.position = new BABYLON.Vector3(4300, -100, 0)
+         mesh.scaling = new BABYLON.Vector3(8, 8, 8)
+ 
+     }
 
     scene.mapEngine = new MapEngine(scene, "clementArenatest7")
     //clementArena4
     //loic
-
+    //Material pour normal box
+    var materialPlayer = new BABYLON.StandardMaterial("NormalBoxTexture", scene);
+    materialPlayer.diffuseTexture = new BABYLON.Texture("assets/images/player/player3.jpg", scene);
+    materialPlayer.diffuseTexture.uScale = 1.0;
+    materialPlayer.diffuseTexture.vScale = 1.0;
+    scene.player.box.material = materialPlayer;
     
  /** DECOR************************************************* */
     if(scene.decorOn==true){
@@ -47,7 +72,7 @@ Arena8 = function (game) {
     scene.mapEngine.addParamsConfiguration(params)
     params = {"trigger":3000,"upCubesProbability":0,"downCubesProbability":0,"normalCubesProbability":850,"jumpCubesProbability":950,"dangerCubesProbability":1000,"pattern":[-2,-1,0,1,2],"minWidth":2,"maxWidth":2,"change":0}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":5000,"normalCubesProbability":0,"upCubesProbability":0,"upCubeSpeed":0,"jumpCubesProbability":0,"downCubesProbability":0,"dangerCubesProbability":0,"upCubeTriggerX":0,"pattern":[0],"minWidth":1,"maxWidth":0,"change":100}
+    params = {"trigger":5000,"normalCubesProbability":0,"upCubesProbability":0,"jumpCubesProbability":0,"downCubesProbability":0,"dangerCubesProbability":0,"pattern":[0],"minWidth":1,"maxWidth":0,"change":100}
     scene.mapEngine.addParamsConfiguration(params)
 
 

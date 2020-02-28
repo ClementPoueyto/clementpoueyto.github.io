@@ -1,8 +1,0 @@
-- un poisson qui doit aller dans l'eau
-- un pompier qui éteint un feu
-- un dechet qui va dans la poubelle
-- un avion qui se pose
-- ballon foot qui va dans les cages
-- une note de musique qui va dans une oreille
-- un livre qui va dans une bibliotheque
-- un oiseau qui va dans un nid

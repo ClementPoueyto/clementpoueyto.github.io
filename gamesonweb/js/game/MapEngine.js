@@ -1,5 +1,9 @@
 const patternLengh = 20
 
+/**
+ * @author Antoine Blaud
+ */
+
 class MapEngine {
 
 
@@ -18,8 +22,8 @@ class MapEngine {
         //--------Editable-------//
         // Performances
         this.destroyMeshes = 20
-        this.createMeshes = 100
-        this.defaultPattern = [-1,0,1]
+        this.createMeshes = 120
+        this.defaultPattern = [-1, 0, 1]
         this.cubeWidth = 13
         this.init()
         //--------Editable before starting play loop-------//
@@ -43,7 +47,7 @@ class MapEngine {
 
     init() {
         this.currentPattern = new Map()
-    
+
         this.currentParam = -1
         this.rand = random_seed(this.seed)
         // Arrays of meshes
@@ -60,6 +64,8 @@ class MapEngine {
         this.currentGameY = 0
         this.currentGameZ = 0
 
+        this.playerGameY = 0
+
         // Arena width and change params
         this.minWidth = 0
         this.maxWidth = 0
@@ -67,8 +73,8 @@ class MapEngine {
         this.change = 0
         // power and speed params here
         this.jumpCubesPower = 150
-        this.superJumpCubesPower = 5000
-        this.boostPower = 100
+        this.superJumpCubesPower = 500
+        this.boostPower = 75
         this.downCubeSpeed = -0.4
         this.maxUpCubeSpeed = 3
 
@@ -88,6 +94,8 @@ class MapEngine {
         this.angle = 0
         // danger cubes are between current arena height and maxHeight
         this.dangerMaxHeight = 5
+        // variable help to create cube rorox
+        this.nextChange = 5000
 
 
         // Array of probability (between 0 and 1000)
@@ -190,6 +198,11 @@ class MapEngine {
             if (this.params[i]["trigger"] < this.currentGameX * this.cubeWidth && this.currentParam < i) {
                 this.setParamsConfiguration(this.params[i])
                 this.currentParam = i
+                if (i < this.params.length - 1) {
+                    this.nextChange = this.params[i + 1]["trigger"]
+                } else {
+                    this.nextChange = 1000000
+                }
                 break
             }
         }
@@ -236,7 +249,7 @@ class MapEngine {
         }
         let pos = this.pattern.slice();
         shuffle(pos, this.rand());
-        for (let i = 0; i < Math.floor(this.rand() * this.maxWidth) + this.minWidth; i++) {
+        for (let i = 0; i < this.minWidth + Math.floor(Math.random()*this.maxWidth); i++) {
             let position = new BABYLON.Vector3(this.currentGameX * this.cubeWidth, this.currentGameY, pos.pop() * this.cubeWidth)
             this.createRandomItem(position);
         }
@@ -246,11 +259,13 @@ class MapEngine {
      * Create row cubes until the vision field
      */
     createNextMeshes() {
-        this.updateParams()
-        while (this.game.player.box.position.x > this.currentGameX * this.cubeWidth - this.createMeshes * this.cubeWidth) {
-            this.createCubesRows();
-            this.currentGameX += 1
-        }
+
+            if(this.game.player.box.position.x > this.currentGameX * this.cubeWidth - this.createMeshes * this.cubeWidth) {
+                this.createCubesRows();
+                this.currentGameX += 1
+            }
+        
+
 
     }
     /**
@@ -438,7 +453,7 @@ class MapEngine {
         mainBox.actionManager = new BABYLON.ActionManager(this.game);
         mainBox.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
             { trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: scene.player.box },
-            function (mainBox) { scene.player.hasJump = false; }
+            function (mainBox) { scene.player.hasJump = false;scene.mapEngine.playerGameY = mainBox.source.position.y }
         ));
         this.normalCubes.push(mainBox);
 
@@ -452,9 +467,9 @@ class MapEngine {
     createUpBox(position) {
         var mainBox = this.createBox(position)
         mainBox.material = this.upCubesMat
-        return mainBox   
+        return mainBox
     }
-    
+
     /**
      * Cube qui monte lorsque on l'aproche
      * @param {} position 
@@ -483,23 +498,23 @@ class MapEngine {
         mainBox.material = this.downCubesMat
         return mainBox
     }
-     /**
-    * Cube qui descend lorsque l'on est dessus
-    * @param {} position 
-    */
-   createDownBoxInst(position) {
-    var scene = this.game
-    var mainBox = this.downCubesInst.createInstance()
-    mainBox.position = position
-    mainBox.checkCollisions = true;
-    mainBox.physicsImpostor = new BABYLON.PhysicsImpostor(mainBox, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0 }, this.game);
-    mainBox.actionManager = new BABYLON.ActionManager(this.game);
-    mainBox.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
-        { trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: scene.player.box },
-        function (mainBox) { scene.player.hasJump = false; }
-    ));
-    this.downCubes.push(mainBox);
-}
+    /**
+   * Cube qui descend lorsque l'on est dessus
+   * @param {} position 
+   */
+    createDownBoxInst(position) {
+        var scene = this.game
+        var mainBox = this.downCubesInst.createInstance()
+        mainBox.position = position
+        mainBox.checkCollisions = true;
+        mainBox.physicsImpostor = new BABYLON.PhysicsImpostor(mainBox, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0 }, this.game);
+        mainBox.actionManager = new BABYLON.ActionManager(this.game);
+        mainBox.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+            { trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: scene.player.box },
+            function (mainBox) { scene.player.hasJump = false; }
+        ));
+        this.downCubes.push(mainBox);
+    }
     /**
     * Cube saut
     * @param {} position 
@@ -577,7 +592,7 @@ class MapEngine {
             }
         ));
 
-        var particleSystem = new BABYLON.ParticleSystem("particles", 10000, scene);
+        var particleSystem = new BABYLON.ParticleSystem("particles", 5000, scene);
         particleSystem.particleTexture = new BABYLON.Texture("assets/images/flare.png", scene);
         var radius = 0.5;
         var angle = Math.PI / 4;
@@ -590,16 +605,16 @@ class MapEngine {
         particleSystem.colorDead = new BABYLON.Color4(0.2, 0.8, 0.2, 1);
         particleSystem.gravity = new BABYLON.Vector3(-20, 15, 0);
         // Size of each particle (random between...
-        particleSystem.minSize = 1.1;
-        particleSystem.maxSize = 3.5;
+        particleSystem.minSize = 0.1;
+        particleSystem.maxSize = 0.8;
         // Life time of each particle (random between...
         particleSystem.minLifeTime = 0.1;
-        particleSystem.maxLifeTime = 0.5;
+        particleSystem.maxLifeTime = 0.12;
         // Emission rate
-        particleSystem.emitRate = 50;
+        particleSystem.emitRate = 2000;
         // Speed
-        particleSystem.minEmitPower = 0;
-        particleSystem.maxEmitPower = 0.5;
+        particleSystem.minEmitPower = 0.3;
+        particleSystem.maxEmitPower = 4;
         particleSystem.updateSpeed = 0.008;
         particleSystem.start();
         this.boostCubes.push(mainBox);

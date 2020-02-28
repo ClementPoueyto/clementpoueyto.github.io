@@ -24,17 +24,17 @@ Arena4 = function (game) {
     scene.materialNormalBox = materialNormalBox;
 
     //MESH DE FIN - Ramene au menu
-    this.end = BABYLON.MeshBuilder.CreateBox("box1", { size: 80 }, scene);
+    this.end = BABYLON.MeshBuilder.CreateBox("box1", { size: 100 }, scene);
     var endMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
     endMaterial.alpha = 0
-    this.end.position = new BABYLON.Vector3(5140, -40, 0);
+    this.end.position = new BABYLON.Vector3(4400, -40, 0);
     this.end.material = endMaterial
     //MESH DE FIN - Ramene au menu
     loader = BABYLON.SceneLoader.Append('assets/model/', 'scene2end.glb', scene, function (scene) {
         // do something with the scene
     })
     loader.onMeshLoaded = function (mesh) {
-        mesh.position = new BABYLON.Vector3(5140, -80, 0)
+        mesh.position = new BABYLON.Vector3(4400, -80, 0)
         mesh.scaling = new BABYLON.Vector3(40, 40, 40)
 
     }
@@ -45,6 +45,13 @@ Arena4 = function (game) {
     //clementArena4
     //loic
 
+     //Material pour normal box
+     var materialPlayer = new BABYLON.StandardMaterial("NormalBoxTexture", scene);
+     materialPlayer.diffuseTexture = new BABYLON.Texture("assets/images/player/player2.jpg", scene);
+     materialPlayer.diffuseTexture.uScale = 1.0;
+     materialPlayer.diffuseTexture.vScale = 1.0;
+     scene.player.box.material = materialPlayer;
+
     /** DECOR************************************************* */
     if(scene.decorOn==true){
         var decor2= new Decor2(scene);}
@@ -52,15 +59,15 @@ Arena4 = function (game) {
 
     params = {"trigger":-1,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":3}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":400,"normalCubesProbability":850,"upCubesProbability":1000,"upCubeSpeed":0.2,"upCubeTriggerX":10,"pattern":[0,1],"minWidth":2,"maxWidth":0}
+    params = {"trigger":400,"normalCubesProbability":850,"upCubesProbability":1000,"upCubeSpeed":0.2,"upCubeTriggerX":5,"pattern":[0,1],"minWidth":2,"maxWidth":0}
     scene.mapEngine.addParamsConfiguration(params)
     params = {"trigger":2000,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":2,"change":0,"maxWidth":0}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":3000,"normalCubesProbability":600,"upCubesProbability":1000,"upCubeSpeed":0.2,"upCubeTriggerX":10,"pattern":[-2,0,1,2],"minWidth":2,"maxWidth":2,"change":0}
+    params = {"trigger":3000,"normalCubesProbability":600,"upCubesProbability":1000,"pattern":[-2,0,1,2],"minWidth":2,"maxWidth":2,"change":0}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":4500,"normalCubesProbability":850,"pattern":[-2,0,2],"minWidth":1,"maxWidth":2,"change":200,"upCubeSpeed":0.1,"upCubeTriggerX":5}
+    params = {"trigger":4500,"normalCubesProbability":850,"pattern":[-2,0,2],"minWidth":2,"maxWidth":2,"change":200}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":5000,"normalCubesProbability":0,"upCubesProbability":0,"upCubeSpeed":0,"upCubeTriggerX":0,"pattern":[0],"minWidth":1,"maxWidth":0,"change":0}
+    params = {"trigger":5000,"normalCubesProbability":0,"upCubesProbability":0,"pattern":[0],"minWidth":1,"maxWidth":0,"change":0}
     scene.mapEngine.addParamsConfiguration(params)
 
 

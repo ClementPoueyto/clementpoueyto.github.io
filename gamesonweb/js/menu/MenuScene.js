@@ -17,10 +17,9 @@ createMenuScene = function (engine, canvas) {
     scene.level = -1;
     scene.pointedLevel = -1;
 
-    var nbLevel = 9;
+    var nbLevel = 13;
 
     scene.decor = true;
-
     scene.materials = new MenuMaterials(scene);
     scene.listMesh = []
     for (let i = 0; i < nbLevel; i++) {
@@ -65,13 +64,15 @@ createMenuScene = function (engine, canvas) {
 
 
     //affiche un niveau
-    function addMesh(id) {
+    function addMesh(id, special) {
         var box = BABYLON.Mesh.CreateBox(id, 1, scene);
-        box.position = new BABYLON.Vector3(
-            id * 1.5,
-            -2,
-            id * 1.5,
-        );
+        if (!special) {
+            box.position = new BABYLON.Vector3(
+                id * 1.5,
+                -2,
+                id * 0.9,
+            );
+        }
 
 
         //ensemble d'observable
@@ -121,7 +122,7 @@ createMenuScene = function (engine, canvas) {
     imageTitle.width = "1000px";
     imageTitle.height = "200px";
     imageTitle.top = -270;
-   
+
     advancedTexture.addControl(imageTitle);
 
     //Theme du jeu
@@ -129,7 +130,7 @@ createMenuScene = function (engine, canvas) {
     imageTitle2.width = "600px";
     imageTitle2.height = "100px";
     imageTitle2.top = -100;
-   
+
     advancedTexture.addControl(imageTitle2);
 
 
@@ -164,11 +165,11 @@ createMenuScene = function (engine, canvas) {
 
 
     var setting = new BABYLON.GUI.Button.CreateSimpleButton('Decor', 'Mode Performance')
-    setting.width = "0.2" 
+    setting.width = "0.1"
     setting.height = "0.1"
     setting.color = 'black'
     setting.background = 'white'
-    setting.fontSize = "35";
+    setting.fontSize = "25";
 
     setting.left = '50px'
     setting.top = '30px'
@@ -186,60 +187,69 @@ createMenuScene = function (engine, canvas) {
     })
     advancedTexture.addControl(setting)
 
-//
+    //
 
-var textDecor=[
-    "Aidez le déchet à atteindre la poubelle !",
-    "Aidez l'oeuf à regagner son nid !",
-    "Aidez le boulet de canon à percuter le navire",
-]
+    var textDecor = [
+        "Aidez le déchet à atteindre la poubelle !",
+        "Aidez l'oeuf à regagner son nid !",
+        "Aidez le boulet de canon à percuter le navire",
+        "Rentrez le ballon de foot dans le but",
+        "Niveau infini, réalisez le meilleur score !",
 
-var textDifficulty=[
-    "Facile",
-    "Moyen",
-    "Dificile",
-    "Expert"
-]
+    ]
 
-var dataBaseLevel=[
-    textDecor[0]+"\nDifficulté : "+textDifficulty[0],  
-    textDecor[0]+"\nDifficulté : "+textDifficulty[0],
-    textDecor[0]+"\nDifficulté : "+textDifficulty[0],
-    textDecor[1]+"\nDifficulté : "+textDifficulty[1],
-    textDecor[1]+"\nDifficulté : "+textDifficulty[1],
-    textDecor[1]+"\nDifficulté : "+textDifficulty[2],
-    textDecor[2]+"\nDifficulté : "+textDifficulty[0],
-    textDecor[2]+"\nDifficulté : "+textDifficulty[1],
-    textDecor[2]+"\nDifficulté : "+textDifficulty[2]
+    var textDifficulty = [
+        "Facile",
+        "Moyen",
+        "Dificile",
+        "Expert"
+    ]
+
+    var dataBaseLevel = [
+        textDecor[4] + "\nDifficulté : " + textDifficulty[3],
+        textDecor[0] + "\nDifficulté : " + textDifficulty[0],
+        textDecor[0] + "\nDifficulté : " + textDifficulty[0],
+        textDecor[0] + "\nDifficulté : " + textDifficulty[0],
+        textDecor[1] + "\nDifficulté : " + textDifficulty[1],
+        textDecor[1] + "\nDifficulté : " + textDifficulty[1],
+        textDecor[1] + "\nDifficulté : " + textDifficulty[2],
+        textDecor[2] + "\nDifficulté : " + textDifficulty[0],
+        textDecor[2] + "\nDifficulté : " + textDifficulty[1],
+        textDecor[2] + "\nDifficulté : " + textDifficulty[2],
+        textDecor[3] + "\nDifficulté : " + textDifficulty[1],
+        textDecor[3] + "\nDifficulté : " + textDifficulty[2],
+        textDecor[3] + "\nDifficulté : " + textDifficulty[3]
 
 
 
-]
-var dataBaseColor=[
-    "green","green","green","red","red","red","blue","blue","blue","yellow"
-]
 
-var rectangle = new BABYLON.GUI.Rectangle("rect");
-    rectangle.background = "green";
+
+    ]
+    var dataBaseColor = [
+        "grey", "green", "green", "green", "red", "red", "red", "blue", "blue", "blue", "orange", "orange", "orange"
+    ]
+
+    var rectangle = new BABYLON.GUI.Rectangle("rect");
+    rectangle.background = "grey";
     rectangle.color = "black";
     rectangle.width = "30%";
     rectangle.height = "15%";
-    rectangle.top="40%"
-advancedTexture.addControl(rectangle);
-var text1 = new BABYLON.GUI.TextBlock("text1");
-    
+    rectangle.top = "40%"
+    advancedTexture.addControl(rectangle);
+    var text1 = new BABYLON.GUI.TextBlock("text1");
+
     text1.fontFamily = "Helvetica";
     text1.textWrapping = true;
-    
-    text1.text = textDecor[0]+"\nDifficulté : "+textDifficulty[0]
+
+    text1.text = dataBaseLevel[0]
     text1.color = "white";
     text1.fontSize = "20%";
     rectangle.addControl(text1);
 
 
-    function updateText(){
-        text1.text=dataBaseLevel[scene.level]
-        rectangle.background=dataBaseColor[scene.level]
+    function updateText() {
+        text1.text = dataBaseLevel[scene.level]
+        rectangle.background = dataBaseColor[scene.level]
     }
 
     //-------------------------KEY CONTROLL -------------------------------//

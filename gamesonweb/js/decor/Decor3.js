@@ -20,31 +20,34 @@ Decor3 = function (scene) {
     groundMaterial.diffuseTexture.uScale = 1000.0;
     groundMaterial.diffuseTexture.vScale = 100.0;
     ground.material = groundMaterial;
+    groundMaterial.freeze()
     
     var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 10, 0), scene);
 
-    loaderDecor = BABYLON.SceneLoader.Append('assets/model/', 'out.glb', scene, function (scene) {
+    loaderDecor = BABYLON.SceneLoader.Append('assets/model/', 'boat.glb', scene, function (scene) {
         // do something with the scene
     });
     loaderDecor.onMeshLoaded = function (mesh) {
 
-        for (var index = 0; index < 15; index++) {
+        mesh.position.y=-90
+
+        for (var index = 0; index < 20; index++) {
             var newInstance = mesh.createInstance("i" + index);
             // Here you could change the properties of your individual instance,
             // for example to form a diagonal line of instances:
             newInstance.scaling = new BABYLON.Vector3(20, 20, 20)
             newInstance.position.x = index*300;
-            newInstance.position.y = -100;
+            newInstance.position.y = -90;
             newInstance.position.z = 90;
             // See below for more details on what can be changed.
         }
-        for (var index = 0; index < 15; index++) {
+        for (var index = 0; index < 20; index++) {
             var newInstance = mesh.createInstance("i2-" + index);
             // Here you could change the properties of your individual instance,
             // for example to form a diagonal line of instances:
             newInstance.scaling = new BABYLON.Vector3(20, 20, 20)
             newInstance.position.x = index*300;
-            newInstance.position.y = -100;
+            newInstance.position.y = -90;
             newInstance.position.z = -110;
             // See below for more details on what can be changed.
         }
