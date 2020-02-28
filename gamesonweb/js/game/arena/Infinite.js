@@ -46,7 +46,12 @@ var Infinite = function (game) {
     this.end = BABYLON.MeshBuilder.CreateBox("box1", { size: 0 }, scene);
 
 
-
+    //Material pour normal box
+    var materialPlayer = new BABYLON.StandardMaterial("NormalBoxTexture", scene);
+    materialPlayer.diffuseTexture = new BABYLON.Texture("assets/images/player/player0.jpg", scene);
+    materialPlayer.diffuseTexture.uScale = 1.0;
+    materialPlayer.diffuseTexture.vScale = 1.0;
+    scene.player.box.material = materialPlayer;
 
     var pattern_params = [
         { "normalCubesProbability": 800, "pattern": [-1, 0, 1], "minWidth": 3, "maxWidth": 0,"angle":0 },
