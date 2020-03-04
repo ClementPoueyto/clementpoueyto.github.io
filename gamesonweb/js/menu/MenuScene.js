@@ -12,10 +12,8 @@ createMenuScene = function (engine, canvas) {
     // This targets the camera to scene origin
     camera.setTarget(BABYLON.Vector3.Zero());
     scene.begin = false;
-    // This attaches the camera to the canvas
-    //camera.attachControl(canvas, true);
-    scene.level = -1;
-    scene.pointedLevel = -1;
+    scene.level = 13;
+    scene.pointedLevel = 1;
 
     var nbLevel = 13;
 
@@ -64,16 +62,22 @@ createMenuScene = function (engine, canvas) {
 
 
     //affiche un niveau
-    function addMesh(id, special) {
+    function addMesh(id) {
         var box = BABYLON.Mesh.CreateBox(id, 1, scene);
-        if (!special) {
+        if (id!=0) {
             box.position = new BABYLON.Vector3(
                 id * 1.5,
                 -2,
                 id * 0.9,
             );
         }
-
+        else{
+            box.position = new BABYLON.Vector3(
+                -2,
+                -2,
+                id * 0.9,
+            );
+        }
 
         //ensemble d'observable
         box.material = new BABYLON.StandardMaterial("mat", scene);
@@ -187,6 +191,29 @@ createMenuScene = function (engine, canvas) {
     })
     advancedTexture.addControl(setting)
 
+    var instructionsScene = createInstructionsScene(engine, canvas);
+
+    var instructions = new BABYLON.GUI.Button.CreateSimpleButton('Decor', 'Instructions');
+    instructions.width = "0.1";
+    instructions.height = "0.1";
+    instructions.color = 'black';
+    instructions.background = 'white';
+    instructions.fontSize = "25";
+
+    instructions.left = '50px'
+    instructions.top = '-30px'
+    instructions.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT
+    instructions.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM
+    instructions.onPointerClickObservable.add(function () {
+        scene.dispose();
+        instructionsScene.render();
+
+    })
+    advancedTexture.addControl(instructions)
+
+
+
+
     //
 
     var textDecor = [
@@ -195,7 +222,6 @@ createMenuScene = function (engine, canvas) {
         "Aidez le boulet de canon à percuter le navire",
         "Rentrez le ballon de foot dans le but",
         "Niveau infini, réalisez le meilleur score !",
-
     ]
 
     var textDifficulty = [
@@ -207,23 +233,19 @@ createMenuScene = function (engine, canvas) {
 
     var dataBaseLevel = [
         textDecor[4] + "\nDifficulté : " + textDifficulty[3],
-        textDecor[0] + "\nDifficulté : " + textDifficulty[0],
-        textDecor[0] + "\nDifficulté : " + textDifficulty[0],
-        textDecor[0] + "\nDifficulté : " + textDifficulty[0],
-        textDecor[1] + "\nDifficulté : " + textDifficulty[1],
-        textDecor[1] + "\nDifficulté : " + textDifficulty[1],
-        textDecor[1] + "\nDifficulté : " + textDifficulty[2],
-        textDecor[2] + "\nDifficulté : " + textDifficulty[0],
-        textDecor[2] + "\nDifficulté : " + textDifficulty[1],
-        textDecor[2] + "\nDifficulté : " + textDifficulty[2],
-        textDecor[3] + "\nDifficulté : " + textDifficulty[1],
-        textDecor[3] + "\nDifficulté : " + textDifficulty[2],
-        textDecor[3] + "\nDifficulté : " + textDifficulty[3]
-
-
-
-
-
+        "Niveau 1\n"+textDecor[0] + "\nDifficulté : " + textDifficulty[0],
+        "Niveau 2\n"+textDecor[0] + "\nDifficulté : " + textDifficulty[0],
+        "Niveau 3\n"+textDecor[0] + "\nDifficulté : " + textDifficulty[0],
+        "Niveau 4\n"+textDecor[1] + "\nDifficulté : " + textDifficulty[1],
+        "Niveau 5\n"+textDecor[1] + "\nDifficulté : " + textDifficulty[1],
+        "Niveau 6\n"+textDecor[1] + "\nDifficulté : " + textDifficulty[2],
+        "Niveau 7\n"+textDecor[2] + "\nDifficulté : " + textDifficulty[0],
+        "Niveau 8\n"+textDecor[2] + "\nDifficulté : " + textDifficulty[1],
+        "Niveau 9\n"+textDecor[2] + "\nDifficulté : " + textDifficulty[2],
+        "Niveau 10\n"+textDecor[3] + "\nDifficulté : " + textDifficulty[1],
+        "Niveau 11\n"+textDecor[3] + "\nDifficulté : " + textDifficulty[2],
+        "Niveau 12\n"+textDecor[3] + "\nDifficulté : " + textDifficulty[3],
+        "SELECTIONNER UN NIVEAU"
     ]
     var dataBaseColor = [
         "grey", "green", "green", "green", "red", "red", "red", "blue", "blue", "blue", "orange", "orange", "orange"
@@ -275,7 +297,6 @@ createMenuScene = function (engine, canvas) {
                 if (scene.pointedLevel > 0) {
                     scene.pointedLevel--;
                     camera.position = new BABYLON.Vector3(scene.listMesh[scene.pointedLevel].position.x, 5, scene.listMesh[scene.pointedLevel].position.z - 10);
-
                 }
                 break;
             case "d"://"D"
@@ -296,7 +317,6 @@ createMenuScene = function (engine, canvas) {
 
     // Quand les touches sont relachés
     window.addEventListener("keyup", keyController, false);
-
-
+    updateText();
     return scene;
 };

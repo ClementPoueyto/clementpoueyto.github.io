@@ -18,23 +18,23 @@ var Infinite = function (game) {
     }
     )
     this.music = music2;
-    scene.jumpPower = 300
+    scene.jumpPower = 200
 
 
     /****************************** Particle******************************** */
-    var particleSystem = new BABYLON.ParticleSystem("laser", 30000, scene);
+    var particleSystem = new BABYLON.ParticleSystem("laser", 10000, scene);
     particleSystem.particleTexture = new BABYLON.Texture("assets/images/flare.png", scene);
     particleSystem.emitter = player.box;
     particleSystem.emitRate = 3000;
     particleSystem.maxEmitBox = new BABYLON.Vector3(-1, 0, 0);
     particleSystem.minLifeTime = 0.1;
-    particleSystem.maxLifeTime = 3;
+    particleSystem.maxLifeTime = 1;
     particleSystem.minSize = 0.2;
     particleSystem.maxSize = 1.1
     particleSystem.minEmitBox = new BABYLON.Vector3(-1, -2, -2);
     particleSystem.maxEmitBox = new BABYLON.Vector3(1, 2, 2);;
     particleSystem.color1 = new BABYLON.Color4(0.7, 0.3, 0.0, 1);
-    particleSystem.color2 = new BABYLON.Color4(1, 0, 0.2, 0.0);
+    particleSystem.color2 = new BABYLON.Color4(199/255, 63/255, 252/255, 0.0);
     particleSystem.colorDead = new BABYLON.Color4(1, 0, 0.2, 0.0);
     particleSystem.minEmitPower = 0.1;
     particleSystem.maxEmitPower = 8;
@@ -44,6 +44,7 @@ var Infinite = function (game) {
 
     scene.mapEngine = new MapEngine(scene, "Infinite Level")
     this.end = BABYLON.MeshBuilder.CreateBox("box1", { size: 0 }, scene);
+    this.end.position = new BABYLON.Vector3(0,0,0);
 
 
     //Material pour normal box
@@ -72,8 +73,7 @@ var Infinite = function (game) {
 
     ]
 
-    var uniq_params = { "trigger": -1, "jumpCubesPower": 700, "superJumpCubesPower": 1500, "boostPower": 250, "maxUpCubeSpeed": 3, "downCubeSpeed": -0.5, "upCubeTriggerX": 20, "downCubeTriggerX": 3 }
-    var edit_params = { "boostCubesProbability": 10, "dangerCubesProbability": 30, "superJumpCubesProbability": 10, "jumpCubesProbability": 40, "heightDifferenceDownProbability": 5, "heightDifferenceUpProbability": 5, "downCubesProbability": 30, "upCubesProbability": 20, "angle": 0, "change": 50 }
+    var edit_params = { "boostCubesProbability": 10, "dangerCubesProbability": 30, "superJumpCubesProbability": 8, "jumpCubesProbability": 20, "heightDifferenceDownProbability": 100, "heightDifferenceUpProbability": 5, "downCubesProbability": 30, "upCubesProbability": 3, "angle": 0, "change": 50 }
     var edit_paramsA = [ "boostCubesProbability", "dangerCubesProbability", "superJumpCubesProbability", "jumpCubesProbability", "heightDifferenceDownProbability", "heightDifferenceUpProbability", "downCubesProbability", "upCubesProbability", "angle", "change"]
     var probabilityA = ["boostCubesProbability", "dangerCubesProbability", "superJumpCubesProbability", "jumpCubesProbability", "heightDifferenceDownProbability", "heightDifferenceUpProbability", "downCubesProbability", "upCubesProbability"]
 
@@ -85,7 +85,7 @@ var Infinite = function (game) {
       }
 
     function generate_params(scene) {
-        params = { "trigger": -1, "normalCubesProbability": 1000, "pattern": [-1, 0, 1], "minWidth": 3, "maxWidth": 0,"trigger": -1, "jumpCubesPower": 200, "superJumpCubesPower": 5000, "boostPower": 125, "maxUpCubeSpeed": 3, "downCubeSpeed": -0.5, "upCubeTriggerX": 20, "downCubeTriggerX": 3 }
+        params = { "trigger": -1, "normalCubesProbability": 1000, "pattern": [-1, 0, 1], "minWidth": 3, "maxWidth": 0,"trigger": -1, "jumpCubesPower": 180, "superJumpCubesPower": 240, "boostPower": 180, "maxUpCubeSpeed": 3, "downCubeSpeed": 0.5, "upCubeTriggerX": 30, "downCubeTriggerX": 20 }
         trigger = -1
         scene.mapEngine.addParamsConfiguration(params)
         for (index = 0; index < 50; index++) {
@@ -97,7 +97,7 @@ var Infinite = function (game) {
             n = Math.floor(Math.random() * 4) + 2
             for (i = 0; i < n; i++) {
                 para = take(edit_paramsA)
-                v = Math.floor(edit_params[para]*(2*Math.random()-1))+ edit_params[para]
+                v = Math.max(Math.floor(edit_params[para]*(3*Math.random()-1))+ edit_params[para],0)+1
                 if(probabilityA.includes(para) ){
                     v+=current
                     current = v
@@ -118,7 +118,7 @@ var Infinite = function (game) {
     var box = BABYLON.MeshBuilder.CreateBox("cube", { size: 1 }, scene);
     box.position = new BABYLON.Vector3(300, 20, 30)
     box.scaling = size
-    let instanceCount = 1200;
+    let instanceCount = 600;
     let colorData = new Float32Array(4 * instanceCount);
 
     for (var index = 0; index < instanceCount; index++) {
@@ -164,6 +164,8 @@ var Infinite = function (game) {
     var light = new BABYLON.DirectionalLight("DirectionalLight", new BABYLON.Vector3(0.2, -1, 0), scene);
 
 
+
+
     var count = 0
 
     function updateAround() {
@@ -187,32 +189,22 @@ var Infinite = function (game) {
             }
         }
     }
-    /*
-    function updateLightPoint() {
-        for (index = 0; index < Math.floor(lightPoint.length / 10); index++) {
-            take = Math.floor(Math.random() * lightPoint.length)
-            if (lightPoint[take].position.x < scene.player.box.position.x) {
-                var light = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(scene.player.box.position.x + Math.random() * 3000, scene.mapEngine.playerGameY, scene.mapEngine.playerGameZ), scene);
-                light.intensity = 0.2;
-                lightPoint[take] = light
-            }
-        }
-    }*/
 
 
     scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnEveryFrameTrigger },
         function () {
             updateMap(scene)
             count += 1
-            if (count % 60 == 0) {
+            if (count % 120 == 0) {
                 updateAround()
             }
-            if (count % 120 == 0) {
+            if (count % 240 == 0) {
                updateFar()
+            }if(count%500==0){
+                light.intensity = Math.min(Math.random()+0.05,0.4)
             }
-            if (count % 180 == 0) {
-             //updateLightPoint()
-            }
+        
+            
 
 
 

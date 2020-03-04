@@ -23,5 +23,51 @@ Decor4 = function (scene) {
     
     var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 10, 0), scene);
 
+    var rot=new BABYLON.Vector3(0, Math.PI/2, 0);
+    var rot2=new BABYLON.Vector3(0, -Math.PI/2, 0);
+
+    loaderDecor = BABYLON.SceneLoader.Append('assets/model/', 'football.glb', scene, function (scene) {
+        // do something with the scene
+    });
+    loaderDecor.onMeshLoaded = function (mesh) {
+        mesh.isVisible=false;
+        mesh.position.y=-140
+
+        for (var index = 0; index < 20; index++) {
+            var newInstance = mesh.createInstance("i" + index);
+            newInstance.scaling = new BABYLON.Vector3(20, 20, 20)
+            newInstance.position.x = (index*1370)-300;
+            newInstance.position.y = -100;
+            newInstance.position.z =150;
+            newInstance.rotation= rot;
+
+            var newInstance2 = mesh.createInstance("i" + index);
+            newInstance2.scaling = new BABYLON.Vector3(20, 20, 20)
+            newInstance2.position.x = (index*1370)-200;
+            newInstance2.position.y = -100;
+            newInstance2.position.z =150;
+            newInstance2.rotation= rot2;
+        }
+        for (var index = 0; index < 20; index++) {
+
+            var newInstance = mesh.createInstance("i2-" + index);
+            // Here you could change the properties of your individual instance,
+            // for example to form a diagonal line of instances:
+            newInstance.scaling = new BABYLON.Vector3(20, 20, 20)
+            newInstance.position.x = (index*1370)-300;
+            newInstance.position.y = -100;
+            newInstance.position.z = -150;
+            newInstance.rotation= rot;
+
+            var newInstance2 = mesh.createInstance("i" + index);
+            newInstance2.scaling = new BABYLON.Vector3(20, 20, 20)
+            newInstance2.position.x = (index*1370)-200;
+            newInstance2.position.y = -100;
+            newInstance2.position.z =-150;
+            newInstance2.rotation= rot2;
+
+            // See below for more details on what can be changed.
+        }
+    }
 
 }

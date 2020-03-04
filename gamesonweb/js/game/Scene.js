@@ -1,6 +1,6 @@
 /**
  * Definie la scene de jeu
- * 
+ *
  */
 createScene = function (engine) {
 
@@ -26,6 +26,7 @@ createScene = function (engine) {
     var brakePower = 70
     var brakeInterval = 800
     var jumpPower = 130
+    scene.jumpPower = jumpPower
     var sideDelay = 200
     var jumpVector = new BABYLON.Vector3(0, 1, 0)
     var brakeVector = new BABYLON.Vector3(-1, 0.01, 0)
@@ -48,6 +49,7 @@ createScene = function (engine) {
 
     /********************* Camera  *********************** */
     scene.camera = new BABYLON.FreeCamera('camera', player.box.position, scene);
+    scene.camera.rotation = new BABYLON.Vector3(Math.PI/8, Math.PI/2, 0);
     var cameraAdd = 0;
 
     var defaultEnvironment = scene.createDefaultEnvironment({ createSkybox: false })
@@ -133,7 +135,7 @@ createScene = function (engine) {
       );
     stopButton.width = "80px"
     stopButton.height = "80px"
-    
+
     stopButton.left = '50px'
     stopButton.top = '150px'
     stopButton.background="white"
@@ -380,29 +382,29 @@ createScene = function (engine) {
                 loading()
                 if (scene.keepPosition.x == 0 && scene.keepPosition.y == 0 && scene.keepPosition.z == 0) {
 
-                    player.box.physicsImpostor.setAngularVelocity(quaternion0) 
+                    player.box.physicsImpostor.setAngularVelocity(quaternion0)
                     player.box.position.x += scene.arena.speed*min(150,(new Date().getTime() -previousPlayerFrontMovement))*0.05;
                     previousPlayerFrontMovement = new Date().getTime()
                     if (player.hasJump) {
-                        //cameraAdd += 0.5
-                        //cameraAdd = Math.min(cameraAdd, 60)
+                        cameraAdd += 0.2;
+                        cameraAdd = Math.min(cameraAdd, 15);
                     } else {
-                        //cameraAdd -= 1
-                        //cameraAdd = Math.max(cameraAdd, 25)
+                        cameraAdd -= 0.3;
+                        cameraAdd = Math.max(cameraAdd, 0);
                     }
-                    if (scene.level!=0 && player.box.position.y + 20 * scene.mapEngine.cubeWidth < scene.mapEngine.playerGameY + 160)
+                    if (scene.level!==0 && player.box.position.y + 20 * scene.mapEngine.cubeWidth < scene.mapEngine.playerGameY + 160)
                         respawn()
-                    if (scene.level==0 && player.box.position.y + 80 * scene.mapEngine.cubeWidth < scene.mapEngine.playerGameY + 160)
+                    if (scene.level===0 && player.box.position.y + 80 * scene.mapEngine.cubeWidth < scene.mapEngine.playerGameY + 160)
                         respawn()
 
-                    scene.camera.position.x = player.box.position.x - cameraAdd ** 2 - 120;
-                    scene.camera.position.y = player.box.position.y + Math.round(50 + cameraAdd ** 2);
+                    scene.camera.position.x = player.box.position.x - 160 - cameraAdd;
+                    scene.camera.position.y += (player.box.position.y - scene.camera.position.y + cameraAdd + 65) * 0.1
                     scene.camera.position.z = player.box.position.z * 1.1
-                    scene.camera.setTarget(new BABYLON.Vector3(player.box.position.x, player.box.position.y, player.box.position.z));
-
                     
+
+
                     if (player.box.position.y >= 4) {
-                        actualScore = min(scene.arena.end.position.x, Math.floor(player.box.position.x))
+                        actualScore = scene.arena.end.position.x === 0 ? Math.floor(player.box.position.x) : min(scene.arena.end.position.x, Math.floor(player.box.position.x))
                         score.text = 'Score: ' + actualScore
                         if (actualScore > bestScore) {
                             bestScore = actualScore
@@ -413,25 +415,25 @@ createScene = function (engine) {
                         setCookie('highscore' + scene.arena.levelId, bestScore, 100 * 365)
                         highScore.text = 'Highscore: ' + bestScore
                     }
-                    textPlayerX.text = 'x: ' + Math.floor(player.box.position.x)
+                     textPlayerX.text = 'x: ' + Math.floor(player.box.position.x)
                     textPlayerY.text = 'y: ' + Math.floor(player.box.position.y)
                     textPlayerZ.text = 'z: ' + Math.floor(player.box.position.z)
-                    
-                    
+
+
                     var vec = new BABYLON.Vector3(player.box.position.x, player.box.position.y - 3, player.box.position.z)
                     ray = new BABYLON.Ray(vec, new BABYLON.Vector3(0, -1, 0), 20 * scene.mapEngine.cubeWidth)
                     hit = scene.pickWithRay(ray)
                     if (hit.pickedMesh) {
                         shadowY = hit.pickedMesh.position.y
                     }
-                    
-                   
+
+
                     if (player.box.position.y > shadowY + 12) {
                         pointer.position.x = player.box.position.x + (player.box.position.y - shadowY) * scene.arena.speed * 0.28
                         pointer.position.y = shadowY + 6
                         pointer.position.z = player.box.position.z
-                        pointer.scaling.x = min(2, 0.4 * (player.box.position.y - shadowY) / 13 + 0.4)
-                        pointer.scaling.z = min(2, 0.4 * (player.box.position.y - shadowY) / 13 + 0.4)
+                        pointer.scaling.x = min(2, 0.4 * (player.box.position.y - shadowY) /  scene.mapEngine.cubeWidth + 0.4)
+                        pointer.scaling.z = min(2, 0.4 * (player.box.position.y - shadowY) /  scene.mapEngine.cubeWidth + 0.4)
                     } else {
                         pointer.position.y += 500
                     }
@@ -462,7 +464,7 @@ createScene = function (engine) {
         let scale = 13
         if (player.movingSideTicks <= 0) {
             player.movingSide = 0
-            player.box.position.z = Math.round(player.box.position.z / 13) * 13
+            player.box.position.z = Math.round(player.box.position.z / scene.mapEngine.cubeWidth) *  scene.mapEngine.cubeWidth
         } else {
             player.box.position.z += player.movingSide * 2
             player.movingSideTicks -= 2
@@ -474,7 +476,7 @@ createScene = function (engine) {
                 player.movingSide = +1
                 player.movingSideTicks = scale
                 previousMove = new Date().getTime()
-                
+
             }
 
 
@@ -482,7 +484,7 @@ createScene = function (engine) {
                 player.movingSide = -1
                 player.movingSideTicks = scale
                 previousMove = new Date().getTime()
-                
+
             }
 
 
@@ -507,7 +509,7 @@ createScene = function (engine) {
                 jump = player.box.position.x
                 var forceDirection = new BABYLON.Vector3(0, 0.9, 0)
                 var contactLocalRefPoint = BABYLON.Vector3.Zero()
-                scene.player.box.physicsImpostor.applyImpulse(forceDirection.scale(jumpPower),
+                scene.player.box.physicsImpostor.applyImpulse(forceDirection.scale(scene.jumpPower),
                     scene.player.box.getAbsolutePosition().add(contactLocalRefPoint))
                 player.hasJump = true
             }
@@ -535,7 +537,7 @@ createScene = function (engine) {
                 this._loadingDiv.id = "customLoadingScreenDiv";
                 this._loadingDiv.innerHTML = '<div id="babylonjsLoadingDiv" style="opacity: 1; transition: opacity 1.5s ease 0s; pointer-events: none; position: absolute; left: 0px; top: 0px; width: 100vw; height: 100vh; background-color: black;"><div style="position: absolute; left: 0px; top: 50%; margin-top: 80px; width: 100%; height: 20px; font-family: Arial; font-size: 14px; color: white; text-align: center;"></div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAuMTcgMjA4LjA0Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2ZmZjt9LmNscy0ye2ZpbGw6I2UwNjg0Yjt9LmNscy0ze2ZpbGw6I2JiNDY0Yjt9LmNscy00e2ZpbGw6I2UwZGVkODt9LmNscy01e2ZpbGw6I2Q1ZDJjYTt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPkJhYnlsb25Mb2dvPC90aXRsZT48ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIj48ZyBpZD0iUGFnZV9FbGVtZW50cyIgZGF0YS1uYW1lPSJQYWdlIEVsZW1lbnRzIj48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik05MC4wOSwwLDAsNTJWMTU2bDkwLjA5LDUyLDkwLjA4LTUyVjUyWiIvPjxwb2x5Z29uIGNsYXNzPSJjbHMtMiIgcG9pbnRzPSIxODAuMTcgNTIuMDEgMTUxLjk3IDM1LjczIDEyNC44NSA1MS4zOSAxNTMuMDUgNjcuNjcgMTgwLjE3IDUyLjAxIi8+PHBvbHlnb24gY2xhc3M9ImNscy0yIiBwb2ludHM9IjI3LjEyIDY3LjY3IDExNy4yMSAxNS42NiA5MC4wOCAwIDAgNTIuMDEgMjcuMTIgNjcuNjciLz48cG9seWdvbiBjbGFzcz0iY2xzLTIiIHBvaW50cz0iNjEuODkgMTIwLjMgOTAuMDggMTM2LjU4IDExOC4yOCAxMjAuMyA5MC4wOCAxMDQuMDIgNjEuODkgMTIwLjMiLz48cG9seWdvbiBjbGFzcz0iY2xzLTMiIHBvaW50cz0iMTUzLjA1IDY3LjY3IDE1My4wNSAxNDAuMzcgOTAuMDggMTc2LjcyIDI3LjEyIDE0MC4zNyAyNy4xMiA2Ny42NyAwIDUyLjAxIDAgMTU2LjAzIDkwLjA4IDIwOC4wNCAxODAuMTcgMTU2LjAzIDE4MC4xNyA1Mi4wMSAxNTMuMDUgNjcuNjciLz48cG9seWdvbiBjbGFzcz0iY2xzLTMiIHBvaW50cz0iOTAuMDggNzEuNDYgNjEuODkgODcuNzQgNjEuODkgMTIwLjMgOTAuMDggMTA0LjAyIDExOC4yOCAxMjAuMyAxMTguMjggODcuNzQgOTAuMDggNzEuNDYiLz48cG9seWdvbiBjbGFzcz0iY2xzLTQiIHBvaW50cz0iMTUzLjA1IDY3LjY3IDExOC4yOCA4Ny43NCAxMTguMjggMTIwLjMgOTAuMDggMTM2LjU4IDkwLjA4IDE3Ni43MiAxNTMuMDUgMTQwLjM3IDE1My4wNSA2Ny42NyIvPjxwb2x5Z29uIGNsYXNzPSJjbHMtNSIgcG9pbnRzPSIyNy4xMiA2Ny42NyA2MS44OSA4Ny43NCA2MS44OSAxMjAuMyA5MC4wOCAxMzYuNTggOTAuMDggMTc2LjcyIDI3LjEyIDE0MC4zNyAyNy4xMiA2Ny42NyIvPjwvZz48L2c+PC9zdmc+" style="position: absolute; left: 50%; top: 50%; width: 10vw; height: 10vw; margin-left: -5vw; margin-top: -5vw;"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzOTIgMzkyIj48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2UwNjg0Yjt9LmNscy0ye2ZpbGw6bm9uZTt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPlNwaW5uZXJJY29uPC90aXRsZT48ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIj48ZyBpZD0iU3Bpbm5lciI+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDAuMjEsMTI2LjQzYzMuNy03LjMxLDcuNjctMTQuNDQsMTItMjEuMzJsMy4zNi01LjEsMy41Mi01YzEuMjMtMS42MywyLjQxLTMuMjksMy42NS00LjkxczIuNTMtMy4yMSwzLjgyLTQuNzlBMTg1LjIsMTg1LjIsMCwwLDEsODMuNCw2Ny40M2EyMDgsMjA4LDAsMCwxLDE5LTE1LjY2YzMuMzUtMi40MSw2Ljc0LTQuNzgsMTAuMjUtN3M3LjExLTQuMjgsMTAuNzUtNi4zMmM3LjI5LTQsMTQuNzMtOCwyMi41My0xMS40OSwzLjktMS43Miw3Ljg4LTMuMywxMi00LjY0YTEwNC4yMiwxMDQuMjIsMCwwLDEsMTIuNDQtMy4yMyw2Mi40NCw2Mi40NCwwLDAsMSwxMi43OC0xLjM5QTI1LjkyLDI1LjkyLDAsMCwxLDE5NiwyMS40NGE2LjU1LDYuNTUsMCwwLDEsMi4wNSw5LDYuNjYsNi42NiwwLDAsMS0xLjY0LDEuNzhsLS40MS4yOWEyMi4wNywyMi4wNywwLDAsMS01Ljc4LDMsMzAuNDIsMzAuNDIsMCwwLDEtNS42NywxLjYyLDM3LjgyLDM3LjgyLDAsMCwxLTUuNjkuNzFjLTEsMC0xLjkuMTgtMi44NS4yNmwtMi44NS4yNHEtNS43Mi41MS0xMS40OCwxLjFjLTMuODQuNC03LjcxLjgyLTExLjU4LDEuNGExMTIuMzQsMTEyLjM0LDAsMCwwLTIyLjk0LDUuNjFjLTMuNzIsMS4zNS03LjM0LDMtMTAuOTQsNC42NHMtNy4xNCwzLjUxLTEwLjYsNS41MUExNTEuNiwxNTEuNiwwLDAsMCw2OC41Niw4N0M2Ny4yMyw4OC40OCw2Niw5MCw2NC42NCw5MS41NnMtMi41MSwzLjE1LTMuNzUsNC43M2wtMy41NCw0LjljLTEuMTMsMS42Ni0yLjIzLDMuMzUtMy4zMyw1YTEyNywxMjcsMCwwLDAtMTAuOTMsMjEuNDksMS41OCwxLjU4LDAsMSwxLTMtMS4xNVM0MC4xOSwxMjYuNDcsNDAuMjEsMTI2LjQzWiIvPjxyZWN0IGNsYXNzPSJjbHMtMiIgd2lkdGg9IjM5MiIgaGVpZ2h0PSIzOTIiLz48L2c+PC9nPjwvc3ZnPg==" style="position: absolute; left: 50%; top: 50%; width: 18vw; height: 18vw; margin-left: -9vw; margin-top: -9vw; animation: 0.75s linear 0s infinite normal none running spin1; transform-origin: 50% 50%;"></div>'
                 document.body.insertBefore(this._loadingDiv,document.getElementById("renderCanvas"));
-    
+
             } else {
                 player.box.physicsImpostor.wakeUp()
                 scene.keepPosition = new BABYLON.Vector3.Zero()
@@ -548,7 +550,7 @@ createScene = function (engine) {
 
 
 ;
-    
+
 
 
     //Ensemble des actions a execute une fois le niveau charge

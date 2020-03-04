@@ -6,7 +6,7 @@ Arena10 = function (game) {
     //position d'apparition du joueur dans le niveau;
     this.spawn = new BABYLON.Vector3(0, 15 * 1, 0);
     //Vitesse du joueur dans le niveau
-    this.speed = 2;
+    this.speed = 5;
     var music2 = new BABYLON.Sound(
         "Music", "assets/sons/music.mp3", scene, null, {
         loop: true,
@@ -33,7 +33,7 @@ Arena10 = function (game) {
         // do something with the scene
     })
     loader.onMeshLoaded = function (mesh) {
-        mesh.position = new BABYLON.Vector3(4300, 0, 250)
+        mesh.position = new BABYLON.Vector3(5100, 0, 250)
         mesh.scaling = new BABYLON.Vector3(1, 1, 1)
         mesh.rotate(BABYLON.Axis.Y, -1.55 , BABYLON.Space.WORLD);
 

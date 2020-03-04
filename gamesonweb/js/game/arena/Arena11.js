@@ -36,7 +36,7 @@ Arena11 = function (game) {
         // do something with the scene
     })
     loader.onMeshLoaded = function (mesh) {
-        mesh.position = new BABYLON.Vector3(4300, 0, 250)
+        mesh.position = new BABYLON.Vector3(5100, 0, 250)
         mesh.scaling = new BABYLON.Vector3(1, 1, 1)
         mesh.rotate(BABYLON.Axis.Y, -1.55 , BABYLON.Space.WORLD);
 

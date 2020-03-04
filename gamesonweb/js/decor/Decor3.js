@@ -42,11 +42,12 @@ Decor3 = function (scene) {
             // See below for more details on what can be changed.
         }
         for (var index = 0; index < 20; index++) {
+
             var newInstance = mesh.createInstance("i2-" + index);
             // Here you could change the properties of your individual instance,
             // for example to form a diagonal line of instances:
             newInstance.scaling = new BABYLON.Vector3(20, 20, 20)
-            newInstance.position.x = index*300;
+            newInstance.position.x = (index*300);
             newInstance.position.y = -90;
             newInstance.position.z = -110;
             // See below for more details on what can be changed.

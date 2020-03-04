@@ -21,10 +21,10 @@ class MapEngine {
         this.run = true
         //--------Editable-------//
         // Performances
-        this.destroyMeshes = 20
-        this.createMeshes = 120
+        this.destroyMeshes = 10
+        this.createMeshes = 80
         this.defaultPattern = [-1, 0, 1]
-        this.cubeWidth = 13
+        this.cubeWidth = 12
         this.init()
         //--------Editable before starting play loop-------//
         //materials
@@ -246,10 +246,11 @@ class MapEngine {
     createCubesRows() {
         if (Math.floor(this.rand() * 1000) < this.change) {
             this.setNewPattern(incArray(this.pattern, Math.floor(this.rand() * 3) - 1))
+            this.currentGameX--
         }
         let pos = this.pattern.slice();
         shuffle(pos, this.rand());
-        for (let i = 0; i < this.minWidth + Math.floor(Math.random()*this.maxWidth); i++) {
+        for (let i = 0; i < this.minWidth + Math.floor(Math.random() * this.maxWidth); i++) {
             let position = new BABYLON.Vector3(this.currentGameX * this.cubeWidth, this.currentGameY, pos.pop() * this.cubeWidth)
             this.createRandomItem(position);
         }
@@ -260,11 +261,12 @@ class MapEngine {
      */
     createNextMeshes() {
 
-            if(this.game.player.box.position.x > this.currentGameX * this.cubeWidth - this.createMeshes * this.cubeWidth) {
-                this.createCubesRows();
-                this.currentGameX += 1
-            }
-        
+        if (this.game.player.box.position.x > this.currentGameX * this.cubeWidth - this.createMeshes * this.cubeWidth) {
+            this.createCubesRows();
+            this.currentGameX += 1
+
+        }
+
 
 
     }
@@ -399,7 +401,7 @@ class MapEngine {
     createBox(position, name) {
         var mainBox = BABYLON.MeshBuilder.CreateBox("normalBox", { size: 3 }, this.game);
         var scene = this.game
-        mainBox.scaling.y = 1.5;
+        mainBox.scaling.y = 3;
         mainBox.name = "box"
         mainBox.scaling.x = 4;
         mainBox.scaling.z = 4;
@@ -453,7 +455,7 @@ class MapEngine {
         mainBox.actionManager = new BABYLON.ActionManager(this.game);
         mainBox.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
             { trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: scene.player.box },
-            function (mainBox) { scene.player.hasJump = false;scene.mapEngine.playerGameY = mainBox.source.position.y }
+            function (mainBox) { scene.player.hasJump = false; scene.mapEngine.playerGameY = mainBox.source.position.y }
         ));
         this.normalCubes.push(mainBox);
 
@@ -639,7 +641,10 @@ class MapEngine {
  */
 function updateMap(scene) {
     scene.mapEngine.updateParams()
-    scene.mapEngine.destroyBackMeshes()
+    r = Math.random()
+    if (r > 0.95) {
+        scene.mapEngine.destroyBackMeshes()
+    }
     scene.mapEngine.createNextMeshes()
     //console.log(scene.mapEngine.normalCubes.length)
 

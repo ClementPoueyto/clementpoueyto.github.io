@@ -20,7 +20,7 @@ Arena2 = function (game) {
 
      //Material pour normal box
      var materialNormalBox = new BABYLON.StandardMaterial("NormalBoxTexture", scene);
-     materialNormalBox.diffuseTexture = new BABYLON.Texture("assets/images/decor1/grass.jpg", scene);
+     materialNormalBox.diffuseTexture = new BABYLON.Texture("assets/images/decor1/road.jpg", scene);
      materialNormalBox.diffuseTexture.uScale = 1.0;
      materialNormalBox.diffuseTexture.vScale = 1.0;
      scene.materialNormalBox = materialNormalBox;
@@ -31,7 +31,7 @@ Arena2 = function (game) {
       var endMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
       endMaterial.alpha = 0
       this.end.material = endMaterial
-      this.end.position = new BABYLON.Vector3(4400, -200, 10);
+      this.end.position = new BABYLON.Vector3(5200, -200, 10);
       var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 50, 0), scene);
       light.intensity = 1.3
       //MESH DE FIN - Ramene au menu
@@ -40,7 +40,7 @@ Arena2 = function (game) {
          // do something with the scene
      })
      loader.onMeshLoaded = function (mesh) {
-         mesh.position = new BABYLON.Vector3(4400, -450, 10)
+         mesh.position = new BABYLON.Vector3(5200, -450, 10)
          mesh.scaling = new BABYLON.Vector3(250, 250, 250)
      }
 

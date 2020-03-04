@@ -27,14 +27,14 @@ Arena4 = function (game) {
     this.end = BABYLON.MeshBuilder.CreateBox("box1", { size: 100 }, scene);
     var endMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
     endMaterial.alpha = 0
-    this.end.position = new BABYLON.Vector3(4400, -40, 0);
+    this.end.position = new BABYLON.Vector3(5100, -40, 0);
     this.end.material = endMaterial
     //MESH DE FIN - Ramene au menu
     loader = BABYLON.SceneLoader.Append('assets/model/', 'scene2end.glb', scene, function (scene) {
         // do something with the scene
     })
     loader.onMeshLoaded = function (mesh) {
-        mesh.position = new BABYLON.Vector3(4400, -80, 0)
+        mesh.position = new BABYLON.Vector3(5100, -80, 0)
         mesh.scaling = new BABYLON.Vector3(40, 40, 40)
 
     }

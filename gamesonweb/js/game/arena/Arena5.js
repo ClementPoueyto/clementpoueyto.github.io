@@ -33,7 +33,7 @@ Arena5 = function (game) {
         // do something with the scene
     })
     loader.onMeshLoaded = function (mesh) {
-        mesh.position = new BABYLON.Vector3(4400, -80, 0)
+        mesh.position = new BABYLON.Vector3(5100, -80, 0)
         mesh.scaling = new BABYLON.Vector3(40, 40, 40)
 
     }
