@@ -22,25 +22,27 @@ var Infinite = function (game) {
 
 
     /****************************** Particle******************************** */
-    var particleSystem = new BABYLON.ParticleSystem("laser", 10000, scene);
-    particleSystem.particleTexture = new BABYLON.Texture("assets/images/flare.png", scene);
-    particleSystem.emitter = player.box;
-    particleSystem.emitRate = 3000;
-    particleSystem.maxEmitBox = new BABYLON.Vector3(-1, 0, 0);
-    particleSystem.minLifeTime = 0.1;
-    particleSystem.maxLifeTime = 1;
-    particleSystem.minSize = 0.2;
-    particleSystem.maxSize = 1.1
-    particleSystem.minEmitBox = new BABYLON.Vector3(-1, -2, -2);
-    particleSystem.maxEmitBox = new BABYLON.Vector3(1, 2, 2);;
-    particleSystem.color1 = new BABYLON.Color4(0.7, 0.3, 0.0, 1);
-    particleSystem.color2 = new BABYLON.Color4(199/255, 63/255, 252/255, 0.0);
-    particleSystem.colorDead = new BABYLON.Color4(1, 0, 0.2, 0.0);
-    particleSystem.minEmitPower = 0.1;
-    particleSystem.maxEmitPower = 8;
-    particleSystem.updateSpeed = 0.01;
-    particleSystem.start();
-
+    if(scene.decorOn==true){
+    
+        var particleSystem = new BABYLON.ParticleSystem("laser", 10000, scene);
+        particleSystem.particleTexture = new BABYLON.Texture("assets/images/flare.png", scene);
+        particleSystem.emitter = player.box;
+        particleSystem.emitRate = 3000;
+        particleSystem.maxEmitBox = new BABYLON.Vector3(-1, 0, 0);
+        particleSystem.minLifeTime = 0.1;
+        particleSystem.maxLifeTime = 1;
+        particleSystem.minSize = 0.2;
+        particleSystem.maxSize = 1.1
+        particleSystem.minEmitBox = new BABYLON.Vector3(-1, -2, -2);
+        particleSystem.maxEmitBox = new BABYLON.Vector3(1, 2, 2);;
+        particleSystem.color1 = new BABYLON.Color4(0.7, 0.3, 0.0, 1);
+        particleSystem.color2 = new BABYLON.Color4(199/255, 63/255, 252/255, 0.0);
+        particleSystem.colorDead = new BABYLON.Color4(1, 0, 0.2, 0.0);
+        particleSystem.minEmitPower = 0.1;
+        particleSystem.maxEmitPower = 8;
+        particleSystem.updateSpeed = 0.01;
+        particleSystem.start();
+    }
 
     scene.mapEngine = new MapEngine(scene, "Infinite Level")
     this.end = BABYLON.MeshBuilder.CreateBox("box1", { size: 0 }, scene);

@@ -31,7 +31,7 @@ Arena2 = function (game) {
       var endMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
       endMaterial.alpha = 0
       this.end.material = endMaterial
-      this.end.position = new BABYLON.Vector3(5200, -200, 10);
+      this.end.position = new BABYLON.Vector3(5100, -200, 10);
       var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 50, 0), scene);
       light.intensity = 1.3
       //MESH DE FIN - Ramene au menu
@@ -40,7 +40,7 @@ Arena2 = function (game) {
          // do something with the scene
      })
      loader.onMeshLoaded = function (mesh) {
-         mesh.position = new BABYLON.Vector3(5200, -450, 10)
+         mesh.position = new BABYLON.Vector3(5100, -450, 10)
          mesh.scaling = new BABYLON.Vector3(250, 250, 250)
      }
 
@@ -57,17 +57,18 @@ Arena2 = function (game) {
    /********************************************************************** */
 
 		
-    scene.mapEngine = new MapEngine(scene, "clement2arena")
-
+    scene.mapEngine = new MapEngine(scene, "clement2AA2")
 
 
     params = {"trigger":-1,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":3}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":500,"normalCubesProbability":1000,"pattern":[0],"minWidth":1,"change":100}
+    params = {"trigger":500,"normalCubesProbability":1000,"pattern":[0],"minWidth":1,"change":80}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":4000,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":2,"change":0,"maxWidth":1}
+    params = {"trigger":1500,"normalCubesProbability":1000,"pattern":[-2,-1,0,1],"minWidth":3,"maxWidth":4}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":5000,"normalCubesProbability":0,"pattern":[-1,0,1],"minWidth":1,"change":0}
+    params = {"trigger":3000,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":2,"change":0,"maxWidth":1}
+    scene.mapEngine.addParamsConfiguration(params)
+    params = {"trigger":5000,"normalCubesProbability":0,"pattern":[0],"minWidth":1,"change":0}
     scene.mapEngine.addParamsConfiguration(params)
 
 

@@ -61,11 +61,11 @@ Arena4 = function (game) {
     scene.mapEngine.addParamsConfiguration(params)
     params = {"trigger":400,"normalCubesProbability":850,"upCubesProbability":1000,"upCubeSpeed":0.2,"upCubeTriggerX":5,"pattern":[0,1],"minWidth":2,"maxWidth":0}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":2000,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":2,"change":0,"maxWidth":0}
+    params = {"trigger":2000,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":2,"change":0,"maxWidth":3}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":3000,"normalCubesProbability":600,"upCubesProbability":1000,"pattern":[-2,0,1,2],"minWidth":2,"maxWidth":2,"change":0}
+    params = {"trigger":3000,"normalCubesProbability":850,"upCubesProbability":1000,"pattern":[-1,0,1,2],"minWidth":3,"maxWidth":4,"change":0}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":4500,"normalCubesProbability":850,"pattern":[-2,0,2],"minWidth":2,"maxWidth":2,"change":200}
+    params = {"trigger":4500,"normalCubesProbability":850,"pattern":[-1,0,1],"minWidth":2,"maxWidth":2,"change":200}
     scene.mapEngine.addParamsConfiguration(params)
     params = {"trigger":5000,"normalCubesProbability":0,"upCubesProbability":0,"pattern":[0],"minWidth":1,"maxWidth":0,"change":0}
     scene.mapEngine.addParamsConfiguration(params)

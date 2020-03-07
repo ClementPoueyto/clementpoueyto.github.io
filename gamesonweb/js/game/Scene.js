@@ -11,7 +11,7 @@ createScene = function (engine) {
 
     /********************* Moteur physique du jeu *********************** */
     var scene = new BABYLON.Scene(engine)
-    var gravityVector = new BABYLON.Vector3(0, -150.81, 0)
+    var gravityVector = new BABYLON.Vector3(0, -165.81, 0)
     var physicsPlugin = new BABYLON.CannonJSPlugin()
     scene.enablePhysics(gravityVector, physicsPlugin)
     scene.clearColor = new BABYLON.Color3(0, 0, 0)
@@ -49,7 +49,7 @@ createScene = function (engine) {
 
     /********************* Camera  *********************** */
     scene.camera = new BABYLON.FreeCamera('camera', player.box.position, scene);
-    scene.camera.rotation = new BABYLON.Vector3(Math.PI/8, Math.PI/2, 0);
+    scene.camera.setTarget(new BABYLON.Vector3(60, -10, 0));
     var cameraAdd = 0;
 
     var defaultEnvironment = scene.createDefaultEnvironment({ createSkybox: false })
@@ -71,7 +71,6 @@ createScene = function (engine) {
 
     scene.blueMat = new BABYLON.StandardMaterial('blueMat', scene)
 
-    //scene.blueMat.diffuseTexture = new BABYLON.Texture("assets/images/Portal-PNG-Free-Image.png", scene);
     scene.blueMat.diffuseColor = new BABYLON.Color3(0.4, 0.2, 0.8)
     scene.blueMat.alpha = 0.03
     scene.cyanMat = new BABYLON.StandardMaterial('cyanMat', scene)
@@ -109,6 +108,7 @@ createScene = function (engine) {
     advancedTexture.idealWidth = 1920
     advancedTexture.idealHeight = 1080
     advancedTexture.renderAtIdealSize = true
+    scene.advancedTexture=advancedTexture
     var quitButton = BABYLON.GUI.Button.CreateImageWithCenterTextButton(
         "but",
         "",
@@ -400,10 +400,11 @@ createScene = function (engine) {
                     scene.camera.position.x = player.box.position.x - 160 - cameraAdd;
                     scene.camera.position.y += (player.box.position.y - scene.camera.position.y + cameraAdd + 65) * 0.1
                     scene.camera.position.z = player.box.position.z * 1.1
-                    
+                    //scene.camera.parent = player.box;
 
 
-                    if (player.box.position.y >= 4) {
+
+                    if (player.box.position.y >= 4 || scene.arena.end.position.x === 0) {
                         actualScore = scene.arena.end.position.x === 0 ? Math.floor(player.box.position.x) : min(scene.arena.end.position.x, Math.floor(player.box.position.x))
                         score.text = 'Score: ' + actualScore
                         if (actualScore > bestScore) {

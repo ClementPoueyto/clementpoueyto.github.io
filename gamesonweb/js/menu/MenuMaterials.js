@@ -45,7 +45,7 @@ MenuMaterials = function (scene) {
 
         levelTx[i] = new BABYLON.StandardMaterial("NormalBoxTexture", scene);
         levelTx[i].diffuseTexture = new BABYLON.Texture("assets/images/menu/yellow.jpg", scene);
-        levelTx[i].emissiveColor = BABYLON.Color3.Blue();
+        levelTx[i].emissiveColor = BABYLON.Color3.Yellow();
         levelTx[i].diffuseTexture.uScale = 1.0;
         levelTx[i].diffuseTexture.vScale = 1.0;
         tableauMaterials.push(levelTx[i]);

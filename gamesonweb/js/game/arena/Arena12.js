@@ -6,7 +6,7 @@ Arena12 = function (game) {
     //position d'apparition du joueur dans le niveau;
     this.spawn = new BABYLON.Vector3(0, 15 * 1, 0);
     //Vitesse du joueur dans le niveau
-    this.speed = 2;
+    this.speed = 3;
     var music2 = new BABYLON.Sound(
         "Music", "assets/sons/music.mp3", scene, null, {
         loop: true,

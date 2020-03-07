@@ -6,7 +6,7 @@ Arena9 = function (game) {
     //position d'apparition du joueur dans le niveau;
     this.spawn = new BABYLON.Vector3(0, 15 * 1, 0);
     //Vitesse du joueur dans le niveau
-    this.speed = 2;
+    this.speed = 2.5;
     var music2 = new BABYLON.Sound(
         "Music", "assets/sons/music.mp3", scene, null, {
         loop: true,
@@ -25,11 +25,11 @@ Arena9 = function (game) {
     light.intensity = 1.3
 
     //MESH DE FIN - Ramene au menu
-    this.end = BABYLON.MeshBuilder.CreateBox("box1", { size: 100 }, scene);
+    this.end = BABYLON.MeshBuilder.CreateBox("box1", { size: 250 }, scene);
     var endMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
     endMaterial.alpha = 0
     this.end.material = endMaterial
-    this.end.position = new BABYLON.Vector3(4300, -100, 0);
+    this.end.position = new BABYLON.Vector3(5100, -100, 0);
     loader = BABYLON.SceneLoader.Append('assets/model/', 'barrel.glb', scene, function (scene) {
         // do something with the scene
     })

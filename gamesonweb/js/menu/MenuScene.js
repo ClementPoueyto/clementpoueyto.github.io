@@ -73,7 +73,7 @@ createMenuScene = function (engine, canvas) {
         }
         else{
             box.position = new BABYLON.Vector3(
-                -2,
+                -1.5,
                 -2,
                 id * 0.9,
             );
@@ -318,5 +318,15 @@ createMenuScene = function (engine, canvas) {
     // Quand les touches sont relachés
     window.addEventListener("keyup", keyController, false);
     updateText();
+
+
+    //MUSIC
+
+    scene.music = new BABYLON.Sound(
+        "MusicMenu", "assets/sons/menu.mp3", scene, null, {
+        loop: true,
+        autoplay: true
+    });
+
     return scene;
 };

@@ -6,7 +6,7 @@ Arena10 = function (game) {
     //position d'apparition du joueur dans le niveau;
     this.spawn = new BABYLON.Vector3(0, 15 * 1, 0);
     //Vitesse du joueur dans le niveau
-    this.speed = 5;
+    this.speed = 3;
     var music2 = new BABYLON.Sound(
         "Music", "assets/sons/music.mp3", scene, null, {
         loop: true,
@@ -28,7 +28,7 @@ Arena10 = function (game) {
     var endMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
     endMaterial.alpha = 0
     this.end.material = endMaterial
-    this.end.position = new BABYLON.Vector3(4300, 0, 0);
+    this.end.position = new BABYLON.Vector3(5100, 0, 0);
     loader = BABYLON.SceneLoader.Append('assets/model/', 'football.glb', scene, function (scene) {
         // do something with the scene
     })

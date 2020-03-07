@@ -51,7 +51,7 @@ createInstructionsScene = function (engine, canvas) {
     instructionsTexture.stretch = BABYLON.GUI.Image.STRETCH_NONE;
     instructionsTexture.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER
     instructionsTexture.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER
-    // advancedTexture.addControl(instructionsTexture)
+    advancedTexture.addControl(instructionsTexture)
 
     scene.upCubeColor = new BABYLON.StandardMaterial('yellow', scene)
     scene.upCubeColor.emissiveColor = new BABYLON.Color3(0.86, 0.57, 0.13)
@@ -91,36 +91,54 @@ createInstructionsScene = function (engine, canvas) {
 
     //lance la procedure de chargement de niveau
 
+
+    // var particlesBox = BABYLON.MeshBuilder.CreateSphere("normalBox", { size: 3 }, scene);
+    //
+    // particlesBox.material = scene.cyanMat
+    // var particleSystem = new BABYLON.ParticleSystem("particles", 5000, scene);
+    // particleSystem.particleTexture = new BABYLON.Texture("assets/images/flare.png", scene);
+    // var radius = 0.5;
+    // var angle = Math.PI / 4;
+    // particlesBox.rotate(BABYLON.Axis.Z, 0, BABYLON.Space.WORLD);
+    // var sphereEmitter = particleSystem.createSphereEmitter(0.2);
+    // particleSystem.emitter = particlesBox;
+    // particlesBox.rotation.z = -300
+    // particleSystem.color2 = new BABYLON.Color4(0.2, 0.8, 0.2, 1);
+    // particleSystem.color1 = new BABYLON.Color4(0.2, 0.8, 0.2, 1);
+    // particleSystem.colorDead = new BABYLON.Color4(0.2, 0.8, 0.2, 1);
+    // particleSystem.gravity = new BABYLON.Vector3(-20, 15, 0);
+    // // Size of each particle (random between...
+    // particleSystem.minSize = 0.1;
+    // particleSystem.maxSize = 0.8;
+    // // Life time of each particle (random between...
+    // particleSystem.minLifeTime = 0.1;
+    // particleSystem.maxLifeTime = 0.12;
+    // // Emission rate
+    // particleSystem.emitRate = 2000;
+    // // Speed
+    // particleSystem.minEmitPower = 0.3;
+    // particleSystem.maxEmitPower = 4;
+    // particleSystem.updateSpeed = 0.008;
+    // particleSystem.start();
+    //
+    // scene.cyanMat = particlesBox;
+
+
     var instructions = [
         [scene.dangerCubeColor, 'Les dalles rouges vous font perdre la partie dès lors que vous passez dessus... Un conseil : évitez les !'],
-        [scene.cyanMat, 'Si vous cherchez un peu de vitesse, passez sur les dalles cyan ! Boost garanti !'],
+        [scene.cyanMat, 'Si vous cherchez un peu de vitesse, passez sur les les particules cyan ! Boost garanti !'],
         [scene.jumpCubeColor, 'Pouf ! Passez sur une dalle bleue et vous serez propulsé à l\'infini ! Attention à l\'atterissage !'],
         [scene.greenMat, 'Ces dalles se retirent de la plateforme à votre passage ! Ne comptez pas sur elles...'],
         [scene.yellowMat, 'Ces dalles s\'élèvent à votre approche ; elles constituent un deuxième niveau de plateforme dont il faut profiter !'],
     ]
-    //
-    // var materialPlane = new BABYLON.StandardMaterial('texturePlane', scene)
-    // materialPlane.diffuseTexture = new BABYLON.Texture('assets/images/menu/instructions.png', scene)
-    // materialPlane.specularColor = new BABYLON.Color3(0, 0, 0)
-    // materialPlane.backFaceCulling = false//Allways show the front and the back of an element
-    //
-    // //Creation of a plane
-    // var plane = BABYLON.Mesh.CreatePlane('plane', 15, scene)
-    // plane.scaling.x = 1.4;
-    //
-    // // plane.rotation.x = Math.PI / 2
-    // plane.material = materialPlane
 
 
 
-
-
-    //
-    var pos = 0;
-    for (let i = 0; i < instructions.length; i++) {
-        createEntry(pos, instructions[i][0], instructions[i][1]);
-        pos++;
-    }
+    // var pos = 0;
+    // for (let i = 0; i < instructions.length; i++) {
+    //     createEntry(pos, instructions[i][0], instructions[i][1], i);
+    //     pos++;
+    // }
 
     function createText (pos, text) {
         var rectangle = new BABYLON.GUI.Rectangle('rect')
@@ -142,17 +160,24 @@ createInstructionsScene = function (engine, canvas) {
         rectangle.addControl(text1)
     }
 
-    function createEntry (pos, color, text) {
+    function createEntry (pos, color, text, i) {
         createBox(new BABYLON.Vector3(-10, -pos * 2.9 + 5.3, 0), color)
         createText(new BABYLON.Vector3(30, -2, -275 + pos * 150), text)
     }
 
-    function createBox (position, color) {
-        var mainBox = BABYLON.MeshBuilder.CreateBox('normalBox', { size: 3 }, scene)
+    function createBox (position, color, i) {
+        if(i == 1){
+            var mainBox = scene.cyanMat
+        }else{
+            var mainBox = BABYLON.MeshBuilder.CreateBox('normalBox', { size: 3 }, scene)
+            mainBox.material = color
+        }
+
         mainBox.scaling = new BABYLON.Vector3(0.5, 0.5, 0.5)
         mainBox.name = 'box'
         mainBox.position = position
-        mainBox.material = color
+
+
         return mainBox
     }
 

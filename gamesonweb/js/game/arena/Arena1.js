@@ -30,7 +30,7 @@ Arena1 = function (game) {
      var endMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
      endMaterial.alpha = 0
      this.end.material = endMaterial
-     this.end.position = new BABYLON.Vector3(4400, -200, 10);
+     this.end.position = new BABYLON.Vector3(5100, -200, 10);
      var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 50, 0), scene);
      light.intensity = 1.3
      //MESH DE FIN - Ramene au menu
@@ -39,7 +39,7 @@ Arena1 = function (game) {
         // do something with the scene
     })
     loader.onMeshLoaded = function (mesh) {
-        mesh.position = new BABYLON.Vector3(5200, -450, 10)
+        mesh.position = new BABYLON.Vector3(5100, -450, 10)
         mesh.scaling = new BABYLON.Vector3(250, 250, 250)
     }
 
@@ -53,14 +53,14 @@ Arena1 = function (game) {
 
     params = { "trigger": -1, "normalCubesProbability": 1000, "pattern": [-1, 0, 1], "minWidth": 3 }
     scene.mapEngine.addParamsConfiguration(params)
-    params = { "trigger": 400, "normalCubesProbability": 950, "pattern": [0], "minWidth": 1, "change": 80 }
+    params = { "trigger": 400, "normalCubesProbability": 950, "pattern": [0,1], "minWidth": 2, "change": 50 }
     scene.mapEngine.addParamsConfiguration(params)
-    params = { "trigger": 3000, "normalCubesProbability": 1000, "pattern": [0, 1], "minWidth": 1, "change": 20, "maxWidth": 2 }
+    params = { "trigger": 3000, "normalCubesProbability": 1000, "pattern": [0], "minWidth": 1, "change": 80 }
     scene.mapEngine.addParamsConfiguration(params)
     params = { "trigger": 5000, "normalCubesProbability": 0, "pattern": [-1, 0, 1], "minWidth": 1, "change": 0 }
     scene.mapEngine.addParamsConfiguration(params)
 
-    
+
      //Material pour normal box
      var materialPlayer = new BABYLON.StandardMaterial("NormalBoxTexture", scene);
      materialPlayer.diffuseTexture = new BABYLON.Texture("assets/images/player/player1.jpg", scene);
@@ -74,6 +74,45 @@ Arena1 = function (game) {
 
         }
     ));
+
+
+
+    var imageArrowleft = new BABYLON.GUI.Image("left", "assets/images/arrow.png");
+    imageArrowleft.width = "300px";
+    imageArrowleft.height = "200px";
+    imageArrowleft.top = 250;
+    imageArrowleft.left = -350;
+    scene.advancedTexture.addControl(imageArrowleft);
+
+    var imageArrowright = new BABYLON.GUI.Image("right", "assets/images/arrow.png");
+    imageArrowright.width = "300px";
+    imageArrowright.height = "200px";
+    imageArrowright.top = 250;
+    imageArrowright.left = 350;
+    imageArrowright.rotation=Math.PI
+    scene.advancedTexture.addControl(imageArrowright);
+
+    var image = new BABYLON.GUI.Image("but", "assets/images/menu/keyQ.png");
+    image.width = "60px";
+    image.height = "60px";
+    image.top = 320;
+    image.left = -350;
+    scene.advancedTexture.addControl(image);
+    var image2 = new BABYLON.GUI.Image("but2", "assets/images/menu/keyD.png");
+    image2.width = "60px";
+    image2.height = "60px";
+    image2.top = 320;
+    image2.left = 350;
+    scene.advancedTexture.addControl(image2);
+    var image3 = new BABYLON.GUI.Image("but3", "assets/images/menu/keySpace.png");
+    image3.width = "360px";
+    image3.height = "60px";
+    image3.top = 360;
+    image3.left = 0;
+    scene.advancedTexture.addControl(image3);
+
+
+
     return this
 
 

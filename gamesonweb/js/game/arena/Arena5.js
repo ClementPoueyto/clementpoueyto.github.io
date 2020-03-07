@@ -26,7 +26,7 @@ Arena5 = function (game) {
     this.end = BABYLON.MeshBuilder.CreateBox("box1", { size: 100 }, scene);
     var endMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
     endMaterial.alpha = 0
-    this.end.position = new BABYLON.Vector3(4400, -40, 0);
+    this.end.position = new BABYLON.Vector3(5100, -40, 0);
     this.end.material = endMaterial
      //MESH DE FIN - Ramene au menu
      loader = BABYLON.SceneLoader.Append('assets/model/', 'scene2end.glb', scene, function (scene) {
@@ -58,13 +58,13 @@ Arena5 = function (game) {
 
     params = {"trigger":-1,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":3}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":400,"normalCubesProbability":800,"downCubesProbability":1000,"downCubeSpeed":0.3,"downCubeTriggerX":5,"downCubeTriggerY":5,"pattern":[0,1],"minWidth":2,"maxWidth":0}
+    params = {"trigger":400,"normalCubesProbability":900,"downCubesProbability":1000,"downCubeSpeed":0.3,"downCubeTriggerX":5,"downCubeTriggerY":5,"pattern":[0,1],"minWidth":2,"maxWidth":0}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":2000,"normalCubesProbability":1000,"pattern":[-1,0,1],"minWidth":2,"change":0,"maxWidth":0}
+    params = {"trigger":2000,"normalCubesProbability":80,"downCubesProbability":1000,"pattern":[0],"minWidth":1,"change":0,"maxWidth":0}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":3000,"normalCubesProbability":600,"downCubesProbability":1000,"pattern":[-1,0,1,2],"minWidth":2,"maxWidth":3,"change":0}
+    params = {"trigger":3000,"normalCubesProbability":700,"downCubesProbability":1000,"pattern":[-1,0,1,2],"minWidth":3,"maxWidth":4,"change":0}
     scene.mapEngine.addParamsConfiguration(params)
-    params = {"trigger":4500,"normalCubesProbability":1500,"pattern":[-2,-1,0,1,2],"minWidth":2,"maxWidth":2,"change":0}
+    params = {"trigger":4500,"normalCubesProbability":1000,"pattern":[-2,-1,0,1,2],"minWidth":2,"maxWidth":3,"change":0}
     scene.mapEngine.addParamsConfiguration(params)
     params = {"trigger":5000,"normalCubesProbability":0,"downCubesProbability":0,"pattern":[0],"minWidth":1,"maxWidth":0,"change":0}
     scene.mapEngine.addParamsConfiguration(params)
